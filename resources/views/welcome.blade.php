@@ -60,16 +60,19 @@
 
     {{-- Hero Section --}}
     <header class="bg-hijautua max-w-screen h-[90vh] flex justify-center items-center px-4 md:px-8 pt-16">
-        <div class="lg:grid lg:grid-cols-2 lg:gap-4 items-center">
-            <div class="text-center text-white  ">
-                <h1 class="text-5xl md:text-5xl font-bold mb-4">Posyandu Online Puskesmas Wonoayu
+        <div class="lg:container lg:grid lg:grid-cols-3 lg:gap-4 items-center  bg-red-500">
+            <div class=" text-white text-center lg:col-span-2 items-center">
+                <h1 class="text-5xl md:text-6xl font-bold mb-4 text-center lg:text-left">Posyandu Online Puskesmas
+                    Wonoayu
                 </h1>
-                <p class="text-lg md:text-xl mb-8">Tumbuh Kembang Optimal untuk Generasi Emas</p> <a href="#"
-                    class="bg-white text-green-700 px-6 py-3 rounded-xl hover:bg-hijaumuda hover:text-green-700 transition duration-300">Login</a>
+                <p class="text-lg md:text-xl mb-8 text-center lg:text-left ">Tumbuh Kembang Optimal untuk Generasi Emas
+                </p> <a href="#"
+                    class="bg-white  text-green-700 px-11 py-3 rounded-xl hover:bg-hijaumuda hover:text-green-700 transition duration-300">Login</a>
             </div>
-            <div class=" mb-12 lg:col-span-2 mx-auto">
-                <img src="{{ asset('img/gizi.svg') }}" alt=""
-                    class="w-3/4 h-auto my-4 hidden lg:block items-center">
+        </div>
+        <div class="lg:container-fluid lg:w-full lg:flex lg:justify-center">
+            <div class="mb-12 w-auto hidden lg:block items-center">
+                <img src="{{ asset('img/gizi.svg') }}" alt="">
             </div>
         </div>
     </header>
