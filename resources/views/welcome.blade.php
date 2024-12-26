@@ -100,7 +100,7 @@
                 <div class="bg-hijautua px-3 py-5 my-6  font-semibold rounded-xl mx-8 text-white">
                     <i class="fa-regular fa-calendar-days fa-4x"></i>
                     <div>
-                        <h1 class="my-2">
+                        <h1 class="mt-5">
                             Jadwal Imunisasi & Perkembangan
                         </h1>
                     </div>
@@ -108,8 +108,10 @@
                 <div class="bg-hijautua px-3 py-5 font-semibold rounded-xl mx-8  text-white">
                     <i class="fa-solid fa-syringe fa-3x"></i>
                     <div>
+                        <h1 class="mt-5">
+                            Cek Imunisasi Balita
+                        </h1>
                     </div>
-                    Cek Imunisasi Balita
                 </div>
                 <div class="bg-hijautua px-8 py-6 font-semibold rounded-xl mx-8 text-white">Cek Tumbuh Kembang Balita
                 </div>
