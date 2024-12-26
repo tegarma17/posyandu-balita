@@ -80,7 +80,7 @@
                 </h1>
                 <p class="text-lg md:text-xl mb-8 text-center lg:text-left ">Tumbuh Kembang Optimal untuk Generasi Emas
                 </p> <a href="#"
-                    class="bg-white  text-green-700 px-11 py-3 rounded-xl hover:bg-hijaumuda hover:text-green-700 transition duration-300">Login</a>
+                    class="bg-white font-bold text-green-700 px-11 py-3 rounded-xl hover:bg-hijaumuda hover:text-white transition duration-300">Login</a>
             </div>
         </div>
         <div class="lg:container-fluid lg:w-full lg:flex lg:justify-center">
@@ -96,8 +96,8 @@
             Keunggulan
         </h2>
         <div class="mx-8 ">
-            <div class="grid grid-cols-1 gap-4 text-center">
-                <div class="bg-hijautua px-3 py-5 my-6  font-semibold rounded-xl mx-8 text-white">
+            <div class="grid grid-cols-1 gap-4 lg:grid-cols-3 text-center">
+                <div class="bg-hijautua px-5 py-8 my-6  font-semibold rounded-xl mx-8 text-white">
                     <i class="fa-regular fa-calendar-days fa-4x"></i>
                     <div>
                         <h1 class="mt-5">
@@ -105,28 +105,75 @@
                         </h1>
                     </div>
                 </div>
-                <div class="bg-hijautua px-3 py-5 font-semibold rounded-xl mx-8  text-white">
+                <div class="bg-hijautua px-5 py-8 my-6 font-semibold rounded-xl mx-8 text-white">
                     <i class="fa-solid fa-syringe fa-3x"></i>
                     <div>
-                        <h1 class="mt-5">
+                        <h1 class="mt-10">
                             Cek Imunisasi Balita
                         </h1>
                     </div>
                 </div>
-                <div class="bg-hijautua px-8 py-6 font-semibold rounded-xl mx-8 text-white">
+                <div class="bg-hijautua px-5 py-8 my-6 font-semibold rounded-xl mx-8 text-white">
                     <i class="fa-solid fa-chart-line fa-3x"></i>
                     <div>
-                        <h1 class="mt-5">
+                        <h1 class="mt-10">
                             Cek Tumbuh Kembang Balita
                         </h1>
                     </div>
                 </div>
-
             </div>
         </div>
     </section>
 
-
+    <section class="p-8 bg-hijaumuda text-wrap">
+        <div class="text-center text-white font-bold tracking-wider ">
+            <h1 class="text-2xl font-bold mb-4 text-center border-b-4 mx-24 lg:mx-[83vh] border-green-900">Tentang Kami
+            </h1>
+        </div>
+        <p class="text-center text-white font-light">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facilis
+            maxime,
+            porro nihil
+            illo ex sint sunt
+            beatae, ratione ad, minima asperiores at maiores voluptate laborum obcaecati suscipit voluptas culpa!
+            Est, alias eveniet id hic accusamus quae unde. Expedita nesciunt ea doloremque repellendus? Fuga, quos.
+            In molestiae nesciunt alias expedita repudiandae!</p>
+        <div class=" mt-14 text-center text-white font-bold tracking-wider ">
+            <h1 class="text-2xl font-bold mb-4 text-center border-b-4 mx-24 lg:mx-[83vh] border-green-900">Visi Misi
+            </h1>
+        </div>
+        <p class="text-center text-white font-light">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facilis
+            maxime,
+            porro nihil
+            illo ex sint sunt
+            beatae, ratione ad, minima asperiores at maiores voluptate laborum obcaecati suscipit voluptas culpa!
+            Est, alias eveniet id hic accusamus quae unde. Expedita nesciunt ea doloremque repellendus? Fuga, quos.
+            In molestiae nesciunt alias expedita repudiandae!</p>
+    </section>
+    <section class="p-8 bg-white">
+        <div class=" grid grid-cols-1 lg:grid-cols-3 gap-12 ">
+            <div class="bg-hijautua rounded-md h-48">
+                <div class="text-white text-center text-xl uppercase font-bold">
+                    <i class="fa-solid fa-building fa-4x mt-4"></i>
+                    <h2 class="mt-2">1+</h2>
+                    <h2>Kecamatan</h2>
+                </div>
+            </div>
+            <div class="bg-hijautua rounded-md h-48">
+                <div class="text-white text-center text-xl uppercase font-bold mt-5">
+                    <i class="fa-solid fa-house fa-4x mt-2"></i>
+                    <h2 class="mt-2">10+</h2>
+                    <h2>Desa</h2>
+                </div>
+            </div>
+            <div class="bg-hijautua rounded-md h-48">
+                <div class="text-white text-center text-xl uppercase font-bold mt-2">
+                    <i class="fa-solid fa-house-medical fa-4x mt-4"></i>
+                    <h2 class="mt-2">5+</h2>
+                    <h2>Posyandu</h2>
+                </div>
+            </div>
+        </div>
+    </section>
 </body>
 
 </html>
