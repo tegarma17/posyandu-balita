@@ -11,6 +11,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Mina:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('fontawesome-free-6.7.2-web/css/all.css') }}">
     {{-- Alpine Js --}}
     <script src="//unpkg.com/alpinejs" defer></script>
 
@@ -22,14 +23,26 @@
         <div class="flex items-center justify-between px-2 ">
             <img src="{{ asset('img/logo.svg') }}" style="width: 70px; height: auto" alt="" class="gap-1">
 
-            <img @click="navOpen = ! navOpen" src="{{ asset('img/hamburger.svg') }}" class="lg:hidden">
+            <button>
+                <img @click="navOpen = ! navOpen" src="{{ asset('img/hamburger.svg') }}" class="lg:hidden">
+            </button>
             <div class="hidden lg:block">
                 <ul class="flex justify-end items-center gap-8 ">
-                    <li class="text-gray-700 font-bold text-lg">Home</li>
-                    <li class="text-gray-700 font-bold text-lg">Keunggulan</li>
-                    <li class="text-gray-700 font-bold text-lg">Tentang Kami</li>
-                    <li class="text-gray-700 font-bold text-lg">Kontak</li>
-                    <li class="text-gray-700 font-bold text-lg">Puskesmas</li>
+                    <a href="">
+                        <li class="text-gray-700 font-bold text-lg">Home</li>
+                    </a>
+                    <a href="">
+                        <li class="text-gray-700 font-bold text-lg">Keunggulan</li>
+                    </a>
+                    <a href="">
+                        <li class="text-gray-700 font-bold text-lg">Tentang Kami</li>
+                    </a>
+                    <a href="">
+                        <li class="text-gray-700 font-bold text-lg">Kontak</li>
+                    </a>
+                    <a href="">
+                        <li class="text-gray-700 font-bold text-lg">Puskesmas</li>
+                    </a>
                     <button class="w-32 h-11 rounded-lg text-white bg-hijautua">Login</button>
                 </ul>
             </div>
@@ -60,7 +73,7 @@
 
     {{-- Hero Section --}}
     <header class="bg-hijautua max-w-screen h-[90vh] flex justify-center items-center px-4 md:px-8 pt-16">
-        <div class="lg:container lg:grid lg:grid-cols-3 lg:gap-4 items-center  bg-red-500">
+        <div class="lg:container lg:grid lg:grid-cols-3 lg:gap-4 items-center">
             <div class=" text-white text-center lg:col-span-2 items-center">
                 <h1 class="text-5xl md:text-6xl font-bold mb-4 text-center lg:text-left">Posyandu Online Puskesmas
                     Wonoayu
@@ -78,13 +91,31 @@
     </header>
     <!-- Content -->
 
-    <section class="p-8 bg-white">
-        <h2 class="text-2xl font-bold mb-4 text-center">Keunggulan</h2>
-        <p class="text-lg mb-4">This is an example of a hero section with a fixed navbar using Tailwind CSS. Scroll down
-            to see the navbar remains at the top.</p> <!-- Add more content here to show the scrolling effect -->
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum vestibulum.
-            Cras venenatis euismod malesuada. Curabitur pulvinar nibh eu...</p>
-        <!-- Repeat or add more content to make the page longer -->
+    <section class="p-8 bg-hijaunavbar">
+        <h2 class="text-2xl font-bold mb-4 text-center border-b-4 mx-24 lg:mx-[83vh] border-green-900">
+            Keunggulan
+        </h2>
+        <div class="mx-8 ">
+            <div class="grid grid-cols-1 gap-4 text-center">
+                <div class="bg-hijautua px-3 py-5 my-6  font-semibold rounded-xl mx-8 text-white">
+                    <i class="fa-regular fa-calendar-days fa-4x"></i>
+                    <div>
+                        <h1 class="my-2">
+                            Jadwal Imunisasi & Perkembangan
+                        </h1>
+                    </div>
+                </div>
+                <div class="bg-hijautua px-3 py-5 font-semibold rounded-xl mx-8  text-white">
+                    <i class="fa-solid fa-syringe fa-3x"></i>
+                    <div>
+                    </div>
+                    Cek Imunisasi Balita
+                </div>
+                <div class="bg-hijautua px-8 py-6 font-semibold rounded-xl mx-8 text-white">Cek Tumbuh Kembang Balita
+                </div>
+
+            </div>
+        </div>
     </section>
 
 
