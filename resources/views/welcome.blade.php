@@ -113,7 +113,13 @@
                         </h1>
                     </div>
                 </div>
-                <div class="bg-hijautua px-8 py-6 font-semibold rounded-xl mx-8 text-white">Cek Tumbuh Kembang Balita
+                <div class="bg-hijautua px-8 py-6 font-semibold rounded-xl mx-8 text-white">
+                    <i class="fa-solid fa-chart-line fa-3x"></i>
+                    <div>
+                        <h1 class="mt-5">
+                            Cek Tumbuh Kembang Balita
+                        </h1>
+                    </div>
                 </div>
 
             </div>
