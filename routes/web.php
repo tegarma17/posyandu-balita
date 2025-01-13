@@ -11,5 +11,5 @@ Route::get('/login', function () {
 });
 
 Route::get('/test', function () {
-    return view('templateNavbar');
+    return view('dashboard');
 });
