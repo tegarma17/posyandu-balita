@@ -1,9 +1,8 @@
 <x-navbar></x-navbar>
 
 <body class="font-serif">
-
     <section>
-        <div class="  w-full justify-items-center ">
+        <div class="justify-items-center ">
             <img src="{{ asset('img/logo_login.svg') }}" class="lg:w-1/5 w-1/3 md:w-1/4" alt="">
             <div>
                 <form class="space-y-6" action="#" method="POST">
@@ -39,6 +38,11 @@
             </div>
         </div>
     </section>
-    <x-footer></x-footer>
+    <section>
+        <div class="w-full absolute bg-hijaumuda p-3 inset-x-0 bottom-0 text-white text-center">Copyright &#169;
+            {{ date('Y') }} Posyandu Online
+        </div>
+
+    </section>
 
 </body>

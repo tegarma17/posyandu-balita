@@ -13,3 +13,14 @@ Route::get('/login', function () {
 Route::get('/test', function () {
     return view('dashboard');
 });
+
+Route::get('/profile', function () {
+    return view('profile', ['profile' => 'Profile']);
+});
+
+Route::get('/dta_blt', function () {
+    return view('balita');
+});
+Route::get('/dshbrd', function () {
+    return view('templateNavbar');
+});
