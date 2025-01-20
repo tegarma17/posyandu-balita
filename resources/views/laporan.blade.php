@@ -5,16 +5,9 @@
                 <a href="#" class="text-gray-400 hover:text-gray-600 font-medium">Dashboard</a>
             </li>
             <li class="text-gray-600 mr-2 font-medium">/</li>
-            <li class="text-gray-600 mr-2 font-medium">{{ $blt }}</li>
+            <li class="text-gray-600 mr-2 font-medium"></li>
         </ul>
-        <h4 class="text-2xl font-bold text-center my-4">Data Balita</h4>
-        <!-- Tambah data balita -->
-        <a href="/tmbdta_blt">
-            <button class="mx-4 my-3 bg-hijautua hover:bg-hijaumuda text-white font-bold py-2 px-4 rounded-lg">Tambah
-                Data</button></a>
-        <!-- End tambah data-->
-
-        <!-- pencarian data -->
+        <h4 class="text-2xl font-bold text-center my-4">{{ $title }}</h4>
         <label for="table-search" class="sr-only">Search</label>
         <div class="relative mx-4">
             <div class="absolute inset-y-0 left-0 rtl:inset-r-0 rtl:right-0 flex items-center ps-3 pointer-events-none">
@@ -29,21 +22,18 @@
                 class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-6"
                 placeholder="Nama Balita">
         </div>
-        <!-- End pencarian data -->
-
-        <!-- tabel data -->
         <div class="relative overflow-x-auto mx-5 sm:rounded-lg">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class=" text-gray-700 uppercase dark:text-gray-400">
-                    <tr class="bg-green-700 text-white text-center font-semibold">
+                    <tr class="bg-green-700 text-white font-semibold">
                         <th scope="col" class="px-6 py-3  dark:bg-gray-800">
-                            Nama Balita
+                            Tanggal Posyandu
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Nama Ibu
+                            Posyandu
                         </th>
                         <th scope="col" class="px-6 py-3  dark:bg-gray-800">
-                            Username
+                            Desa
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Action
@@ -62,18 +52,14 @@
                         <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800">
                             Laptop
                         </td>
-                        <td class="px-6 py-4 text-center">
+                        <td class="px-6 py-4">
                             <a href="#" data-modal-target="popup-modal" data-modal-toggle="popup-modal"
                                 class="px-3 py-1 bg-red-500 rounded-lg font-medium text-white dark:text-red-500 hover:underline transition duration-150 ease-in-out">Delete</a>
-                            <a href="/edt-blt"
-                                class="px-3 py-1 bg-yellow-400 rounded-lg font-medium text-white dark:text-red-500 hover:underline">Edit</a>
                         </td>
                     </tr>
-
                 </tbody>
             </table>
         </div>
-        <!--End Tabel  -->
 
         <nav aria-label="Page navigation example" class="mt-2">
             <ul class="flex items-center justify-center -space-x-px h-8 text-sm ">
@@ -122,7 +108,7 @@
             </ul>
         </nav>
 
-        <!-- Modal Delete -->
+        <!-- Modal Cetak -->
         <div id="popup-modal" tabindex="-1"
             class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full ttransition-opacity duration-300">
             <div class="relative p-4 w-full max-w-md max-h-full ">
@@ -132,8 +118,8 @@
                         data-modal-hide="popup-modal">
                         <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 14 14">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                         </svg>
                         <span class="sr-only">Close modal</span>
                     </button>

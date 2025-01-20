@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Mina:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
     <title>Dashboard</title>
     @vite('resources/css/app.css')
 </head>
@@ -40,14 +41,14 @@
                 </a>
             </li>
             <li class="mb-1 group">
-                <a href="#"
+                <a href="/dta_nks"
                     class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
                     <i class="ri-nurse-fill mr-3 text-lg"></i>
                     <span class="text-sm">Data Tenaga Kesehatan</span>
                 </a>
             </li>
             <li class="mb-1 group">
-                <a href="#"
+                <a href="/dta_psynd"
                     class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
                     <i class="ri-building-2-fill mr-3 text-lg"></i>
                     <span class="text-sm">Data Posyandu</span>
@@ -59,21 +60,23 @@
                 </span>
             </li>
             <li class="mb-1 group">
-                <a href="#"
+                <a href="/dta_jdl"
                     class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
                     <i class="ri-calendar-todo-line mr-3 text-lg"></i>
                     <span class="text-sm">Jadwal</span>
                 </a>
             </li>
             <li class="mb-1 group">
-                <a href="#"
-                    class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
-                    <i class="ri-syringe-fill mr-3 text-lg"></i>
-                    <span class="text-sm">Vaksin / Imunsasi</span>
+                <a href="/dta-vip-blt"
+                    class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100 ">
+                    <i class="ri-health-book-fill mr-3 text-lg"></i>
+                    <span class="text-sm">VIP</span>
+                    <i class="ri-arrow-right-s-line ml-auto group-[.selected]:rotate-90"></i>
                 </a>
+
             </li>
             <li class="mb-1 group">
-                <a href="#"
+                <a href="/dta-laporan"
                     class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
                     <i class="ri-file-fill mr-3 text-lg"></i>
                     <span class="text-sm">Laporan</span>
@@ -92,7 +95,7 @@
                 </a>
             </li>
             <li class="mb-1 group">
-                <a href="#"
+                <a href="/login"
                     class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
                     <i class="ri-logout-box-fill mr-3 text-lg"></i>
                     <span class="text-sm">Logout</span>

@@ -30,4 +30,15 @@
         </ul>
     </div>
     {{ $slot }}
+
+    <p class="my-10 text-sm text-center text-gray-500">
+        Copyright
+        &copy; {{ date('Y') }}
+        Posyandu Online.
+    </p>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ 'js/script.js' }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+
 </main>
