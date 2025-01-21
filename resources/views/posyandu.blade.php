@@ -6,6 +6,7 @@
             </li>
             <li class="text-gray-600 mr-2 font-medium">/</li>
             <li class="text-gray-600 mr-2 font-medium">{{ $psynd }}</li>
+
         </ul>
         <h4 class="text-2xl font-bold text-center my-4">Data Posyandu</h4>
         <button data-modal-target="crud-modal" data-modal-toggle="crud-modal"
@@ -47,6 +48,7 @@
                     </tr>
                 </thead>
                 <tbody>
+
                     <tr class="border-b border-gray-200 dark:border-gray-700">
                         <th scope="row"
                             class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
@@ -142,10 +144,10 @@
                     <form class="p-4 md:p-5">
                         <div class="grid gap-4 mb-4 grid-cols-2">
                             <div class="col-span-2 sm:col-span-1">
-                                <label for="price"
+                                <label for="kode-pos"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kode
                                     Posyandu</label>
-                                <input type="number" name="price" id="price"
+                                <input type="text" name="kd_psynd" id="kd_psynd"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                     placeholder="" required="">
                             </div>
@@ -153,51 +155,59 @@
                                 <label for="category"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama
                                     Posyandu</label>
-                                <input type="text" name="price" id="price"
+                                <input type="text" name="nm_psynd" id="nm_psynd"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                     placeholder="" required="">
                             </div>
                             <div class="col-span-2">
-                                <label for="name"
+                                <label for="alamat"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Alamat</label>
-                                <input type="text" name="name" id="name"
+                                <input type="text" name="alamat" id="alamat"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                     placeholder="Type product name" required="">
                             </div>
                             <div class="col-span-2 sm:col-span-1">
                                 <label for="price"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Provinsi</label>
-                                <select id="category"
+                                <select id="prov" name="prov"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                    <option selected="">Jenis Kelamin</option>
-
+                                    <option selected="">Pilih Provinsi</option>
+                                    <option value="1" selected="">Jawa Timur</option>
                                 </select>
                             </div>
                             <div class="col-span-2 sm:col-span-1">
                                 <label for="category"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kabupaten /
                                     Kota</label>
-                                <select id="category"
+                                <select id="ktkbp_id" name="ktkbp_id"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                    <option selected="">Jenis Kelamin</option>
-
+                                    <option selected="">Pilih Kota / Kabupaten</option>
+                                    @foreach ($ktkbp as $kota)
+                                        <option value="{{ $kota->id }}">{{ $kota->nm_ktkbp }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="col-span-2 sm:col-span-1">
                                 <label for="price"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kecamatan</label>
-                                <select id="category"
+                                <select id="kecamatan" name="id"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                    <option selected="">Jenis Kelamin</option>
+                                    <option selected="">Pilih Kecamatan</option>
+                                    @foreach ($kcmtn as $kecamatan)
+                                        <option value="{{ $kecamatan->id }}">{{ $kecamatan->nm_kcmtn }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="col-span-2 sm:col-span-1">
                                 <label for="category"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Desa</label>
-                                <select id="category"
+                                <select id="desa" name="id"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                    <option selected="">Jenis Kelamin</option>
-
+                                    <option selected="">Pilih Desa</option>
+                                    @foreach ($desa as $desa)
+                                        <option value="{{ $desa->id }}" data-kecamatan="{{ $desa->kcmtn_id }}">
+                                            {{ $desa->nm_desa }}</option>
+                                    @endforeach
                                 </select>
                             </div>
 
@@ -354,5 +364,19 @@
             </div>
         </div>
         <!-- End Modal  -->
-    </section>
+        <script>
+            $(document).ready(function() {
+                $('#kecamatan').change(function() {
+                    var kcmtnID = $(this).val();
+                    $('#desa option').each(function() {
+                        if ($(this).data('kecamatan') == kcmtnID || !kcmtnID) {
+                            $(this).show();
+                        } else {
+                            $(this).hide();
+                        }
+                    });
+                    $('#desa').val('');
+                });
+            });
+        </script>
 </x-main-admin>

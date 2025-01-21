@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DesaController;
+use App\Http\Controllers\PosyanduController;
+use App\Http\Controllers\KecamatanController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -32,9 +35,11 @@ Route::get('/dta_nks', function () {
     return view('nakes', ['nks' => 'Data Tenaga Kesehatan']);
 });
 
-Route::get('/dta_psynd', function () {
-    return view('posyandu', ['psynd' => 'Data Posyandu']);
-});
+route::get("/psyndu", [PosyanduController::class, 'index'])->name('psynd.index');
+Route::get('/desa/by-kecamatan/{id}', [KecamatanController::class, 'getByKecamatan']);
+Route::get('/desa/by-kecamatan/{id}', [DesaController::class, 'getByKecamatan']);
+
+
 
 Route::get('/dta_jdl', function () {
     return view('jadwal', ['jdwl' => 'Jadwal Posyandu']);
