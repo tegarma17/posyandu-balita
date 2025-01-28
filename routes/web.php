@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DesaController;
 use App\Http\Controllers\PosyanduController;
 use App\Http\Controllers\KecamatanController;
+use App\Models\Posyandu;
 
 Route::get('/', function () {
     return view('welcome');
@@ -35,10 +36,13 @@ Route::get('/dta_nks', function () {
     return view('nakes', ['nks' => 'Data Tenaga Kesehatan']);
 });
 
-route::get("/psyndu", [PosyanduController::class, 'index'])->name('psynd.index');
+Route::get("/psyndu", [PosyanduController::class, 'index'])->name('psynd.index');
+route::get('/posyandu-balita/edit/{id}', [PosyanduController::class, 'edit'])->name('psynd.edit');
+Route::post('posyandu', [PosyanduController::class, 'store'])->name('psynd.simpan');
+Route::delete('/posyandu/delete/{id}', [PosyanduController::class, 'destroy'])->name('psynd.destroy');
+Route::put('/posyandu/edit/{id}', [PosyanduController::class, 'update'])->name('psynd.update');
 Route::get('/desa/by-kecamatan/{id}', [KecamatanController::class, 'getByKecamatan']);
 Route::get('/desa/by-kecamatan/{id}', [DesaController::class, 'getByKecamatan']);
-
 
 
 Route::get('/dta_jdl', function () {
