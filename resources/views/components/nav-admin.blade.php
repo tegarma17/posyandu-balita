@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Mina:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>Dashboard</title>
     @vite('resources/css/app.css')
 </head>
@@ -35,14 +36,14 @@
                 </span>
             </li>
             <li class="mb-1 group">
-                <a href="/dta_blt"
+                <a href="{{ route('balita.index') }}"
                     class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
                     <i class="ri-user-fill mr-3 text-lg"></i>
                     <span class="text-sm">Data Balita</span>
                 </a>
             </li>
             <li class="mb-1 group">
-                <a href="/dta_nks"
+                <a href="{{ route('nakes.index') }}"
                     class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
                     <i class="ri-nurse-fill mr-3 text-lg"></i>
                     <span class="text-sm">Data Tenaga Kesehatan</span>

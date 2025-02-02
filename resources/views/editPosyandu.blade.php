@@ -119,7 +119,7 @@
                 </div>
             </div>
             <button class="mx-4 my-3 bg-hijautua hover:bg-hijaumuda text-white font-bold py-2 px-4 rounded-lg">
-                Tambah Data
+                Simpan Data
             </button>
         </form>
     </section>

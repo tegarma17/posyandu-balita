@@ -9,13 +9,13 @@
                 <li class="text-gray-400 hover:text-gray-600 font-medium mr-2"> Data Balita</li>
             </a>
             <li class="text-gray-600 mr-2 font-medium">/</li>
-            <li class="text-gray-600 mr-2 font-medium">{{ $blt }}</li>
+            <li class="text-gray-600 mr-2 font-medium">{{ $title }}</li>
         </ul>
         <a href="/dta_blt"><button
                 class="mx-4  bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded-lg">
                 Kembali
             </button></a>
-        <h4 class="text-2xl font-bold text-center my-4">Data Balita</h4>
+        <h4 class="text-2xl font-bold text-center my-4">Tambah Data Balita Baru</h4>
 
         <form class="mx-auto w-full ">
             <div class="flex flex-wrap mx-3 mb-2">

@@ -28,7 +28,6 @@ class PosyanduController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-
         Posyandu::create($request->all());
         return redirect()->route('psynd.index')->with('success', 'Posyandu Baru telah ditambahkan.');
     }

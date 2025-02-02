@@ -18,10 +18,26 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
-        'email',
+        'user_id',
+        'role_id',
+        'username',
         'password',
+        'nm_balita',
+        'tgl_lahir'
     ];
+    public function role()
+    {
+        return $this->belongsTo(roles::class, 'role_id', 'id');
+    }
+
+    public function nakes()
+    {
+        return $this->hasOne(Nakes::class, 'user_id', 'id');
+    }
+    public function balita()
+    {
+        return $this->hasOne(Balita::class, 'user_id', 'id');
+    }
 
     /**
      * The attributes that should be hidden for serialization.

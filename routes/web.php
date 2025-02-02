@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\BalitaController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DesaController;
 use App\Http\Controllers\PosyanduController;
 use App\Http\Controllers\KecamatanController;
+use App\Http\Controllers\NakesController;
 use App\Models\Posyandu;
 
 Route::get('/', function () {
@@ -22,19 +24,19 @@ Route::get('/profile', function () {
     return view('profile', ['profile' => 'Profile']);
 });
 
-Route::get('/dta_blt', function () {
-    return view('balita', ['blt' => 'Data Balita']);
-});
-Route::get('/tmbdta_blt', function () {
-    return view('tambahdtBalita', ['blt' => 'Tambah Data Balita']);
-});
+Route::get('/data-balita', [BalitaController::class, 'index'])->name('balita.index');
+Route::get('/data-balita/tambah', [BalitaController::class, 'create'])->name(('tambah.balita'));
+
+
 Route::get('/edt-blt', function () {
     return view('editBalita', ['' => '']);
 });
 
-Route::get('/dta_nks', function () {
-    return view('nakes', ['nks' => 'Data Tenaga Kesehatan']);
-});
+Route::get('/data-tenaga-kesehatan', [NakesController::class, 'index'])->name('nakes.index');
+Route::post('/data-tenaga-kesehatan', [NakesController::class, 'store'])->name('nakes.simpan');
+Route::delete('/data-tenaga-kesehatan/delete/{id}', [NakesController::class, 'destroy'])->name('nakes.destroy');
+Route::get('/data-tenaga-kesehatan/edit/{id}', [NakesController::class, 'edit'])->name('nakes.edit');
+Route::put('/data-tenaga-kesehatan/update/{id}', [NakesController::class, 'update'])->name('nakes.update');
 
 Route::get("/psyndu", [PosyanduController::class, 'index'])->name('psynd.index');
 route::get('/posyandu-balita/edit/{id}', [PosyanduController::class, 'edit'])->name('psynd.edit');
