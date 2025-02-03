@@ -28,10 +28,6 @@ Route::get('/data-balita', [BalitaController::class, 'index'])->name('balita.ind
 Route::get('/data-balita/tambah', [BalitaController::class, 'create'])->name(('tambah.balita'));
 
 
-Route::get('/edt-blt', function () {
-    return view('editBalita', ['' => '']);
-});
-
 Route::get('/data-tenaga-kesehatan', [NakesController::class, 'index'])->name('nakes.index');
 Route::post('/data-tenaga-kesehatan', [NakesController::class, 'store'])->name('nakes.simpan');
 Route::delete('/data-tenaga-kesehatan/delete/{id}', [NakesController::class, 'destroy'])->name('nakes.destroy');

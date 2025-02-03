@@ -25,7 +25,7 @@
                     </label>
                     <input
                         class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                        id="grid-city" type="number" placeholder="Albuquerque">
+                        id="grid-city" type="number" placeholder="Nomer NIK" name="nik">
                 </div>
                 <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
                     <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-city">
@@ -33,7 +33,7 @@
                     </label>
                     <input
                         class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                        id="grid-city" type="number" placeholder="Albuquerque">
+                        id="grid-city" type="number" placeholder="Nomer Kartu Keluarga" name="no_kk">
                 </div>
                 <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
                     <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-city">
@@ -41,19 +41,18 @@
                     </label>
                     <input
                         class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                        id="grid-city" type="number" placeholder="Albuquerque">
+                        id="grid-city" type="number" placeholder="NIK Orang Tua" name="no_kk_ortu">
                 </div>
             </div>
             <div class="flex flex-wrap mx-3 mb-6">
                 <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                     <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                         for="grid-first-name">
-                        Nama Lengkap
+                        Nama Balita
                     </label>
                     <input
                         class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                        id="grid-first-name" type="text" placeholder="Jane">
-                    <p class="text-red-500 text-xs italic">Please fill out this field.</p>
+                        id="grid-first-name" type="text" placeholder="Nama Balita" name="nama">
                 </div>
                 <div class="w-full md:w-1/2 px-3">
                     <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-state">
@@ -62,10 +61,10 @@
                     <div class="relative">
                         <select
                             class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                            id="grid-state">
+                            id="grid-state" name="jns_klmn">
                             <option>Pilih Jenis Kelamin</option>
-                            <option>Laki - Laki</option>
-                            <option>Perempuan</option>
+                            <option value="l">Laki - Laki</option>
+                            <option value="p">Perempuan</option>
 
                         </select>
                         <div
@@ -85,8 +84,8 @@
                     </label>
                     <input
                         class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                        id="grid-first-name" type="date" placeholder="Jane">
-                    <p class="text-red-500 text-xs italic">Please fill out this field.</p>
+                        id="grid-first-name" type="date" placeholder="Tanggal Lahir Balita" name="tgl_lahir">
+
                 </div>
                 <div class="w-full md:w-1/2 px-3">
                     <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
