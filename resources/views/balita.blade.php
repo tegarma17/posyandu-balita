@@ -5,12 +5,12 @@
                 <a href="#" class="text-gray-400 hover:text-gray-600 font-medium">Dashboard</a>
             </li>
             <li class="text-gray-600 mr-2 font-medium">/</li>
-            <li class="text-gray-600 mr-2 font-medium">{{ $blt }}</li>
+            <li class="text-gray-600 mr-2 font-medium">{{ $title }}</li>
         </ul>
         <h4 class="text-2xl font-bold text-center my-4">Data Balita</h4>
         <!-- Tambah data balita -->
-        <a href="/tmbdta_blt">
-            <button class="mx-4 my-3 bg-hijautua hover:bg-hijaumuda text-white font-bold py-2 px-4 rounded-lg">Tambah
+        <a href="{{ route('tambah.balita') }}">
+            <button class="mx-4 my-3 bg-hijautua hover:bg-hijaumuda text-white py-2 px-4 rounded-lg">Tambah
                 Data</button></a>
         <!-- End tambah data-->
 

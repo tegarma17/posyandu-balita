@@ -14,11 +14,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-        DB::table('User')->delete();
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        $this->call(KtkbpSeeder::class);
+        $this->call(KecamatanSeeder::class);
+        $this->call(DesaSeeder::class);
+        $this->call(roleSeed::class);
     }
 }
