@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('desa', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('kcmtn_id');
-            $table->foreign('kcmtn_id')->references('id')->on('kecamatan');
+            $table->string('kd_kcmtn');
+            $table->foreign('kd_kcmtn')->references('kd_kcmtn')->on('kecamatan');
             $table->string('kd_desa')->unique();
             $table->string('nm_desa');
             $table->timestamps();

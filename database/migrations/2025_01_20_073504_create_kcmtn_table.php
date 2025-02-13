@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('Kecamatan', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('ktkbp_id');
-            $table->foreign('ktkbp_id')->references('id')->on('ktkbp');
+            $table->string('kd_ktkbp');
+            $table->foreign('kd_ktkbp')->references('kd_ktkbp')->on('ktkbp')->onDelete('cascade');
             $table->string('kd_kcmtn')->unique();
             $table->string('nm_kcmtn')->unique();
             $table->timestamps();

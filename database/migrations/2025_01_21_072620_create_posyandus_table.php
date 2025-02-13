@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('posyandu', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('ktkbp_id');
-            $table->foreign('ktkbp_id')->references('id')->on('ktkbp');
-            $table->unsignedBigInteger('kecamatan_id');
-            $table->foreign('kecamatan_id')->references('id')->on('kecamatan');
-            $table->unsignedBigInteger('desa_id');
-            $table->foreign('desa_id')->references('id')->on('desa');
+            $table->string('kd_ktkbp');
+            $table->foreign('kd_ktkbp')->references('kd_ktkbp')->on('ktkbp');
+            $table->string('kd_kcmtn');
+            $table->foreign('kd_kcmtn')->references('kd_kcmtn')->on('kecamatan');
+            $table->string('kd_desa');
+            $table->foreign('kd_desa')->references('kd_desa')->on('desa');
             $table->string('kd_psynd');
             $table->string('nm_psynd');
             $table->string('alamat');

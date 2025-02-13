@@ -9,10 +9,24 @@
 
         </ul>
         <h4 class="text-2xl font-bold text-center my-4">Data Posyandu</h4>
-        <button data-modal-target="crud-modal" data-modal-toggle="crud-modal"
-            class="block mx-4 my-3 bg-hijautua hover:bg-hijaumuda text-white py-2 px-4 rounded-lg" type="button">
-            Tambah Posyandu Baru
-        </button>
+        <div class="flex justify-start">
+            <button data-modal-target="crud-modal" data-modal-toggle="crud-modal"
+                class="block mx-4 my-3 bg-hijautua hover:bg-hijaumuda text-white py-2 px-4 rounded-lg" type="button">
+                Tambah Posyandu Baru
+            </button>
+            <a href="{{ route('download.template.posyandu') }}"
+                class="block my-3 bg-yellow-400 hover:bg-orange-400 text-white py-2 px-4 rounded-lg" type="button">
+                Download Template Excel
+            </a>
+        </div>
+        <div class="relative mx-4">
+            <form action="{{ route('import.posyandu') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <input type="file" name="file" required>
+                <button class="block mx-4 my-3 bg-yellow-400 hover:bg-orange-400 text-white py-2 px-4 rounded-lg"
+                    type="submit">Unggah</button>
+            </form>
+        </div>
         <label for="table-search" class="sr-only">Search</label>
         <div class="relative mx-4">
             <div class="absolute inset-y-0 left-0 rtl:inset-r-0 rtl:right-0 flex items-center ps-3 pointer-events-none">
@@ -74,10 +88,8 @@
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit"
-                                        class="px-3 py-1 bg-red-500 rounded-lg font-medium text-white dark:text-red-500 hover:underline transition duration-150 ease-in-out">Delete</button>
+                                        class="px-6 py-2 bg-red-500 rounded-lg font-medium text-white dark:text-red-500 hover:underline transition duration-150 ease-in-out">Delete</button>
                                 </form>
-                                <a href="{{ route('psynd.edit', $posyandu->id) }}"
-                                    class="px-3 py-1 bg-yellow-400 rounded-lg font-medium text-white dark:text-red-500 hover:underline">Edit</a>
                             </td>
                         </tr>
                     @endforeach

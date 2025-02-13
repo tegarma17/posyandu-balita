@@ -12,4 +12,8 @@ class Ktkbp extends Model
         'nm_ktkbp',
 
     ];
+    public function kecamatan()
+    {
+        return $this->hasMany(Kecamatan::class, 'kd_ktkbp', 'kd_ktkbp');
+    }
 }

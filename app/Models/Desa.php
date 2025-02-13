@@ -10,14 +10,14 @@ class Desa extends Model
     use HasFactory;
     protected $table = 'desa';
     protected $fillable = [
-        'kcmtn_id',
+        'kd_kcmtn',
         'kd_desa',
         'nm_desa',
 
     ];
     public function kecamatan()
     {
-        return $this->belongsTo(Kecamatan::class);
+        return $this->belongsTo(Kecamatan::class, 'kd_kcmtn', 'kd_kcmtn');
     }
     public function posyandu()
     {

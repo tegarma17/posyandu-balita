@@ -8,11 +8,19 @@ use App\Models\Posyandu;
 use App\Models\Kecamatan;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use App\Http\Controllers\TemplateExcelController;
 
 class PosyanduController extends Controller
 {
+    protected $excelImportServices;
+    public function __construct(TemplateExcelController $excelImportServices)
+    {
+        $this->excelImportServices = $excelImportServices;
+    }
     public function index()
     {
         $ktkbp = Ktkbp::all();
@@ -20,9 +28,6 @@ class PosyanduController extends Controller
         $desa = Desa::all();
         $psyndu = Posyandu::with('desa')->get();
         $title = 'Data Posyandu';
-        // $posyandu = Posyandu::with('desa')->get();
-
-
         return view('posyandu', compact('ktkbp', 'kcmtn', 'desa', 'title', 'psyndu'));
     }
 
@@ -30,6 +35,37 @@ class PosyanduController extends Controller
     {
         Posyandu::create($request->all());
         return redirect()->route('psynd.index')->with('success', 'Posyandu Baru telah ditambahkan.');
+    }
+    public function import(Request $request)
+    {
+        $file = $request->file('file');
+        $spreadsheet = IOFactory::load($file->getPathname());
+
+        $rows = $spreadsheet->getSheetByName('Sheet1')->toArray();
+
+        foreach ($rows as $index => $row) {
+            if ($index === 0) {
+                continue; // Lewatkan baris pertama (header)
+            }
+            Log::info('Processing row: ' . json_encode($row));
+
+            if (!empty($row[0]) && !empty($row[1]) && !empty($row[2]) && !empty($row[3])) {
+                Posyandu::updateOrCreate(
+                    [
+                        'kd_psynd' => $row[0]
+                    ],
+                    [
+                        'nm_psynd' => $row[1],
+                        'alamat' => $row[2],
+                        'prov' => $row[4],
+                        'kd_ktkbp' => $row[6],
+                        'kd_kcmtn' => $row[8],
+                        'kd_desa' => $row[10],
+                    ]
+                );
+            }
+        }
+        return redirect()->route('psynd.index')->with('success', 'Data Posyandu berhasil diimport');
     }
     public function destroy($id)
     {
@@ -51,7 +87,6 @@ class PosyanduController extends Controller
     {
         $posyandu = Posyandu::find($id);
         $posyandu->update($request->all());
-
         return redirect()->route('psynd.index')->with('success', 'Data Posyandu telah dirubah');
     }
 }
