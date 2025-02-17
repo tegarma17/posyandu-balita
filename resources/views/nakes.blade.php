@@ -9,11 +9,24 @@
         </ul>
         <h4 class="text-2xl font-bold text-center my-4">Data Tenaga Kesehatan</h4>
         <!-- Modal toggle -->
-        <button data-modal-target="crud-modal" data-modal-toggle="crud-modal"
-            class="block mx-4 my-3 bg-hijautua hover:bg-hijaumuda text-white py-2 px-4 rounded-lg" type="button">
-            Tambah Tenaga Kesehatan Baru
-        </button>
-
+        <div class="flex justify-start">
+            <button data-modal-target="crud-modal" data-modal-toggle="crud-modal"
+                class="block mx-4 my-3 bg-hijautua hover:bg-hijaumuda text-white py-2 px-4 rounded-lg" type="button">
+                Tambah Tenaga Kesehatan Baru
+            </button>
+            <a href="{{ route('template.nakes') }}"
+                class="block my-3 bg-yellow-400 hover:bg-orange-400 text-white py-2 px-4 rounded-lg" type="button">
+                Download Template Excel
+            </a>
+        </div>
+        <div class="relative mx-4">
+            <form action="{{ route('import.nakes') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <input type="file" name="file" required>
+                <button class="block mx-4 my-3 bg-yellow-400 hover:bg-orange-400 text-white py-2 px-4 rounded-lg"
+                    type="submit">Unggah</button>
+            </form>
+        </div>
         <label for="table-search" class="sr-only">Search</label>
         <div class="relative mx-4">
             <div class="absolute inset-y-0 left-0 rtl:inset-r-0 rtl:right-0 flex items-center ps-3 pointer-events-none">
@@ -127,8 +140,8 @@
                         <span class="sr-only">Next</span>
                         <svg class="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                             fill="none" viewBox="0 0 6 10">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="m1 9 4-4-4-4" />
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="2" d="m1 9 4-4-4-4" />
                         </svg>
                     </a>
                 </li>
@@ -174,7 +187,7 @@
                                     Kesheatan</label>
                                 <input type="text" name="kd_nakes" id="kd_nakes"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                    placeholder="" required="">
+                                    placeholder="NKS001 / KDR001" required="">
                             </div>
                             <div class="col-span-2 sm:col-span-1">
                                 <label for="price"

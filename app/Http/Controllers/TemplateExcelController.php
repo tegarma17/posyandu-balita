@@ -8,58 +8,50 @@ use App\Http\Controllers\Controller;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\NamedRange;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Style\Color;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Cell\DataValidation;
 
+
 class TemplateExcelController extends Controller
 {
-    public function generatePosyandu()
+    public function generetaNakes()
     {
         $spreadsheet = new Spreadsheet();
         $sheet1 = $spreadsheet->getActiveSheet();
         $sheet1->setTitle('Sheet1');
 
-        $sheet1->setCellValue('A1', 'Header1');
-        $sheet1->setCellValue('B1', 'Header2');
-        $sheet1->setCellValue('C1', 'Header3');
-        $sheet1->setCellValue('D1', 'Header4');
-        $sheet1->setCellValue('E1', 'Header5');
-        $sheet1->setCellValue('F1', 'Header6');
-        $sheet1->setCellValue('G1', 'Select Product'); // Header untuk dropdown list
+        $sheet1->setCellValue('A1', 'NIK');
+        $sheet1->setCellValue('B1', 'Kode Nakes');
+        $sheet1->setCellValue('C1', 'Nama');
+        $sheet1->setCellValue('D1', 'Jenis Kelamin');
+        $sheet1->setCellValue('E1', 'Pilih Posisi');
+        $sheet1->setCellValue('F1', 'Alamat');
+        $sheet1->setCellValue('G1', 'Nomer HP / WA');
 
-        // Buat sheet kedua dan tambahkan data produk
-        $sheet2 = $spreadsheet->createSheet();
-        $sheet2->setTitle('Sheet2');
-        $sheet2->setCellValue('A1', 'Product');
-        $sheet2->setCellValue('A2', 'Apple');
-        $sheet2->setCellValue('A3', 'Banana');
-        $sheet2->setCellValue('A4', 'Cherry');
+        $sheet1->getStyle('G')->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_TEXT);
 
-        // Tambahkan nama rentang untuk data produk
-        $spreadsheet->addNamedRange(new NamedRange('ProductList', $sheet2, 'A2:A4'));
+        // template isi yang akan disii
+        $sheet1->setCellValue('K2', 'Kode Nakes');
+        $sheet1->setCellValue('K3', 'NKS001 / KDR001');
+        $sheet1->setCellValue('J2', 'Jenis Kelamin');
+        $sheet1->setCellValue('J3', 'L / P');
+        $sheet1->setCellValue('K2', 'Posisi');
+        $sheet1->setCellValue('K3', 'Ketik Angka 2 dan 3');
+        $sheet1->setCellValue('K4', '2 ( Kader )');
+        $sheet1->setCellValue('K5', '3 ( Nakes )');
 
-        // Buat dropdown list (data validation) di kolom ketujuh Sheet1 (kolom G) mulai dari baris kedua
-        $validation = $sheet1->getCell('G2')->getDataValidation();
-        $validation->setType(DataValidation::TYPE_LIST);
-        $validation->setErrorStyle(DataValidation::STYLE_INFORMATION);
-        $validation->setAllowBlank(false);
-        $validation->setShowInputMessage(true);
-        $validation->setShowErrorMessage(true);
-        $validation->setShowDropDown(true);
-        $validation->setFormula1('=ProductList');
 
-        // Terapkan data validation ke rentang yang lebih besar jika perlu
-        $sheet1->getCell('G2')->setDataValidation(clone $validation);
-        for ($row = 3; $row <= 100; $row++) { // Misalnya, untuk baris 2 sampai 100
-            $sheet1->getCell("G$row")->setDataValidation(clone $validation);
-            // Simpan file Excel
-        }
+        $sheet1->getStyle('A1:G1')->getFill()->setFillType(Fill::FILL_SOLID);
+        $sheet1->getStyle('A1:G1')->getFill()->getStartColor()->setARGB(Color::COLOR_YELLOW);
+
         $tulis = new Xlsx($spreadsheet);
-        $namaFile = 'data_posyandu.xlsx';
+        $namaFile = 'data_nakes.xlsx';
         $temp_file = tempnam(sys_get_temp_dir(), $namaFile);
         $tulis->save($temp_file);
         return response()->download($temp_file, $namaFile, ['Cache-Control' => 'no-cache, must-revalidate'])->deleteFileAfterSend(true);
 
-        return redirect()->route('psynd.index');
+        return redirect()->route('nakes.index');
     }
 }

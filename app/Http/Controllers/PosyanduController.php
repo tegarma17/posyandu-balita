@@ -8,6 +8,7 @@ use App\Models\Posyandu;
 use App\Models\Kecamatan;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
@@ -27,8 +28,9 @@ class PosyanduController extends Controller
         $kcmtn = Kecamatan::all();
         $desa = Desa::all();
         $psyndu = Posyandu::with('desa')->get();
+        $kd_psyndu = Posyandu::generateKdPsynd();
         $title = 'Data Posyandu';
-        return view('posyandu', compact('ktkbp', 'kcmtn', 'desa', 'title', 'psyndu'));
+        return view('posyandu', compact('ktkbp', 'kcmtn', 'desa', 'title', 'psyndu', 'kd_psyndu'));
     }
 
     public function store(Request $request): RedirectResponse

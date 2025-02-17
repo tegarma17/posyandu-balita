@@ -1,5 +1,4 @@
 <x-main-admin>
-
     <section class="container mx-auto my-5">
         <ul class="flex items-center text-sm ml-4 my-5">
             <li class="mr-2">
@@ -7,24 +6,24 @@
             </li>
             <li class="text-gray-600 mr-2 font-medium">/</li>
             <li class="text-gray-600 mr-2 font-medium">{{ $title }}</li>
-
         </ul>
-        <h4 class="text-2xl font-bold text-center my-4">Data Posyandu</h4>
+        <h4 class="text-2xl font-bold text-center my-4">Data Kader</h4>
+        <!-- Modal toggle -->
         <div class="flex justify-start">
             <button data-modal-target="crud-modal" data-modal-toggle="crud-modal"
                 class="block mx-4 my-3 bg-hijautua hover:bg-hijaumuda text-white py-2 px-4 rounded-lg" type="button">
-                Tambah Posyandu Baru
+                Tambah Kader Baru
             </button>
-            <a href="{{ route('download.template.posyandu') }}"
+            <a href="{{ route('template.nakes') }}"
                 class="block my-3 bg-yellow-400 hover:bg-orange-400 text-white py-2 px-4 rounded-lg" type="button">
                 Download Template Excel
             </a>
         </div>
         <div class="relative mx-4">
-            <form action="{{ route('import.posyandu') }}" method="POST" enctype="multipart/form-data">
+            <form action="" method="POST" enctype="multipart/form-data">
                 @csrf
                 <input type="file" name="file" required>
-                <button class="block  my-3 bg-yellow-400 hover:bg-orange-400 text-white py-2 px-4 rounded-lg"
+                <button class="block mx-4 my-3 bg-yellow-400 hover:bg-orange-400 text-white py-2 px-4 rounded-lg"
                     type="submit">Unggah</button>
             </form>
         </div>
@@ -40,7 +39,7 @@
             </div>
             <input type="text" id="table-search"
                 class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-6"
-                placeholder="Nama Balita">
+                placeholder="Nama Kader">
         </div>
         @if (session('success'))
             <script>
@@ -51,46 +50,44 @@
                 });
             </script>
         @endif
-        <!-- Tabel Data -->
+        <!-- Tabel data -->
         <div class="relative overflow-x-auto mx-5 sm:rounded-lg">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class=" text-gray-700 uppercase dark:text-gray-400">
                     <tr class="bg-green-700 text-white font-semibold">
                         <th scope="col" class="px-6 py-3  dark:bg-gray-800">
-                            Kode Posyandu
+                            Kode Kader
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Desa
+                            Nama Nakes
                         </th>
-                        <th scope="col" class="px-6 py-3  dark:bg-gray-800">
-                            Nama Posyandu
-                        </th>
+
                         <th scope="col" class="px-6 py-3">
                             Action
                         </th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($psyndu as $posyandu)
+                    @foreach ($kaders as $kader)
                         <tr class="border-b border-gray-200 dark:border-gray-700">
                             <th scope="row"
                                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
-                                {{ $posyandu->kd_psynd }}
+                                {{ $kader->kd_nakes }}
                             </th>
                             <td class="px-6 py-4">
-                                {{ $posyandu->desa->nm_desa }}
-                            </td>
-                            <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800">
-                                {{ $posyandu->nm_psynd }}
+                                {{ $kader->nama }}
                             </td>
                             <td class="px-6 py-4">
-                                <form action="{{ route('nakes.destroy', $posyandu->id) }}" method="POST"
-                                    onsubmit="return confirmDelete(event)">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit"
-                                        class="px-6 py-2 bg-red-500 rounded-lg font-medium text-white dark:text-red-500 hover:underline transition duration-150 ease-in-out">Delete</button>
-                                </form>
+                                <div class="flex gap-3 items-center text-white ">
+                                    <form action="" method="POST" onsubmit="return confirmDelete(event)">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"
+                                            class=" bg-red-500 py-3 px-6 rounded-lg dark:text-red-500 hover:underline transition duration-150 ease-in-out">Delete</button>
+                                    </form>
+                                    <a href=""
+                                        class=" bg-yellow-400 py-3 px-6 mb-3 rounded-lg dark:text-red-500 hover:underline">Edit</a>
+                                </div>
                             </td>
                         </tr>
                     @endforeach
@@ -98,6 +95,8 @@
             </table>
 
         </div>
+        <!-- End Tabel -->
+
         <nav aria-label="Page navigation example" class="mt-2">
             <ul class="flex items-center justify-center -space-x-px h-8 text-sm ">
                 <li>
@@ -145,7 +144,7 @@
             </ul>
         </nav>
 
-        <!-- Modal Tambah posyandu -->
+        <!-- Modal Tambah Kader -->
         <div id="crud-modal" tabindex="-1" aria-hidden="true"
             class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
             <div class="relative p-4 w-full max-w-md max-h-full">
@@ -154,7 +153,7 @@
                     <!-- Modal header -->
                     <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                            Posyandu Baru
+                            Kader Baru
                         </h3>
                         <button type="button"
                             class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
@@ -168,69 +167,50 @@
                         </button>
                     </div>
                     <!-- Modal body -->
-                    <form action="{{ route('psynd.simpan') }}" method="POST" class="p-4 md:p-5">
+                    <form class="p-4 md:p-5" action="{{ route('kader.simpan') }}" method="POST">
                         @csrf
                         <div class="grid gap-4 mb-4 grid-cols-2">
-                            <div>{{ $kd_psyndu }}</div>
-                            <div class="col-span-2">
-                                <label for="category"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama
-                                    Posyandu</label>
-                                <input type="text" name="nm_psynd" id="nm_psynd"
+                            <div class="col-span-2 sm:col-span-1">
+                                <label for="price"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">NIK</label>
+                                <input type="number" name="nik" id="nik"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                     placeholder="" required="">
                             </div>
+
+                            <div class="col-span-2 sm:col-span-1">
+                                <label for="price"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama</label>
+                                <input type="text" name="nama" id="nama"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                    placeholder="" required="">
+                            </div>
+                            <div class="col-span-2 ">
+                                <label for="jk"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jenis
+                                    Kelamin</label>
+                                <select id="jk" name="jns_klmn"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                    <option selected="">Jenis Kelamin</option>
+                                    <option value="l">Laki - Laki</option>
+                                    <option value="p">Perempuan</option>
+                                </select>
+                            </div>
+
                             <div class="col-span-2">
-                                <label for="alamat"
+                                <label for="name"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Alamat</label>
                                 <input type="text" name="alamat" id="alamat"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                     placeholder="Type product name" required="">
                             </div>
-                            <div class="col-span-2 sm:col-span-1">
-                                <label for="price"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Provinsi</label>
-                                <select id="prov" name="prov"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                    <option selected="">Pilih Provinsi</option>
-                                    <option value="35" selected="">Jawa Timur</option>
-                                </select>
-                            </div>
-                            <div class="col-span-2 sm:col-span-1">
-                                <label for="category"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kabupaten /
-                                    Kota</label>
-                                <select id="kd_ktkbp" name="kd_ktkbp"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                    <option selected="">Pilih Kota / Kabupaten</option>
-                                    @foreach ($ktkbp as $kota)
-                                        <option value="{{ $kota->kd_ktkbp }}">{{ $kota->nm_ktkbp }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-span-2 sm:col-span-1">
-                                <label for="kdKcmtn"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kecamatan</label>
-                                <select id="kecamatan" name="kd_kcmtn"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                    <option selected="">Pilih Kecamatan</option>
-                                    @foreach ($kcmtn as $kecamatan)
-                                        <option value="{{ $kecamatan->kd_kcmtn }}">{{ $kecamatan->nm_kcmtn }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-span-2 sm:col-span-1">
-                                <label for="category"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Desa</label>
-                                <select id="desa" name="kd_desa"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                    <option selected="">Pilih Desa</option>
-                                    @foreach ($desa as $desa)
-                                        <option value="{{ $desa->kd_desa }}"data-kecamatan="{{ $desa->kd_kcmtn }}">
-                                            {{ $desa->nm_desa }}</option>
-                                    @endforeach
-                                </select>
+                            <div class="col-span-2">
+                                <label for="name"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nomer
+                                    HP</label>
+                                <input type="number" name="no_hp" id="no_hp"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                    placeholder="Type product name" required="">
                             </div>
                         </div>
                         <button type="submit"
@@ -247,44 +227,28 @@
                 </div>
             </div>
         </div>
+        <!-- End Modal  -->
 
 
+    </section>
 
-        <script>
-            $(document).ready(function() {
-                $('#kecamatan').change(function() {
-                    var kcmtnID = $(this).val();
-                    $('#output').text('Kode Kecamatan: ' + kcmtnID);
-                    $('#desa option').each(function() {
-                        if ($(this).data('kecamatan') == kcmtnID || !kcmtnID) {
-                            $(this).show();
-                        } else {
-                            $(this).hide();
-                        }
-                    });
-                    $('#desa').val('Pilih Desa');
-                });
+    <script>
+        function confirmDelete(event) {
+            event.preventDefault(); // Mencegah pengiriman form
+            const form = event.target;
+            Swal.fire({
+                title: 'Apakah kamu yakin?',
+                text: "Data yang terhapus tidak bisa dikembalikan!!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Hapus'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit(); // Kirim form setelah konfirmasi
+                }
             });
-
-
-            // delete alert
-            function confirmDelete(event) {
-                event.preventDefault(); // Mencegah pengiriman form
-                const form = event.target;
-                Swal.fire({
-                    title: 'Apakah kamu yakin?',
-                    text: "Data yang terhapus tidak bisa dikembalikan!!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Hapus'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        form.submit(); // Kirim form setelah konfirmasi
-                    }
-                });
-            }
-        </script>
-
+        }
+    </script>
 </x-main-admin>

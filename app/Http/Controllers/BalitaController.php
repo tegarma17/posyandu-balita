@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Desa;
 use App\Models\User;
+use App\Models\Ktkbp;
 use App\Models\Balita;
+use App\Models\Kecamatan;
 use Illuminate\Http\Request;
 
 class BalitaController extends Controller
@@ -24,7 +27,10 @@ class BalitaController extends Controller
     public function create()
     {
         $title = 'Tambah Data Balita';
-        return view('tambahdtBalita', compact('title'));
+        $ktkbp = Ktkbp::all();
+        $kcmtn = Kecamatan::all();
+        $desa = Desa::all();
+        return view('tambahdtBalita', compact('title', 'ktkbp', 'kcmtn', 'desa'));
     }
 
     /**

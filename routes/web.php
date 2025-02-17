@@ -3,6 +3,7 @@
 use App\Http\Controllers\BalitaController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DesaController;
+use App\Http\Controllers\KaderController;
 use App\Http\Controllers\PosyanduController;
 use App\Http\Controllers\KecamatanController;
 use App\Http\Controllers\NakesController;
@@ -32,8 +33,13 @@ Route::POST('/data-tenaga-kesehatan', [NakesController::class, 'store'])->name('
 Route::DELETE('/data-tenaga-kesehatan/delete/{id}', [NakesController::class, 'destroy'])->name('nakes.destroy');
 Route::GET('/data-tenaga-kesehatan/edit/{id}', [NakesController::class, 'edit'])->name('nakes.edit');
 Route::PUT('/data-tenaga-kesehatan/update/{id}', [NakesController::class, 'update'])->name('nakes.update');
+Route::GET('/generate-template-excel-nakes', [TemplateExcelController::class, 'generetaNakes'])->name('template.nakes');
+Route::POST('/import-data-nakes', [NakesController::class, 'import'])->name('import.nakes');
 
-Route::GET("/data-posyandu", [PosyanduController::class, 'index'])->name('psynd.index');
+Route::GET('data/kader', [KaderController::class, 'index'])->name('kader.index');
+Route::POST('kader', [KaderController::class, 'store'])->name('kader.simpan');
+
+Route::GET('/data-posyandu', [PosyanduController::class, 'index'])->name('psynd.index');
 route::GET('/posyandu-balita/edit/{id}', [PosyanduController::class, 'edit'])->name('psynd.edit');
 Route::POST('posyandu', [PosyanduController::class, 'store'])->name('psynd.simpan');
 Route::DELETE('/posyandu/delete/{id}', [PosyanduController::class, 'destroy'])->name('psynd.destroy');
