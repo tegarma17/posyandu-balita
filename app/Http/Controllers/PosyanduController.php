@@ -35,6 +35,7 @@ class PosyanduController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
+
         Posyandu::create($request->all());
         return redirect()->route('psynd.index')->with('success', 'Posyandu Baru telah ditambahkan.');
     }
@@ -46,6 +47,7 @@ class PosyanduController extends Controller
         $rows = $spreadsheet->getSheetByName('Sheet1')->toArray();
 
         foreach ($rows as $index => $row) {
+
             if ($index === 0) {
                 continue; // Lewatkan baris pertama (header)
             }
@@ -54,15 +56,12 @@ class PosyanduController extends Controller
             if (!empty($row[0]) && !empty($row[1]) && !empty($row[2]) && !empty($row[3])) {
                 Posyandu::updateOrCreate(
                     [
-                        'kd_psynd' => $row[0]
-                    ],
-                    [
-                        'nm_psynd' => $row[1],
-                        'alamat' => $row[2],
-                        'prov' => $row[4],
-                        'kd_ktkbp' => $row[6],
-                        'kd_kcmtn' => $row[8],
-                        'kd_desa' => $row[10],
+                        'nm_psynd' => $row[0],
+                        'alamat' => $row[1],
+                        'prov' => $row[3],
+                        'kd_ktkbp' => $row[5],
+                        'kd_kcmtn' => $row[7],
+                        'kd_desa' => $row[9],
                     ]
                 );
             }

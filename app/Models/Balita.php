@@ -9,9 +9,9 @@ class Balita extends Model
     protected $table = 'balitas';
     protected $fillable = [
         'user_id',
-        'ktkbp_id',
-        'kecamatan_id',
-        'desa_id',
+        'kd_ktkbp',
+        'kd_kcmtn',
+        'kd_desa',
         'nik',
         'no_kk',
         'no_kk_ortu',

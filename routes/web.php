@@ -27,6 +27,9 @@ Route::GET('/profile', function () {
 
 Route::GET('/data-balita', [BalitaController::class, 'index'])->name('balita.index');
 Route::GET('/data-balita/tambah', [BalitaController::class, 'create'])->name(('tambah.balita'));
+Route::POST('/data-balita', [BalitaController::class, 'store'])->name('balita.simpan');
+Route::GET('/data-balita/edit/{id}', [BalitaController::class, 'edit'])->name('balita.edit');
+Route::PUT('/data-balita/update-data/{id}', [BalitaController::class, 'update'])->name('balita.update');
 
 Route::GET('/data-tenaga-kesehatan', [NakesController::class, 'index'])->name('nakes.index');
 Route::POST('/data-tenaga-kesehatan', [NakesController::class, 'store'])->name('nakes.simpan');
@@ -36,8 +39,13 @@ Route::PUT('/data-tenaga-kesehatan/update/{id}', [NakesController::class, 'updat
 Route::GET('/generate-template-excel-nakes', [TemplateExcelController::class, 'generetaNakes'])->name('template.nakes');
 Route::POST('/import-data-nakes', [NakesController::class, 'import'])->name('import.nakes');
 
-Route::GET('data/kader', [KaderController::class, 'index'])->name('kader.index');
-Route::POST('kader', [KaderController::class, 'store'])->name('kader.simpan');
+Route::GET('/data-kader', [KaderController::class, 'index'])->name('kader.index');
+Route::POST('/data-kader', [KaderController::class, 'store'])->name('kader.simpan');
+Route::GET('/generate-template-kader-excel', [TemplateExcelController::class, 'generateKader'])->name('template.kader');
+Route::POST('/import-data-kader', [KaderController::class, 'import'])->name('import.kader');
+Route::GET('/data-kader/edit/{id}', [KaderController::class, 'edit'])->name('kader.edit');
+Route::PUT('/data-kader/update/{id}', [KaderController::class, 'update'])->name('kader.ubah');
+Route::DELETE('/data-kader/delete/{id}', [KaderController::class, 'destroy'])->name('kader.destroy');
 
 Route::GET('/data-posyandu', [PosyanduController::class, 'index'])->name('psynd.index');
 route::GET('/posyandu-balita/edit/{id}', [PosyanduController::class, 'edit'])->name('psynd.edit');

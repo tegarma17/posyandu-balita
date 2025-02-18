@@ -62,7 +62,7 @@
                             Nama Nakes
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Posisi
+                            No HP
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Action
@@ -80,18 +80,20 @@
                                 {{ $nks->nama }}
                             </td>
                             <td class="px-6 py-4">
-                                {{ $nks->user->role->nama_role ?? 'Tidak Ada' }}
+                                {{ $nks->no_hp }}
                             </td>
                             <td class="px-6 py-4">
-                                <form action="{{ route('nakes.destroy', $nks->id) }}" method="POST"
-                                    onsubmit="return confirmDelete(event)">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit"
-                                        class="px-3 py-1 bg-red-500 rounded-lg font-medium text-white dark:text-red-500 hover:underline transition duration-150 ease-in-out">Delete</button>
-                                </form>
-                                <a href="{{ route('nakes.edit', $nks->id) }}"
-                                    class="px-3 py-1 bg-yellow-400 rounded-lg font-medium text-white dark:text-red-500 hover:underline">Edit</a>
+                                <div class="flex gap-3 items-center text-white ">
+                                    <form action="{{ route('nakes.destroy', $nks->id) }}"
+                                        onsubmit="return confirmDelete(event)">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"
+                                            class="bg-red-500 py-3 px-6 rounded-lg dark:text-red-500 hover:underline transition duration-150 ease-in-out">Delete</button>
+                                        <a href="{{ route('nakes.edit', $nks->id) }}"
+                                            class="bg-yellow-400 py-3 px-6 mb-3 rounded-lg dark:text-red-500 hover:underline">Edit</a>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     @endforeach
@@ -174,21 +176,14 @@
                     <form class="p-4 md:p-5" action="{{ route('nakes.simpan') }}" method="POST">
                         @csrf
                         <div class="grid gap-4 mb-4 grid-cols-2">
-                            <div class="col-span-2 sm:col-span-1">
+                            <div class="col-span-2 ">
                                 <label for="price"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">NIK</label>
                                 <input type="number" name="nik" id="nik"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                     placeholder="" required="">
                             </div>
-                            <div class="col-span-2 sm:col-span-1">
-                                <label for="category"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kode Tenaga
-                                    Kesheatan</label>
-                                <input type="text" name="kd_nakes" id="kd_nakes"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                    placeholder="NKS001 / KDR001" required="">
-                            </div>
+
                             <div class="col-span-2 sm:col-span-1">
                                 <label for="price"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama</label>
@@ -207,16 +202,7 @@
                                     <option value="p">Perempuan</option>
                                 </select>
                             </div>
-                            <div class="col-span-2">
-                                <label for="name"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Posisi</label>
-                                <select id="role_id" name="role_id"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                    <option selected="">Pilih Posisi</option>
-                                    <option value="2">Kader</option>
-                                    <option value="3">Nakes</option>
-                                </select>
-                            </div>
+
                             <div class="col-span-2">
                                 <label for="name"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Alamat</label>

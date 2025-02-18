@@ -30,7 +30,15 @@
                 placeholder="Nama Balita">
         </div>
         <!-- End pencarian data -->
-
+        @if (session('success'))
+            <script>
+                Swal.fire({
+                    title: 'Success!',
+                    text: '{{ session('success') }}',
+                    icon: 'success'
+                });
+            </script>
+        @endif
         <!-- tabel data -->
         <div class="relative overflow-x-auto mx-5 sm:rounded-lg">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -43,7 +51,7 @@
                             Nama Ibu
                         </th>
                         <th scope="col" class="px-6 py-3  dark:bg-gray-800">
-                            Username
+                            Alamat
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Action
@@ -51,24 +59,32 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="border-b border-gray-200 dark:border-gray-700">
-                        <th scope="row"
-                            class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
-                            Apple MacBook Pro 17"
-                        </th>
-                        <td class="px-6 py-4">
-                            Silver
-                        </td>
-                        <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800">
-                            Laptop
-                        </td>
-                        <td class="px-6 py-4 text-center">
-                            <a href="#" data-modal-target="popup-modal" data-modal-toggle="popup-modal"
-                                class="px-3 py-1 bg-red-500 rounded-lg font-medium text-white dark:text-red-500 hover:underline transition duration-150 ease-in-out">Delete</a>
-                            <a href="/edt-blt"
-                                class="px-3 py-1 bg-yellow-400 rounded-lg font-medium text-white dark:text-red-500 hover:underline">Edit</a>
-                        </td>
-                    </tr>
+                    @foreach ($balita as $blt)
+                        <tr class="border-b border-gray-200 dark:border-gray-700 text-center">
+                            <th scope="row"
+                                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
+                                {{ $blt->nama }}
+                            </th>
+                            <td class="px-6 py-4">
+                                {{ $blt->nama_ortu }}
+                            </td>
+                            <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800">
+                                {{ $blt->alamat }}
+                            </td>
+                            <td class="px-6 py-4 text-center font-bold tracking-wider">
+                                <div class="flex gap-3 items-center justify-center text-white ">
+                                    <form action="" method="POST" onsubmit="return confirmDelete(event)">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"
+                                            class="bg-red-500 py-3 px-6 rounded-lg dark:text-red-500 hover:underline transition duration-150 ease-in-out">Delete</button>
+                                        <a href="{{ route('balita.edit', $blt->id) }}"
+                                            class="bg-yellow-400 py-3 px-6 mb-3 rounded-lg dark:text-red-500 hover:underline">Edit</a>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
 
                 </tbody>
             </table>

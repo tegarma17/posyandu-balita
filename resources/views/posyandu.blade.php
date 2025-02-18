@@ -84,7 +84,7 @@
                                 {{ $posyandu->nm_psynd }}
                             </td>
                             <td class="px-6 py-4">
-                                <form action="{{ route('nakes.destroy', $posyandu->id) }}" method="POST"
+                                <form action="{{ route('psynd.destroy', $posyandu->id) }}" method="POST"
                                     onsubmit="return confirmDelete(event)">
                                     @csrf
                                     @method('DELETE')
@@ -171,7 +171,6 @@
                     <form action="{{ route('psynd.simpan') }}" method="POST" class="p-4 md:p-5">
                         @csrf
                         <div class="grid gap-4 mb-4 grid-cols-2">
-                            <div>{{ $kd_psyndu }}</div>
                             <div class="col-span-2">
                                 <label for="category"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama

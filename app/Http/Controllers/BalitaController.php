@@ -45,40 +45,39 @@ class BalitaController extends Controller
         } else {
             $newNumber = 1;
         }
-        $newUsername = 'balita' . str_pad($newNumber, 4, '0', STR_PAD_LEFT);
-
+        $newUsername = 'BLT' . str_pad($newNumber, 4, '0', STR_PAD_LEFT);
         User::create([
             'role_id' => '4',
             'username' => $newUsername,
-            'password' => bcrypt('balita0001')
+            'password' => $newUsername
         ]);
-        Balita::create($request->all());
+        $balita = $request->all();
+        $balita['user_id'] = User::latest()->first()->id;
+        Balita::create($balita);
         return redirect()->route('balita.index')->with('success', 'Data Balita Baru telah ditambahkan.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Balita $balita)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
         $balita = Balita::find($id);
-        return view('editBalita', compact('balita', 'id'));
+        $title = 'Edit Data Balita';
+        $ktkbp = Ktkbp::all();
+        $kcmtn = Kecamatan::all();
+        $desa = Desa::all();
+        return view('editBalita', compact('balita', 'title', 'ktkbp', 'kcmtn', 'desa'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Balita $balita)
+    public function update(Request $request, string $id)
     {
-        //
+        $balita = Balita::find($id);
+        $cek = $request->all();
+
+        $balita->update($request->all());
+        return redirect()->route('balita.index')->with('success', 'Data Balita berhasil diupdate');
     }
 
     /**
@@ -86,6 +85,9 @@ class BalitaController extends Controller
      */
     public function destroy(Balita $balita)
     {
-        //
+        $balita = Balita::findOrFail($balita->id);
+        $user = User::findOrFail($balita->user_id);
+        $balita->delete();
+        $user->delete();
     }
 }

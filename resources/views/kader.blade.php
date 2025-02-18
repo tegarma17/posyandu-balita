@@ -14,13 +14,13 @@
                 class="block mx-4 my-3 bg-hijautua hover:bg-hijaumuda text-white py-2 px-4 rounded-lg" type="button">
                 Tambah Kader Baru
             </button>
-            <a href="{{ route('template.nakes') }}"
+            <a href="{{ route('template.kader') }}"
                 class="block my-3 bg-yellow-400 hover:bg-orange-400 text-white py-2 px-4 rounded-lg" type="button">
                 Download Template Excel
             </a>
         </div>
         <div class="relative mx-4">
-            <form action="" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('import.kader') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <input type="file" name="file" required>
                 <button class="block mx-4 my-3 bg-yellow-400 hover:bg-orange-400 text-white py-2 px-4 rounded-lg"
@@ -79,14 +79,15 @@
                             </td>
                             <td class="px-6 py-4">
                                 <div class="flex gap-3 items-center text-white ">
-                                    <form action="" method="POST" onsubmit="return confirmDelete(event)">
+                                    <form action="{{ route('kader.destroy', $kader->id) }}" method="POST"
+                                        onsubmit="return confirmDelete(event)">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit"
                                             class=" bg-red-500 py-3 px-6 rounded-lg dark:text-red-500 hover:underline transition duration-150 ease-in-out">Delete</button>
+                                        <a href="{{ route('kader.edit', $kader->id) }}"
+                                            class=" bg-yellow-400 py-3 px-6 mb-3 rounded-lg dark:text-red-500 hover:underline">Edit</a>
                                     </form>
-                                    <a href=""
-                                        class=" bg-yellow-400 py-3 px-6 mb-3 rounded-lg dark:text-red-500 hover:underline">Edit</a>
                                 </div>
                             </td>
                         </tr>

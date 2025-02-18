@@ -19,7 +19,30 @@ class Nakes extends Model
         parent::boot();
         static::creating(function ($model) {
             $model->kd_nakes = self::generateKader();
+            $model->kd_nakes = self::generateNakes();
         });
+    }
+
+    public static function generateNakes()
+    {
+        $roleID = 3;
+        $prefix = 'Tenaga Kesehatan';
+
+        $lastRecord = DB::table('nakes')
+            ->join('users', 'users.id', '=', 'nakes.user_id')
+            ->where('users.role_id', 3)
+            ->orderBy('kd_nakes', 'desc')
+            ->select('nakes.*')
+            ->first();
+
+        if (!$lastRecord) {
+            $number = 1;
+        } else {
+            $lastNumber = (int)substr($lastRecord->kd_nakes, 5);
+            $number = $lastNumber + 1;
+        }
+
+        return 'NKS' . str_pad($number, 3, '0', STR_PAD_LEFT);
     }
 
     public static function generateKader()
