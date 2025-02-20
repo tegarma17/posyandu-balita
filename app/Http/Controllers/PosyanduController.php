@@ -8,7 +8,6 @@ use App\Models\Posyandu;
 use App\Models\Kecamatan;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
@@ -22,15 +21,27 @@ class PosyanduController extends Controller
     {
         $this->excelImportServices = $excelImportServices;
     }
-    public function index()
+    public function index(Request $request)
     {
         $ktkbp = Ktkbp::all();
         $kcmtn = Kecamatan::all();
         $desa = Desa::all();
-        $psyndu = Posyandu::with('desa')->get();
+        $search = $request->query('search');
+
+        if (!empty($search)) {
+            $psyndu = Posyandu::with('desa')
+                ->where('nm_psynd', 'like', '%' . $search . '%')
+                ->orWhere('kd_psynd', 'like', '%' . $search . '%')
+                ->paginate(5)->fragment('std');
+        } else {
+            $psyndu = Posyandu::with('desa')
+                ->paginate(5)
+
+                ->fragment('std');
+        }
         $kd_psyndu = Posyandu::generateKdPsynd();
         $title = 'Data Posyandu';
-        return view('posyandu', compact('ktkbp', 'kcmtn', 'desa', 'title', 'psyndu', 'kd_psyndu'));
+        return view('posyandu', compact('ktkbp', 'kcmtn', 'desa', 'title', 'psyndu', 'kd_psyndu', 'search'));
     }
 
     public function store(Request $request): RedirectResponse
@@ -44,7 +55,7 @@ class PosyanduController extends Controller
         $file = $request->file('file');
         $spreadsheet = IOFactory::load($file->getPathname());
 
-        $rows = $spreadsheet->getSheetByName('Sheet1')->toArray();
+        $rows = $spreadsheet->getSheetByName('Posyandu')->toArray();
 
         foreach ($rows as $index => $row) {
 

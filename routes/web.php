@@ -57,8 +57,8 @@ Route::GET('/desa/by-kecamatan/{id}', [DesaController::class, 'GETByKecamatan'])
 Route::GET('/generate-template-excel-posyandu', [TemplateExcelController::class, 'generatePosyandu']);
 Route::POST('/import-data-posyandu', [PosyanduController::class, 'import'])->name('import.posyandu');
 Route::GET('/donload-template-posyandu', function () {
-    $file = public_path() . "/template/data_posyandu.xlsx";
-    return response()->download($file, 'data_posyandu.xlsx');
+    $file = public_path() . "/template/template posyandu.xlsx";
+    return response()->download($file, 'template posyandu.xlsx');
 })->name('download.template.posyandu');
 
 Route::GET('/dta_jdl', function () {

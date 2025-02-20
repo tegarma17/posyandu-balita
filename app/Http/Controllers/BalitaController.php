@@ -16,7 +16,7 @@ class BalitaController extends Controller
      */
     public function index()
     {
-        $balita = Balita::all();
+        $balita = Balita::paginate(5);
         $title = 'Data Balita';
         return view('balita', compact('balita', 'title'));
     }
