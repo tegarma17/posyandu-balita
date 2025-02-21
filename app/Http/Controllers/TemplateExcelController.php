@@ -8,58 +8,87 @@ use App\Http\Controllers\Controller;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\NamedRange;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Style\Color;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Cell\DataValidation;
 
+use PhpOffice\PhpSpreadsheet\Style\Border;
+
 class TemplateExcelController extends Controller
 {
-    public function generatePosyandu()
+    public function generetaNakes()
     {
         $spreadsheet = new Spreadsheet();
         $sheet1 = $spreadsheet->getActiveSheet();
-        $sheet1->setTitle('Sheet1');
+        $sheet1->setTitle('nakes');
 
-        $sheet1->setCellValue('A1', 'Header1');
-        $sheet1->setCellValue('B1', 'Header2');
-        $sheet1->setCellValue('C1', 'Header3');
-        $sheet1->setCellValue('D1', 'Header4');
-        $sheet1->setCellValue('E1', 'Header5');
-        $sheet1->setCellValue('F1', 'Header6');
-        $sheet1->setCellValue('G1', 'Select Product'); // Header untuk dropdown list
+        $sheet1->setCellValue('A1', 'NIK');
+        $sheet1->setCellValue('B1', 'Nama');
+        $sheet1->setCellValue('C1', 'Jenis Kelamin l/p');
+        $sheet1->setCellValue('D1', 'Alamat');
+        $sheet1->setCellValue('E1', 'Nomer HP / WA');
+        $sheet1->getStyle('A')->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_TEXT);
+        $sheet1->getStyle('E')->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_TEXT);
 
-        // Buat sheet kedua dan tambahkan data produk
-        $sheet2 = $spreadsheet->createSheet();
-        $sheet2->setTitle('Sheet2');
-        $sheet2->setCellValue('A1', 'Product');
-        $sheet2->setCellValue('A2', 'Apple');
-        $sheet2->setCellValue('A3', 'Banana');
-        $sheet2->setCellValue('A4', 'Cherry');
-
-        // Tambahkan nama rentang untuk data produk
-        $spreadsheet->addNamedRange(new NamedRange('ProductList', $sheet2, 'A2:A4'));
-
-        // Buat dropdown list (data validation) di kolom ketujuh Sheet1 (kolom G) mulai dari baris kedua
-        $validation = $sheet1->getCell('G2')->getDataValidation();
-        $validation->setType(DataValidation::TYPE_LIST);
-        $validation->setErrorStyle(DataValidation::STYLE_INFORMATION);
-        $validation->setAllowBlank(false);
-        $validation->setShowInputMessage(true);
-        $validation->setShowErrorMessage(true);
-        $validation->setShowDropDown(true);
-        $validation->setFormula1('=ProductList');
-
-        // Terapkan data validation ke rentang yang lebih besar jika perlu
-        $sheet1->getCell('G2')->setDataValidation(clone $validation);
-        for ($row = 3; $row <= 100; $row++) { // Misalnya, untuk baris 2 sampai 100
-            $sheet1->getCell("G$row")->setDataValidation(clone $validation);
-            // Simpan file Excel
-        }
+        $sheet1->getStyle('A1:E1')->getFill()->setFillType(Fill::FILL_SOLID);
+        $sheet1->getStyle('A1:E1')->getFill()->getStartColor()->setARGB(Color::COLOR_YELLOW);
+        $styleBorder = [
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => Border::BORDER_THIN,
+                    'color' => ['argb' => '000000'],
+                ],
+            ],
+        ];
+        $sheet1->getStyle('A1:E25')->applyFromArray($styleBorder);
+        $sheet1->getSheetView()->setView(\PhpOffice\PhpSpreadsheet\Worksheet\SheetView::SHEETVIEW_PAGE_BREAK_PREVIEW);
         $tulis = new Xlsx($spreadsheet);
-        $namaFile = 'data_posyandu.xlsx';
+        $namaFile = 'data_nakes.xlsx';
         $temp_file = tempnam(sys_get_temp_dir(), $namaFile);
         $tulis->save($temp_file);
         return response()->download($temp_file, $namaFile, ['Cache-Control' => 'no-cache, must-revalidate'])->deleteFileAfterSend(true);
+        return redirect()->route('nakes.index');
+    }
 
-        return redirect()->route('psynd.index');
+    public function generateKader()
+    {
+        $spreadsheet = new Spreadsheet();
+        $sheet2 = $spreadsheet->getActiveSheet();
+        $sheet2->setTitle('kader');
+
+        $sheet2->setCellValue('A1', 'NIK');
+        $sheet2->setCellValue('B1', 'Nama');
+        $sheet2->setCellValue('C1', 'Jenis Kelamin l/p');
+
+        $sheet2->setCellValue('D1', 'Alamat');
+        $sheet2->setCellValue('E1', 'Nomer HP / WA');
+        $sheet2->getStyle('E')->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_TEXT);
+        $sheet2->getStyle('A')->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_TEXT);
+
+        $sheet2->getStyle('A1:E1')->getFill()->setFillType(Fill::FILL_SOLID);
+        $sheet2->getStyle('A1:E1')->getFill()->getStartColor()->setARGB(Color::COLOR_YELLOW);
+        $sheet2->getStyle('A1:E1')->getFill()->setFillType(Fill::FILL_SOLID);
+        $sheet2->getStyle('A1:E1')->getFill()->getStartColor()->setARGB(Color::COLOR_YELLOW);
+        $styleBorder = [
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => Border::BORDER_THIN,
+                    'color' => ['argb' => '000000'],
+                ],
+            ],
+        ];
+        foreach (range('A', 'E') as $kolom) {
+            $sheet2->getColumnDimension($kolom)->setAutoSize(true);
+        }
+        $sheet2->getStyle('A1:E25')->applyFromArray($styleBorder);
+        $sheet2->getSheetView()->setView(\PhpOffice\PhpSpreadsheet\Worksheet\SheetView::SHEETVIEW_PAGE_BREAK_PREVIEW);
+
+        $tulis = new Xlsx($spreadsheet);
+        $namaFile = 'data_kader.xlsx';
+        $temp_file = tempnam(sys_get_temp_dir(), $namaFile);
+        $tulis->save($temp_file);
+        return response()->download($temp_file, $namaFile, ['Cache-Control' => 'no-cache, must-revalidate'])->deleteFileAfterSend(true);
+        return redirect()->route('kader.index');
     }
 }

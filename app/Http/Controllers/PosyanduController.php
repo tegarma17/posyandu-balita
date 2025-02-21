@@ -21,18 +21,32 @@ class PosyanduController extends Controller
     {
         $this->excelImportServices = $excelImportServices;
     }
-    public function index()
+    public function index(Request $request)
     {
         $ktkbp = Ktkbp::all();
         $kcmtn = Kecamatan::all();
         $desa = Desa::all();
-        $psyndu = Posyandu::with('desa')->get();
+        $search = $request->query('search');
+
+        if (!empty($search)) {
+            $psyndu = Posyandu::with('desa')
+                ->where('nm_psynd', 'like', '%' . $search . '%')
+                ->orWhere('kd_psynd', 'like', '%' . $search . '%')
+                ->orderBy('kd_psynd', 'asc')
+                ->paginate(5)->fragment('std');
+        } else {
+            $psyndu = Posyandu::with('desa')
+                ->paginate(5)
+                ->fragment('std');
+        }
+
         $title = 'Data Posyandu';
-        return view('posyandu', compact('ktkbp', 'kcmtn', 'desa', 'title', 'psyndu'));
+        return view('posyandu', compact('ktkbp', 'kcmtn', 'desa', 'title', 'psyndu', 'search'));
     }
 
     public function store(Request $request): RedirectResponse
     {
+
         Posyandu::create($request->all());
         return redirect()->route('psynd.index')->with('success', 'Posyandu Baru telah ditambahkan.');
     }
@@ -41,9 +55,10 @@ class PosyanduController extends Controller
         $file = $request->file('file');
         $spreadsheet = IOFactory::load($file->getPathname());
 
-        $rows = $spreadsheet->getSheetByName('Sheet1')->toArray();
+        $rows = $spreadsheet->getSheetByName('Posyandu')->toArray();
 
         foreach ($rows as $index => $row) {
+
             if ($index === 0) {
                 continue; // Lewatkan baris pertama (header)
             }
@@ -52,15 +67,12 @@ class PosyanduController extends Controller
             if (!empty($row[0]) && !empty($row[1]) && !empty($row[2]) && !empty($row[3])) {
                 Posyandu::updateOrCreate(
                     [
-                        'kd_psynd' => $row[0]
-                    ],
-                    [
-                        'nm_psynd' => $row[1],
-                        'alamat' => $row[2],
-                        'prov' => $row[4],
-                        'kd_ktkbp' => $row[6],
-                        'kd_kcmtn' => $row[8],
-                        'kd_desa' => $row[10],
+                        'nm_psynd' => $row[0],
+                        'alamat' => $row[1],
+                        'prov' => $row[3],
+                        'kd_ktkbp' => $row[5],
+                        'kd_kcmtn' => $row[7],
+                        'kd_desa' => $row[9],
                     ]
                 );
             }

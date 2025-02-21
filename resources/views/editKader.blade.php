@@ -5,19 +5,19 @@
                 <a href="/dshbrd" class="text-gray-400 hover:text-gray-600 font-medium">Dashboard</a>
             </li>
             <li class="text-gray-600 mr-2 font-medium">/ </li>
-            <a href="/psyndu">
-                <li class="text-gray-400 hover:text-gray-600 font-medium mr-2">Data Tenaga Kesehatan</li>
+            <a href="{{ route('kader.index') }}">
+                <li class="text-gray-400 hover:text-gray-600 font-medium mr-2">Data Kader</li>
             </a>
             <li class="text-gray-600 mr-2 font-medium">/</li>
-            <li class="text-gray-600 mr-2 font-medium">Edit Data Tenaga Kesehatan</li>
+            <li class="text-gray-600 mr-2 font-medium">Edit Data Kader</li>
         </ul>
         <a href="{{ route('nakes.index') }}"><button
                 class="mx-4  bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded-lg">
                 Kembali
             </button></a>
-        <h4 class="text-2xl font-bold text-center my-4">Data Tenaga Kesehatan</h4>
+        <h4 class="text-2xl font-bold text-center my-4">Data Kader</h4>
 
-        <form class="p-4 md:p-5" action="{{ route('nakes.update', $nakes->id) }}" method="POST">
+        <form class="p-4 md:p-5" action="{{ route('kader.ubah', $kader->id) }}" method="POST">
             @csrf
             @method('PUT')
             <div class="grid gap-4 mb-4 grid-cols-2">
@@ -26,7 +26,7 @@
                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">NIK</label>
                     <input type="number" name="nik" id="nik"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        placeholder="" required="" value="{{ old('nik', $nakes->nik) }}">
+                        placeholder="" required="" value="{{ old('nik', $kader->nik) }}">
                 </div>
                 <div class="col-span-2 sm:col-span-1">
                     <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kode
@@ -34,22 +34,22 @@
                         Kesheatan</label>
                     <input type="text" name="kd_nakes" id="kd_nakes"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        placeholder="" readonly disabled value="{{ old('kd_nakes', $nakes->kd_nakes) }}">
+                        placeholder="" disabled value="{{ old('kd_nakes', $kader->kd_nakes) }}">
                 </div>
                 <div class="col-span-2 sm:col-span-1">
                     <label for="price"
                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama</label>
                     <input type="text" name="nama" id="nama"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        placeholder="" required="" value="{{ old('nama', $nakes->nama) }}">
+                        placeholder="" required="" value="{{ old('nama', $kader->nama) }}">
                 </div>
                 <div class="col-span-2 sm:col-span-1">
                     <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jenis
                         Kelamin</label>
                     <select id="category"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                        <option value=" {{ $nakes->jns_klmn == 'l' ? 'selected' : '' }}"">Laki - Laki</option>
-                        <option value="{{ $nakes->jns_klmn == 'p' ? 'selected' : '' }}">Perempuan</option>
+                        <option value="male" {{ $kader->jns_klmn == 'l' ? 'selected' : '' }}>Laki - Laki</option>
+                        <option value="female" {{ $kader->jns_klmn == 'p' ? 'selected' : '' }}>Perempuan</option>
                     </select>
                 </div>
                 <div class="col-span-2">
@@ -57,14 +57,14 @@
                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Alamat</label>
                     <input type="text" name="alamat" id="alamat"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        placeholder="Type product name" required="" value="{{ old('alamat', $nakes->alamat) }}">
+                        placeholder="Type product name" required="" value="{{ old('alamat', $kader->alamat) }}">
                 </div>
                 <div class="col-span-2">
                     <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nomer
                         HP</label>
                     <input type="number" name="no_hp" id="no_hp"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        placeholder="Type product name" required="" value="{{ old('no_hp', $nakes->no_hp) }}">
+                        placeholder="Type product name" required="" value="{{ old('no_hp', $kader->no_hp) }}">
                 </div>
             </div>
             <button type="submit"

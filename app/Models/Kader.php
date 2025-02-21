@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 
-class Nakes extends Model
+class Kader extends Model
 {
     protected $table = 'nakes';
     protected $fillable = ['nik', 'kd_nakes', 'nama', 'jns_klmn', 'alamat', 'no_hp', 'user_id'];
@@ -18,18 +19,14 @@ class Nakes extends Model
     {
         parent::boot();
         static::creating(function ($model) {
-            $model->kd_nakes = self::generateNakes();
+            $model->kd_nakes = self::generateKader();
         });
     }
-
-    public static function generateNakes()
+    public static function generateKader()
     {
-        $roleID = 3;
-        $prefix = 'Tenaga Kesehatan';
-
         $lastRecord = DB::table('nakes')
             ->join('users', 'users.id', '=', 'nakes.user_id')
-            ->where('users.role_id', $roleID)
+            ->where('users.role_id', 2)
             ->orderBy('kd_nakes', 'desc')
             ->select('nakes.*')
             ->first();
@@ -41,6 +38,6 @@ class Nakes extends Model
             $number = $lastNumber + 1;
         }
 
-        return 'NKS' . str_pad($number, 3, '0', STR_PAD_LEFT);
+        return 'KDR' . str_pad($number, 3, '0', STR_PAD_LEFT);
     }
 }
