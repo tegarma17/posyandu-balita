@@ -32,16 +32,16 @@ class PosyanduController extends Controller
             $psyndu = Posyandu::with('desa')
                 ->where('nm_psynd', 'like', '%' . $search . '%')
                 ->orWhere('kd_psynd', 'like', '%' . $search . '%')
+                ->orderBy('kd_psynd', 'asc')
                 ->paginate(5)->fragment('std');
         } else {
             $psyndu = Posyandu::with('desa')
                 ->paginate(5)
-
                 ->fragment('std');
         }
-        $kd_psyndu = Posyandu::generateKdPsynd();
+
         $title = 'Data Posyandu';
-        return view('posyandu', compact('ktkbp', 'kcmtn', 'desa', 'title', 'psyndu', 'kd_psyndu', 'search'));
+        return view('posyandu', compact('ktkbp', 'kcmtn', 'desa', 'title', 'psyndu', 'search'));
     }
 
     public function store(Request $request): RedirectResponse

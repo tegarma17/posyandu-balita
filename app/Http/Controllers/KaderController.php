@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Kader;
 use App\Models\Nakes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -13,29 +14,47 @@ class KaderController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $kaders = Nakes::whereHas('user.role', function ($query) {
-            $query->where('nama_role', 'Kader Posyandu');
-        })->get();
-        return view('kader', ['title' => 'Data Kader'], compact('kaders'));
+        $search = $request->query('search');
+        $kode = Kader::generateKader();
+        $title = 'Data Kader';
+        if (!empty($search)) {
+            $kaders = Kader::where('nama', 'like', '%' . $search . '%')
+                ->orWhere('kd_nakes', 'like', '%' . $search . '%')
+                ->orderBy('kd_nakes', 'ASC')
+                ->whereHas('user.role', function ($query) {
+                    $query->where('nama_role', 'Kader Posyandu');
+                })
+                ->paginate(5)->fragment('std');
+        } else {
+            $kaders = Kader::whereHas('user.role', function ($query) {
+                $query->where('nama_role', 'Kader Posyandu');
+            })->paginate(5)->fragment('std');
+        }
+        return view('kader', compact('kaders', 'kode', 'search', 'title'));
     }
 
 
     public function store(Request $request)
     {
-        $kode = Nakes::generateKader();
-
+        $kode = Kader::generateKader();
 
         User::create([
             'role_id' => 2, //Kode Kader pada database
             'username' => $kode,
             'password' => bcrypt($kode),
-
         ]);
-        $nakes = $request->all();
-        $nakes['user_id'] = User::latest()->first()->id;
-        Nakes::create($nakes);
+        $nakes = [
+            'nik' => $request->nik,
+            'nama' => $request->nama,
+            'kd_nakes' => $kode,
+            'alamat' => $request->alamat,
+            'no_hp' => $request->no_hp,
+            'user_id' => USer::latest()->first()->id,
+        ];
+
+        Kader::create($nakes);
         return redirect()->route('kader.index')->with('success', 'Tenaga Kesehatan Baru telah ditambahkan.');
     }
 
@@ -45,22 +64,19 @@ class KaderController extends Controller
         $file = $request->file('file');
         $spreadsheet = IOFactory::load($file->getPathname());
         $rows = $spreadsheet->getSheetByName('kader')->toArray();
-
         foreach ($rows as $index => $row) {
             if ($index === 0) {
                 continue;
             }
-
             Log::info('Processing row: ' . json_encode($row));
-
             if (!empty($row[0]) && !empty($row[1]) && !empty($row[2])) {
-                $kode = Nakes::generateKader();
+                $kode = Kader::generateKader();
                 User::create([
-                    'role_id' => $row[3],
+                    'role_id' => 2,
                     'username' => $kode,
-                    'password' => $kode,
+                    'password' => bcrypt($kode)
                 ]);
-                Nakes::updateOrCreate(
+                Kader::updateOrCreate(
                     [
                         'nik' => $row[0],
                     ],
@@ -68,13 +84,14 @@ class KaderController extends Controller
                         'user_id' =>  User::latest()->first()->id,
                         'nama' => $row[1],
                         'jns_klmn' => $row[2],
-                        'alamat' => $row[4],
-                        'no_hp' => $row[5],
+                        'alamat' => $row[3],
+                        'no_hp' => $row[4],
                     ]
                 );
             }
         }
-        return redirect()->route('kader.index')->with('success', 'Data Posyandu berhasil diimport');
+
+        return redirect()->route('kader.index')->with('success', 'Data Kader berhasil diimport');
     }
     public function edit(string $id)
     {

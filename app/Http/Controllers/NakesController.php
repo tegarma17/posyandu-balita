@@ -15,14 +15,25 @@ class NakesController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $kode = Nakes::generateNakes();
-        $nakes = Nakes::whereHas('user.role', function ($query) {
-            $query->where('nama_role', 'Tenaga Kesehatan');
-        })->get();
+        $search = $request->query('search');
+        if (!empty($search)) {
+            $nakes = Nakes::where('nama', 'like', '%' . $search . '%')
+                ->orWhere('kd_nakes', 'like', '%' . $search . '%')
+                ->whereHas('user.role', function ($query) {
+                    $query->where('nama_role', 'Tenaga Kesehatan');
+                })
+                ->orderBy('kd_nakes', 'ASC')
+                ->paginate(5)->fragment('std');
+        } else {
+            $nakes = Nakes::whereHas('user.role', function ($query) {
+                $query->where('nama_role', 'Tenaga Kesehatan');
+            })
+                ->paginate(5)->fragment('std');
+        }
         $title = 'Data Tenaga Kesehatan';
-        return view('nakes', compact('nakes', 'title', 'kode'));
+        return view('nakes', compact('nakes', 'title', 'search'));
     }
     public function store(Request $request): RedirectResponse
     {
@@ -67,8 +78,8 @@ class NakesController extends Controller
                         'user_id' =>  User::latest()->first()->id,
                         'nama' => $row[1],
                         'jns_klmn' => $row[2],
-                        'alamat' => $row[4],
-                        'no_hp' => $row[5],
+                        'alamat' => $row[3],
+                        'no_hp' => $row[4],
                     ]
                 );
             }
