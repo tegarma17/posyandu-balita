@@ -42,4 +42,17 @@ class Balita extends Model
     {
         return $this->belongsTo(Desa::class);
     }
+
+    public static function generateBalita()
+    {
+        $latesBalita = User::where('username', 'like', 'BLT%')->orderBy('username', 'desc')->first();
+
+        if (!$latesBalita) {
+            $number = 1;
+        } else {
+            $lastNumber = (int)substr($latesBalita->username, 4);
+            $number = $lastNumber + 1;
+        }
+        return 'BLT' . str_pad($number, 4, '0', STR_PAD_LEFT);
+    }
 }

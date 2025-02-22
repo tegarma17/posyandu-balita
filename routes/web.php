@@ -30,6 +30,12 @@ Route::GET('/data-balita/tambah', [BalitaController::class, 'create'])->name(('t
 Route::POST('/data-balita', [BalitaController::class, 'store'])->name('balita.simpan');
 Route::GET('/data-balita/edit/{id}', [BalitaController::class, 'edit'])->name('balita.edit');
 Route::PUT('/data-balita/update-data/{id}', [BalitaController::class, 'update'])->name('balita.update');
+Route::DELETE('/data-balita/delete/{id}', [BalitaController::class, 'destroy'])->name('balita.delete');
+ROUTE::POST('/import-data-balita', [BalitaController::class, 'import'])->name('import.balita');
+Route::GET('/donload-template-balita', function () {
+    $file = public_path() . "/template/template balita.xlsx";
+    return response()->download($file, 'template balita.xlsx');
+})->name('download.template.balita');
 
 Route::GET('/data-tenaga-kesehatan', [NakesController::class, 'index'])->name('nakes.index');
 Route::POST('/data-tenaga-kesehatan', [NakesController::class, 'store'])->name('nakes.simpan');

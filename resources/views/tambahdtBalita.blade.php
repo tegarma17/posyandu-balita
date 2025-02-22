@@ -1,4 +1,5 @@
 <x-main-admin>
+    {{ dump($kode) }}
     <section class="container mx-auto my-5">
         <ul class="flex items-center text-sm ml-4 my-5">
             <li class="mr-2">
@@ -11,7 +12,7 @@
             <li class="text-gray-600 mr-2 font-medium">/</li>
             <li class="text-gray-600 mr-2 font-medium">{{ $title }}</li>
         </ul>
-        <a href="/dta_blt"><button
+        <a href="{{ route('balita.index') }}"><button
                 class="mx-4  bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded-lg">
                 Kembali
             </button></a>
