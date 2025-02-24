@@ -13,6 +13,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use App\Http\Controllers\TemplateExcelController;
+use App\Http\Requests\ValidasiData;
 
 class PosyanduController extends Controller
 {
@@ -46,8 +47,26 @@ class PosyanduController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-
-        Posyandu::create($request->all());
+        $message = [
+            'kd_psynd.required' => 'Kode Posyandu Wajib diisi',
+            'kd_psynd.unique' => 'Kode Posyandu Sudah ada',
+            'nm_psynd.required' => 'Nama Posyandu Wajib diisi',
+            'alamat.required' => 'Alamat Wajib diisi',
+            'kd_ktkbp.required' => 'Kabupaten / Kota Wajib diisi',
+            'kd_desa.required' => 'Desa Wajib diisi',
+            'kd_kcmtn.required' => 'Kecamatan Wajib diisi',
+            'prov.required' => 'Provinsi Wajib diisi',
+        ];
+        $validate = $request->validate([
+            'kd_psynd' => ['required', 'unique:posyandu'],
+            'nm_psynd' => ['required'],
+            'alamat' => ['required'],
+            'kd_ktkbp' => ['required'],
+            'kd_kcmtn' => ['required'],
+            'kd_desa' => ['required'],
+            'prov' => ['required'],
+        ], $message);
+        Posyandu::create($validate);
         return redirect()->route('psynd.index')->with('success', 'Posyandu Baru telah ditambahkan.');
     }
     public function import(Request $request)

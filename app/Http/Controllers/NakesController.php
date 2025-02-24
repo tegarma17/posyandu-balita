@@ -19,8 +19,10 @@ class NakesController extends Controller
     {
         $search = $request->query('search');
         if (!empty($search)) {
-            $nakes = Nakes::where('nama', 'like', '%' . $search . '%')
-                ->orWhere('kd_nakes', 'like', '%' . $search . '%')
+            $nakes = Nakes::where(function ($query) use ($search) {
+                $query->where('nama', 'like', '%' . $search . '%')
+                    ->orWhere('kd_nakes', 'like', '%' . $search . '%');
+            })
                 ->whereHas('user.role', function ($query) {
                     $query->where('nama_role', 'Tenaga Kesehatan');
                 })
@@ -37,15 +39,37 @@ class NakesController extends Controller
     }
     public function store(Request $request): RedirectResponse
     {
+        $message = [
+            'nik.required' => 'NIK Wajib diisi',
+            'nik.unique' => 'NIK sudah terdaftar',
+            'nik.max' => 'NIK maksimal 16 angka',
+            'nama.required' => 'Nama Wajib diisi',
+            'alamat.required' => 'Alamat Wajib diisi',
+            'no_hp.required' => 'Nomer HP wajib disii',
+            'no_hp.max' => 'Nomer HP maksimal 13 angka',
+            'no_hp.numeric' => 'Nomer HP harus Angka',
+            'user_id.required' => 'User ID tidak boleh kosong',
+            'user_id.unique' => 'User ID sudah terdaftar',
+
+        ];
+        $validate = $request->validate([
+            'nik' => 'required|unique:nakes|max:16',
+            'nama' => 'required',
+            'alamat' => 'required',
+            'no_hp' => 'required|numeric',
+            'user_id' => 'requried|unique:nakes'
+        ], $message);
+        $tambahanData = $request->only(['jns_klmn']);
+        $data = array_merge($validate, $tambahanData);
+
         $kode = Nakes::generateNakes();
         User::create([
             'role_id' => 3,
             'username' => $kode,
             'password' => bcrypt($kode),
         ]);
-        $nakes = $request->all();
-        $nakes['user_id'] = User::latest()->first()->id;
-        Nakes::create($nakes);
+        $data['user_id'] = User::latest()->first()->id;
+        Nakes::create($data);
         return redirect()->route('nakes.index')->with('success', 'Tenaga Kesehatan Baru telah ditambahkan.');
     }
 

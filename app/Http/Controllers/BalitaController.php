@@ -24,15 +24,12 @@ class BalitaController extends Controller
         if (!empty($search)) {
             $balita = Balita::where('nama', 'like', '%' . $search . '%')
                 ->orWhere('nama_ortu', 'like', '%' . $search . '%')
-                ->orWhere('nik', 'like', '%' . $search . '%')
-                ->orWhere('no_kk', 'like', '%' . $search . '%')
-                ->orWhere('no_kk_ortu', 'like', '%' . $search . '%')
                 ->orderBy('nama', 'ASC')
                 ->paginate(5)->fragment('std');
         } else {
             $balita = Balita::paginate(5)->fragment('std');
         }
-        $balita = Balita::paginate(5);
+
         $title = 'Data Balita';
         return view('balita', compact('balita', 'title', 'search'));
     }
@@ -56,6 +53,47 @@ class BalitaController extends Controller
      */
     public function store(Request $request)
     {
+        $validate = $request->validate([
+            'kd_ktkbp' => 'required',
+            'kd_kcmtn' => 'required',
+            'kd_desa' => 'required',
+            'user_id' => 'required|unique:balitas',
+            'nik' => 'required|unique:balitas',
+            'no_kk' => 'required|unique:balitas',
+            'no_kk_ortu' => 'required|unique:balitas',
+            'nama' => 'required',
+            'tgl_lahir' => 'required',
+            'tmpt_lahir' => 'required',
+            'bb_awal' => 'required|numeric',
+            'tb_awal' => 'required|numeric',
+            'nama_ortu' => 'required',
+            'no_hp_ortu' => 'required|numeric',
+            'prov' => 'required',
+
+        ], [
+            'kd_ktkbp.required' => 'Kota / Kabupaten Wajib diisi',
+            'kd_kcmtn.required' => 'Kecamatan Wajib diisi',
+            'kd_desa.required' => 'Desa Wajib diisi',
+            'user_id.required' => 'User ID Wajib diisi',
+            'user_id.unique' => 'User ID sudah terdaftar',
+            'nik.required' => 'NIK Wajib diisi',
+            'nik.unique' => 'NIK sudah terdaftar',
+            'no_kk.required' => 'Nomer KK Wajib diisi',
+            'no_kk.unique' => 'Nomer KK sudah terdaftar',
+            'no_kk_ortu.required' => 'NIK Orang Tua Wajib diisi',
+            'no_kk_ortu.unique' => 'NIK Orang Tua sudah terdaftar',
+            'nama.required' => 'Nama Balita wajib diisi',
+            'tgl_lahir.required' => 'Tanggal Lahir balita wajib disii',
+            'tmpt_lahir.required' => 'Tempat Lahir balita wajib disii',
+            'bb.required' => 'Berat badan balita wajib disii',
+            'bb.numeric' => 'Berat badan balita harus ditulis angka',
+            'tb.numeric' => 'Tinggi badan balita harus ditulis angka',
+            'tb.required' => 'Tinggi Badan balita wajib disii',
+            'nama_ortu.required' => 'Nama Orang Tua balita wajib disii',
+            'no_hp_ortu.required' => 'Nomer HP Orang Tua balita wajib disii',
+            'prov.required' => 'Provinsi balita wajib disii',
+
+        ]);
         $latesBalita = User::where('username', 'like', 'balita%')->orderBy('username', 'desc')->first();
         if ($latesBalita) {
             $latesNumber = intval(substr($latesBalita->username, 6));
@@ -69,9 +107,17 @@ class BalitaController extends Controller
             'username' => $newUsername,
             'password' => $newUsername
         ]);
-        $balita = $request->all();
-        $balita['user_id'] = User::latest()->first()->id;
-        Balita::create($balita);
+        $tambahanData = $request->only([
+            'jns_klmn',
+            'alamat',
+            'rt',
+            'rw',
+            'anak_ke'
+        ]);
+        $data = array_merge($validate, $tambahanData);
+
+        $data['user_id'] = User::latest()->first()->id;
+        Balita::create($data);
         return redirect()->route('balita.index')->with('success', 'Data Balita Baru telah ditambahkan.');
     }
     public function import(Request $request)

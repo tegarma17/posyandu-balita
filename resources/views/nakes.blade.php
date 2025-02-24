@@ -51,6 +51,27 @@
                     id="resetButton" type="submit">Reset Pencarian</a>
             </div>
         </form>
+        @if ($errors->any())
+            <div>
+                <ul>
+                    <div class="flex items-center p-4 mb-4 text-sm text-yellow-800 border border-yellow-300 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300 dark:border-yellow-800"
+                        role="alert">
+                        <svg class="shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                                d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+                        </svg>
+                        <span class="sr-only">Info</span>
+                        <div>
+                            <span class="font-medium">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </span>
+                        </div>
+                    </div>
+            </div>
+        @endif
         @if (session('success'))
             <script>
                 Swal.fire({
@@ -72,6 +93,9 @@
                             Nama Nakes
                         </th>
                         <th scope="col" class="px-6 py-3">
+                            Alamat
+                        </th>
+                        <th scope="col" class="px-6 py-3">
                             No HP
                         </th>
                         <th scope="col" class="px-6 py-3">
@@ -88,6 +112,9 @@
                             </th>
                             <td class="px-6 py-4">
                                 {{ $nks->nama }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ $nks->alamat }}
                             </td>
                             <td class="px-6 py-4">
                                 {{ $nks->no_hp }}
@@ -148,7 +175,7 @@
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">NIK</label>
                                 <input type="number" name="nik" id="nik"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                    placeholder="" required="">
+                                    placeholder="">
                             </div>
 
                             <div class="col-span-2 sm:col-span-1">
@@ -156,7 +183,7 @@
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama</label>
                                 <input type="text" name="nama" id="nama"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                    placeholder="" required="">
+                                    placeholder="">
                             </div>
                             <div class="col-span-2 sm:col-span-1">
                                 <label for="jk"
@@ -175,7 +202,7 @@
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Alamat</label>
                                 <input type="text" name="alamat" id="alamat"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                    placeholder="Type product name" required="">
+                                    placeholder="Type product name">
                             </div>
                             <div class="col-span-2">
                                 <label for="name"
@@ -183,7 +210,7 @@
                                     HP</label>
                                 <input type="number" name="no_hp" id="no_hp"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                    placeholder="Type product name" required="">
+                                    placeholder="Type product name">
                             </div>
                         </div>
                         <button type="submit"

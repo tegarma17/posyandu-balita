@@ -46,7 +46,10 @@
                             <a href="">
                                 <li class="text-gray-700 font-bold text-lg">Puskesmas</li>
                             </a>
-                            <button class="w-32 h-11 rounded-lg text-white bg-hijautua">Login</button>
+                            <a href="{{ route('login.index') }}"">
+                                <button
+                                    class="w-32 h-11 text-lg text-center items-center rounded-lg text-white bg-hijautua">Login</button>
+                            </a>
                         </ul>
                     </div>
                 </div>

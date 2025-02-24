@@ -12,7 +12,7 @@
         <div class="flex justify-start">
             <a href="{{ route('tambah.balita') }}">
                 <button class="mx-4 my-3 bg-hijautua hover:bg-hijaumuda text-white py-2 px-4 rounded-lg">Tambah
-                    Data</button></a>
+                    Data Balita Baru</button></a>
             <a href="{{ route('download.template.balita') }}"
                 class="block my-3 bg-yellow-400 hover:bg-orange-400 text-white py-2 px-4 rounded-lg" type="button">
                 Download Template Excel
@@ -83,7 +83,7 @@
                 </thead>
                 <tbody>
                     @foreach ($balita as $blt)
-                        <tr class="border-b border-gray-200 dark:border-gray-700 text-center">
+                        <tr class="border-b border-gray-200 dark:border-gray-700 text-center text-base">
                             <th scope="row"
                                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
                                 {{ $blt->nama }}
@@ -94,7 +94,7 @@
                             <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800">
                                 {{ $blt->alamat }}
                             </td>
-                            <td class="px-6 py-4 text-center font-bold tracking-wider">
+                            <td class="px-6 py-4 text-center  tracking-wider">
                                 <div class="flex gap-3 items-center justify-center text-white ">
                                     <form action="{{ route('balita.delete', $blt->id) }}" method="POST"
                                         onsubmit="return confirmDelete(event)">
