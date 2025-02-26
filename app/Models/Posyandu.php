@@ -36,4 +36,8 @@ class Posyandu extends Model
     {
         return $this->belongsTo(Desa::class, 'kd_desa', 'kd_desa');
     }
+    public function jadwal()
+    {
+        return $this->hasOne(Jadwal::class, 'id_psynd');
+    }
 }

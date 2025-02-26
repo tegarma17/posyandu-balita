@@ -6,9 +6,11 @@
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Mina:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
@@ -68,12 +70,19 @@
                     </a>
                 </li>
                 <li class="mb-1 group">
+                    <a href="{{ route('user') }}"
+                        class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
+                        <i class="ri-user-fill mr-3 text-lg"></i>
+                        <span class="text-sm">Data User</span>
+                    </a>
+                </li>
+                <li class="mb-1 group">
                     <span class="flex items-center py-2 px-4 text-gray-300 border-b border-b-white">
                         <span class="text-sm">Data Vaksin / Imunisasi</span>
                     </span>
                 </li>
                 <li class="mb-1 group">
-                    <a href="/dta_jdl"
+                    <a href="{{ route('jadwal.index') }}"
                         class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
                         <i class="ri-calendar-todo-line mr-3 text-lg"></i>
                         <span class="text-sm">Jadwal</span>
@@ -104,18 +113,23 @@
                 </span>
             </li>
             <li class="mb-1 group">
-                <a href="/profile"
+                <a href="{{ route('profile') }}"
                     class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
                     <i class="ri-user-4-fill mr-3 text-lg"></i>
                     <span class="text-sm">Profile</span>
                 </a>
             </li>
             <li class="mb-1 group">
-                <a href="{{ route('sesi.logout') }}"
-                    class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
-                    <i class="ri-logout-box-fill mr-3 text-lg"></i>
-                    <span class="text-sm">Logout</span>
-                </a>
+                <form action="{{ route('sesi.logout') }}">
+                    @csrf
+                    <button
+                        class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950
+                        hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white
+                        group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
+                        <i class="ri-logout-box-fill mr-3 text-lg"></i>
+                        <span class="text-sm">Logout</span>
+                    </button>
+                </form>
             </li>
         </ul>
     </div>

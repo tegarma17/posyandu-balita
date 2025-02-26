@@ -15,6 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'check_role' => \App\Http\Middleware\CheckRole::class,
             'nocache' => \App\Http\Middleware\NoCache::class,
+            'ensure_auth' => \App\Http\Middleware\EnsureAuthenticated::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

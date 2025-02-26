@@ -4,7 +4,7 @@
             <a href="#" class="text-gray-400 hover:text-gray-600 font-medium">Dashboard</a>
         </li>
         <li class="text-gray-600 mr-2 font-medium">/</li>
-        <li class="text-gray-600 mr-2 font-medium">{{ $profile }}</li>
+        <li class="text-gray-600 mr-2 font-medium"></li>
     </ul>
     <form class=" my-5 mx-5">
         <h4 class="text-2xl font-bold text-center my-4">Profile</h4>

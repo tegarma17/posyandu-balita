@@ -14,6 +14,10 @@ class Nakes extends Model
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
+    public function jadwal()
+    {
+        return $this->hasMany(Jadwal::class, 'id_nakes');
+    }
     protected static function boot()
     {
         parent::boot();

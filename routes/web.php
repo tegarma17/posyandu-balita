@@ -8,25 +8,22 @@ use App\Http\Controllers\KaderController;
 use App\Http\Controllers\NakesController;
 use App\Http\Controllers\BalitaController;
 use App\Http\Controllers\JadwalController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PosyanduController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KecamatanController;
 use App\Http\Controllers\TemplateExcelController;
+use App\Http\Controllers\UserController;
 
 Route::GET('/', function () {
     return view('welcome');
 });
 
-
-
-Route::GET('/test', function () {
-    return view('dashboard');
+Route::group(['middleware' => ['auth', 'nocache', 'ensure_auth']], function () {
+    Route::GET('/dashboard', [DashboardController::class, 'index'])->name('home');
+    Route::GET('/data-balita', [BalitaController::class, 'index'])->name('balita.index');
+    Route::GET('/data-balita/tambah', [BalitaController::class, 'create'])->name(('tambah.balita'));
 });
-
-Route::GET('/profile', function () {
-    return view('profile', ['profile' => 'Profile']);
-});
-
 
 Route::get('/login', [SesiController::class, 'index'])->name('login.index');
 Route::post('/login', [SesiController::class, 'login'])->name('login.masuk');
@@ -80,7 +77,13 @@ Route::group(['middleware' => ['auth', 'check_role:1']], function () {
         $file = public_path() . "/template/template posyandu.xlsx";
         return response()->download($file, 'template posyandu.xlsx');
     })->name('download.template.posyandu');
-    Route::GET('/jadwal-posyandu', [JadwalController::class, 'index'])->name('jadwal');
+
+
+    Route::get('/jadwal-posyandu', [JadwalController::class, 'index'])->name('jadwal.index');
+    Route::get('/jadwal-posyandu/edit-jadwal/{id}', [JadwalController::class, 'edit'])->name('jadwal.edit');
+    Route::put('/jadwal-posyandu/edit-jadwal/{id}', [JadwalController::class, 'update'])->name('jadwal.ubah');
+    Route::post('/jadwal-posyandu', [JadwalController::class, 'store'])->name('jadwal.tambah');
+    Route::GET('/jadwal-posyandu/detail/{id}', [JadwalController::class, 'show'])->name('jadwal.detail');
 });
 
 Route::group(['middleware' => ['auth', 'check_role:2,3']], function () {
@@ -89,3 +92,6 @@ Route::group(['middleware' => ['auth', 'check_role:2,3']], function () {
 Route::GET('/dta-laporan', function () {
     return view('laporan', ['title' => 'Data Laporan Posyandu']);
 });
+
+Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+Route::get('/data-user', [UserController::class, 'index'])->name('user');
