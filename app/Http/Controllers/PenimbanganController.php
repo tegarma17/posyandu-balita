@@ -2,42 +2,50 @@
 
 namespace App\Http\Controllers;
 
+use DateTime;
 use App\Models\Nakes;
 use App\Models\Balita;
 use App\Models\Jadwal;
 use App\Models\Antrian;
+use App\Models\Penimbangan;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
-class VipController extends Controller
+class PenimbanganController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
         $title = 'Vaksin, Imunisasi, Penimbangan Balita';
-        $namaBalita = $request->input('nama_balita');
-        $namaOrtu = $request->input('nama_ortu');
+
         $UserID = Auth::user()->id;
         $NakesID = Nakes::where('user_id', $UserID)->first();
         $jadwalPosyandu = Jadwal::where('id_nakes', $NakesID->id)->first();
         $antrianBalita = Antrian::where('id_jadwal', $jadwalPosyandu->id)->get();
         // $jadwalBalita = Jadwal::where(
-        $dataBalita = Balita::where('nama', $namaBalita)
-            ->orWhere('nama_ortu', $namaOrtu)->first();
 
-        return view('vipBalita', compact('title', 'antrianBalita', 'dataBalita'));
+
+        return view('vip.penimbangan', compact('title', 'antrianBalita'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create($id)
     {
-        //
-    }
+        $antrianBalita = Antrian::where('id', $id)->first();
+        $usia = DB::table('balitas')
+            ->select(DB::raw('CEIL(TIMESTAMPDIFF(MONTH, tgl_lahir, CURDATE())) as usia'))
+            ->where('id', $antrianBalita->balita->id)
+            ->first();
 
+        return view('vip.tambahPenimbangan', compact('antrianBalita', 'usia'));
+    }
+    public function hitungUsia() {}
     /**
      * Store a newly created resource in storage.
      */
@@ -49,7 +57,7 @@ class VipController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Penimbangan $penimbangan)
     {
         //
     }
@@ -57,7 +65,7 @@ class VipController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Penimbangan $penimbangan)
     {
         //
     }
@@ -65,7 +73,7 @@ class VipController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Penimbangan $penimbangan)
     {
         //
     }
@@ -73,7 +81,7 @@ class VipController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Penimbangan $penimbangan)
     {
         //
     }

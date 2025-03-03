@@ -50,8 +50,7 @@
                             </td>
                             <td
                                 class="flex flex-col md:flex-row md:space-x-2 space-y-2 md:space-y-0 px-6 py-4 bg-gray-50 dark:bg-gray-800">
-                                <a href="#" data-modal-target="popup-penimbangan"
-                                    data-modal-toggle="popup-penimbangan"
+                                <a href="{{ route('vip.penimbangan', $blt->id) }}"
                                     class="px-3 py-1 bg-emerald-500 rounded-lg font-medium text-white dark:text-red-500 hover:underline">Penimbangan</a>
                             </td>
                         </tr>

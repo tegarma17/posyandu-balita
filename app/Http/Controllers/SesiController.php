@@ -27,7 +27,7 @@ class SesiController extends Controller
 
 
         if (Auth::attempt($request->only('username', 'password'), $request->remember)) {
-            if (Auth::user()->role_id == '4') return redirect('/balita');
+            if (Auth::user()->role_id == '4') return redirect()->route('home');
             $request->session()->regenerate();
             return redirect()->route('home');
         } else {

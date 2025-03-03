@@ -5,13 +5,13 @@
                 <a href="{{ route('home') }}" class="text-gray-400 hover:text-gray-600 font-semibold">Dashboard</a>
             </li>
             <li class="text-gray-600 mr-2 font-semibold">/ </li>
-            <a href="{{ route('jadwal.index') }}">
+            <a href="{{ route('jadwal.nakes') }}">
                 <li class="text-gray-400 hover:text-gray-600 font-semibold mr-2">{{ $title }}</li>
             </a>
             <li class="text-gray-600 mr-2 font-semibold">/</li>
             <li class="text-gray-600 mr-2 font-semibold">Detail Jadwal Posyandu</li>
         </ul>
-        <a href="{{ route('jadwal.index') }}"><button
+        <a href="{{ route('jadwal.nakes') }}"><button
                 class="mx-4  bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded-lg">
                 Kembali
             </button></a>
@@ -65,7 +65,7 @@
                         <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                             <dt class="text-sm font-semibold text-gray-500 ">Jadwal Posyandu :</dt>
                             <dd class=" text-base font-medium  text-gray-900 sm:mt-0 sm:col-span-2">
-                                {{ $dateFormat }}</dd>
+                                {{ $dateFormat }} - {{ $dateFormat2 }}</dd>
                         </div>
                     </dl>
                 </div>

@@ -14,28 +14,47 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $nakes = Nakes::with('user')
-            ->select('nakes.id', 'users.password as password_nakes', 'nakes.nama as nama_nakes', 'users.username as user_name')
-            ->join('users', 'nakes.user_id', '=', 'users.id')
-            ->get();
-        $balitas = Balita::with('user')
-            ->select('balitas.id', 'users.password as password_balita', 'balitas.nama as nama_balita', 'users.username as user_name')
-            ->join('users', 'balitas.user_id', '=', 'users.id')
-            ->get();
-        $combinedData = $nakes->concat($balitas);
-        $currentPage = LengthAwarePaginator::resolveCurrentPage();
-        $perPage = 10; // Jumlah item per halaman
-        $currentItems = $combinedData->slice(($currentPage - 1) * $perPage, $perPage)->all();
-        $paginatedItems = new LengthAwarePaginator($currentItems, $combinedData->count(), $perPage, $currentPage, [
-            'path' => LengthAwarePaginator::resolveCurrentPath()
-        ]);
-        $nakes = Nakes::with('user')->paginate(5)->fragment('std');
+        $search = $request->query('search');
+        if (!empty($search)) {
+            $nakes = Nakes::with('user')
+                ->select('nakes.id', 'users.password as password_nakes', 'nakes.nama as nama_nakes', 'users.username as user_name')
+                ->join('users', 'nakes.user_id', '=', 'users.id')
+                ->where('nakes.nama', 'like', '%' . $search . '%')
+                ->get();
+            $balitas = Balita::with('user')
+                ->select('balitas.id', 'users.password as password_balita', 'balitas.nama as nama_balita', 'users.username as user_name')
+                ->join('users', 'balitas.user_id', '=', 'users.id')
+                ->where('balitas.nama', 'like', '%' . $search . '%')
+                ->get();
+            $combinedData = $nakes->concat($balitas);
+            $currentPage = LengthAwarePaginator::resolveCurrentPage();
+            $perPage = 10; // Jumlah item per halaman
+            $currentItems = $combinedData->slice(($currentPage - 1) * $perPage, $perPage)->all();
+            $paginatedItems = new LengthAwarePaginator($currentItems, $combinedData->count(), $perPage, $currentPage, [
+                'path' => LengthAwarePaginator::resolveCurrentPath()
+            ]);
+        } else {
+            $nakes = Nakes::with('user')
+                ->select('nakes.id', 'users.password as password_nakes', 'nakes.nama as nama_nakes', 'users.username as user_name')
+                ->join('users', 'nakes.user_id', '=', 'users.id')
+                ->get();
+            $balitas = Balita::with('user')
+                ->select('balitas.id', 'users.password as password_balita', 'balitas.nama as nama_balita', 'users.username as user_name')
+                ->join('users', 'balitas.user_id', '=', 'users.id')
+                ->get();
+            $combinedData = $nakes->concat($balitas);
+            $currentPage = LengthAwarePaginator::resolveCurrentPage();
+            $perPage = 5; // Jumlah item per halaman
+            $currentItems = $combinedData->slice(($currentPage - 1) * $perPage, $perPage)->all();
+            $paginatedItems = new LengthAwarePaginator($currentItems, $combinedData->count(), $perPage, $currentPage, [
+                'path' => LengthAwarePaginator::resolveCurrentPath()
+            ]);
+        }
         $title = 'Data User';
-        $balita = Balita::with('user')->paginate(5)->fragment('std');
 
-        return view('user', compact('title', 'nakes', 'balita', 'paginatedItems'));
+        return view('user', compact('title', 'paginatedItems', 'search'));
     }
 
     /**

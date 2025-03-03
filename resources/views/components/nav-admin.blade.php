@@ -13,6 +13,7 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
         integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -77,25 +78,39 @@
                     </a>
                 </li>
                 <li class="mb-1 group">
-                    <span class="flex items-center py-2 px-4 text-gray-300 border-b border-b-white">
-                        <span class="text-sm">Data Vaksin / Imunisasi</span>
-                    </span>
-                </li>
-                <li class="mb-1 group">
                     <a href="{{ route('jadwal.index') }}"
                         class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
                         <i class="ri-calendar-todo-line mr-3 text-lg"></i>
                         <span class="text-sm">Jadwal</span>
                     </a>
                 </li>
-            @endif
-            @if (auth()->user()->role_id == '2' || auth()->user()->role_id == '3')
+            @elseif (auth()->user()->role_id == '2' || auth()->user()->role_id == '3')
+                <li class="mb-1 group">
+                    <span class="flex items-center py-2 px-4 text-gray-300 border-b border-b-white">
+                        <span class="text-sm">Data Vaksin / Imunisasi</span>
+                    </span>
+                </li>
+                <li class="mb-1 group">
+                    <a href="{{ route('jadwal.nakes') }}"
+                        class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
+                        <i class="ri-calendar-todo-line mr-3 text-lg"></i>
+                        <span class="text-sm">Jadwal</span>
+                    </a>
+                </li>
                 <li class="mb-1 group">
                     <a href="{{ route('vip') }}"
                         class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100 ">
                         <i class="ri-health-book-fill mr-3 text-lg"></i>
-                        <span class="text-sm">VIP</span>
+                        <span class="text-sm">Vaksin / Imunisasi</span>
                         <i class="ri-arrow-right-s-line ml-auto group-[.selected]:rotate-90"></i>
+                    </a>
+                </li>
+                <li class="mb-1 group">
+                    <a href="{{ route('penimbangan.index') }}"
+                        class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100 ">
+                        <i class="ri-health-book-fill mr-3 text-lg"></i>
+                        <span class="text-sm">Penimbangan</span>
+
                     </a>
                 </li>
 
@@ -106,32 +121,40 @@
                         <span class="text-sm">Laporan</span>
                     </a>
                 </li>
-            @endif
-            <li class="mb-1 group">
-                <span class="flex items-center py-2 px-4 text-gray-300 border-b border-b-white">
-                    <span class="text-sm">Data Profile</span>
-                </span>
-            </li>
-            <li class="mb-1 group">
-                <a href="{{ route('profile') }}"
-                    class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
-                    <i class="ri-user-4-fill mr-3 text-lg"></i>
-                    <span class="text-sm">Profile</span>
-                </a>
-            </li>
-            <li class="mb-1 group">
-                <form action="{{ route('sesi.logout') }}">
-                    @csrf
-                    <button
-                        class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950
+            @else
+                <li class="mb-1 group">
+                    <a href="{{ route('jadwal.balita') }}"
+                        class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
+                        <i class="ri-calendar-todo-line mr-3 text-lg"></i>
+                        <span class="text-sm">Jadwal</span>
+                    </a>
+                </li>
+                <li class="mb-1 group">
+                    <span class="flex items-center py-2 px-4 text-gray-300 border-b border-b-white">
+                        <span class="text-sm">Data Profile</span>
+                    </span>
+                </li>
+                <li class="mb-1 group">
+                    <a href="{{ route('profile') }}"
+                        class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
+                        <i class="ri-user-4-fill mr-3 text-lg"></i>
+                        <span class="text-sm">Profile</span>
+                    </a>
+                </li>
+                <li class="mb-1 group">
+                    <form action="{{ route('sesi.logout') }}">
+                        @csrf
+                        <button
+                            class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950
                         hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white
                         group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
-                        <i class="ri-logout-box-fill mr-3 text-lg"></i>
-                        <span class="text-sm">Logout</span>
-                    </button>
-                </form>
-            </li>
+                            <i class="ri-logout-box-fill mr-3 text-lg"></i>
+                            <span class="text-sm">Logout</span>
+                        </button>
+                    </form>
+                </li>
         </ul>
+        @endif
     </div>
     <div class="fixed top-0 left-0 w-full h-full bg-black/50 z-40 md:hidden sidebar-overlay"></div>
 </body>

@@ -47,7 +47,7 @@
             <div class="flex justify-start">
                 <button class="block mx-4  bg-hijautua hover:bg-hijaumuda text-white py-2 px-4 rounded-lg"
                     id="resetButton" type="submit">Cari</button>
-                <a href="{{ route('nakes.index') }}"class="block bg-yellow-400 hover:bg-orange-400 text-white py-2 px-4 rounded-lg"
+                <a href="{{ route('kader.index') }}"class="block bg-yellow-400 hover:bg-orange-400 text-white py-2 px-4 rounded-lg"
                     id="resetButton" type="submit">Reset Pencarian</a>
             </div>
         </form>
@@ -121,7 +121,7 @@
                                 {{ $kader->no_hp }}
                             </td>
                             <td class="px-6 py-4">
-                                <div class="flex gap-3 items-center text-white ">
+                                <div class="flex gap-2 items-center text-white ">
                                     <form action="{{ route('kader.destroy', $kader->id) }}" method="POST"
                                         onsubmit="return confirmDelete(event)">
                                         @csrf

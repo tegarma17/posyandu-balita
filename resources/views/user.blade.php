@@ -97,7 +97,7 @@
         </div>
         <!-- End Tabel -->
         <div class="mt-4 flex justify-center ">
-            {{ $nakes->links('vendor.pagination.tailwind') }}
+            {{ $paginatedItems->links('vendor.pagination.tailwind') }}
 
         </div>
 

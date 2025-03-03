@@ -17,4 +17,8 @@ class Jadwal extends Model
     {
         return $this->belongsTo(Posyandu::class, 'id_psynd');
     }
+    public function antrian()
+    {
+        return $this->hasMany(Antrian::class, 'id_jadwal');
+    }
 }

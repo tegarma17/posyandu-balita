@@ -58,9 +58,7 @@
                         <th scope="col" class="px-6 py-3">
                             Desa
                         </th>
-                        <th scope="col" class="px-6 py-3">
-                            Alamat
-                        </th>
+
                         <th scope="col" class="px-6 py-3">
                             Jadwal
                         </th>
@@ -84,18 +82,21 @@
                             <td class="px-6 py-4">
                                 {{ $jdwl->posyandu->desa->nm_desa }}
                             </td>
-                            <td class="px-6 py-4">
-                                {{ $jdwl->posyandu->alamat }}
-                            </td>
+
                             <td class="px-6 py-4">
                                 {{ $jdwl->jadwal_posyandu }}
                             </td>
-                            <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800">
-                                <div class="flex gap-2">
-                                    <a href="#" data-modal-target="popup-modal" data-modal-toggle="popup-modal"
-                                        class="px-3 py-1 bg-red-500 rounded-lg font-medium text-white dark:text-red-500 hover:underline transition duration-150 ease-in-out">Delete</a>
-                                    <a href="{{ route('jadwal.edit', $jdwl->id) }}"
-                                        class="px-3 py-1 bg-yellow-400 rounded-lg font-medium text-white dark:text-red-500 hover:underline">Edit</a>
+                            <td class="px-8 py-4 m-4 bg-gray-50 dark:bg-gray-800">
+                                <div class=" grid grid-cols-2 md:grid-cols-1 gap-4">
+                                    <form action="{{ route('jadwal.delete', $jdwl->id) }}"
+                                        onsubmit="return confirmDelete(event)">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button
+                                            class="bg-red-500 py-1 px-3 rounded-lg dark:text-red-500 hover:underline text-white transition duration-150 ease-in-out">Delete</button>
+                                        <a href="{{ route('jadwal.edit', $jdwl->id) }}"
+                                            class="py-1 px-3  bg-yellow-400 rounded-lg font-medium text-white dark:text-red-500 hover:underline">Edit</a>
+                                    </form>
                                 </div>
                             </td>
                         </tr>
@@ -258,6 +259,24 @@
                     $('#posyandu').val('Pilih Posyandu');
                 });
             });
+
+            function confirmDelete(event) {
+                event.preventDefault(); // Mencegah pengiriman form
+                const form = event.target;
+                Swal.fire({
+                    title: 'Apakah kamu yakin?',
+                    text: "Data yang terhapus tidak bisa dikembalikan!!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Hapus'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit(); // Kirim form setelah konfirmasi
+                    }
+                });
+            }
         </script>
     </section>
 </x-main-admin>

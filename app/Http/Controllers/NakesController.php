@@ -139,6 +139,6 @@ class NakesController extends Controller
         $user = User::findOrFail($nakes->user_id);
         $nakes->delete();
         $user->delete();
-        return redirect()->route('nakes.index')->with('success', 'Posyandu Terhapus.');
+        return redirect()->route('nakes.index')->with('success', 'Data Tenaga Kesehatan telah Terhapus.');
     }
 }

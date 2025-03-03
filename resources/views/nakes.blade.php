@@ -121,11 +121,11 @@
                             </td>
                             <td class="px-6 py-4">
                                 <div class="flex gap-3 items-center text-white ">
-                                    <form action="{{ route('nakes.destroy', $nks->id) }}"
+                                    <form action="{{ route('nakes.destroy', $nks->id) }}" method="POST"
                                         onsubmit="return confirmDelete(event)">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit"
+                                        <button
                                             class="bg-red-500 py-3 px-6 rounded-lg dark:text-red-500 hover:underline transition duration-150 ease-in-out">Delete</button>
                                         <a href="{{ route('nakes.edit', $nks->id) }}"
                                             class="bg-yellow-400 py-3 px-6 mb-3 rounded-lg dark:text-red-500 hover:underline">Edit</a>

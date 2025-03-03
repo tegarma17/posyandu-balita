@@ -12,12 +12,15 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PosyanduController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KecamatanController;
+use App\Http\Controllers\PenimbanganController;
 use App\Http\Controllers\TemplateExcelController;
 use App\Http\Controllers\UserController;
 
 Route::GET('/', function () {
     return view('welcome');
 });
+
+
 
 Route::group(['middleware' => ['auth', 'nocache', 'ensure_auth']], function () {
     Route::GET('/dashboard', [DashboardController::class, 'index'])->name('home');
@@ -28,14 +31,15 @@ Route::group(['middleware' => ['auth', 'nocache', 'ensure_auth']], function () {
 Route::get('/login', [SesiController::class, 'index'])->name('login.index');
 Route::post('/login', [SesiController::class, 'login'])->name('login.masuk');
 Route::get('/logout', [SesiController::class, 'logout'])->name('sesi.logout');
-Route::group(['middleware' => ['auth', 'check_role:4']], function () {
-    Route::get('/balita', fn() => 'halaman balita');;
-});
-Route::group(['middleware' => ['auth', 'check_role:1,2,3']], function () {
+
+Route::group(['middleware' => ['auth', 'check_role:1,2,3,4']], function () {
     Route::GET('/dashboard', [DashboardController::class, 'index'])->name('home');
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
 });
 
 Route::group(['middleware' => ['auth', 'check_role:1']], function () {
+    Route::get('/data-user', [UserController::class, 'index'])->name('user');
+
     Route::GET('/data-balita', [BalitaController::class, 'index'])->name('balita.index');
     Route::GET('/data-balita/tambah', [BalitaController::class, 'create'])->name(('tambah.balita'));
     Route::POST('/data-balita', [BalitaController::class, 'store'])->name('balita.simpan');
@@ -78,20 +82,25 @@ Route::group(['middleware' => ['auth', 'check_role:1']], function () {
         return response()->download($file, 'template posyandu.xlsx');
     })->name('download.template.posyandu');
 
-
-    Route::get('/jadwal-posyandu', [JadwalController::class, 'index'])->name('jadwal.index');
+    Route::get('/jadwal', [JadwalController::class, 'index'])->name('jadwal.index');
     Route::get('/jadwal-posyandu/edit-jadwal/{id}', [JadwalController::class, 'edit'])->name('jadwal.edit');
     Route::put('/jadwal-posyandu/edit-jadwal/{id}', [JadwalController::class, 'update'])->name('jadwal.ubah');
-    Route::post('/jadwal-posyandu', [JadwalController::class, 'store'])->name('jadwal.tambah');
-    Route::GET('/jadwal-posyandu/detail/{id}', [JadwalController::class, 'show'])->name('jadwal.detail');
+    Route::post('/jadwal-posyandu/simpan', [JadwalController::class, 'store'])->name('jadwal.tambah');
+    Route::delete('/jadwal-posyandu/hapus/{id}', [JadwalController::class, 'destroy'])->name('jadwal.delete');
 });
 
 Route::group(['middleware' => ['auth', 'check_role:2,3']], function () {
     Route::GET('/data-vip-balita', [VipController::class, 'index'])->name('vip');
-});
-Route::GET('/dta-laporan', function () {
-    return view('laporan', ['title' => 'Data Laporan Posyandu']);
+    Route::GET('/jadwal-posyandu/detail/{id}', [JadwalController::class, 'show'])->name('jadwal.detail');
+    Route::get('/jadwal-posyandu', [JadwalController::class, 'showNksKdr'])->name('jadwal.nakes');
+    Route::get('/penimbangan-balita', [PenimbanganController::class, 'index'])->name('penimbangan.index');
+    Route::get('/penimbangan-balita/{id}', [PenimbanganController::class, 'create'])->name('vip.penimbangan');
+    Route::GET('/dta-laporan', function () {
+        return view('laporan', ['title' => 'Data Laporan Posyandu']);
+    });
 });
 
-Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
-Route::get('/data-user', [UserController::class, 'index'])->name('user');
+Route::group(['middleware' => ['auth', 'check_role:4']], function () {
+    Route::get('/jadwal-posyandu-balita', [JadwalController::class, 'showJadwal'])->name('jadwal.balita');
+    Route::get('/jadwal-posyandu-balita/antrian{id}', [JadwalController::class, 'ambilAntri'])->name('jadwal.antrian');
+});

@@ -8,7 +8,7 @@
         <ul class="ml-auto flex items-center">
             <li class="dropdown ml-3">
                 <button type="button" class="dropdown-toggle flex items-center">
-                    <img src="{{ asset('img/profile.svg') }}" alt=""
+                    <img src="{{ asset('img/admin.png') }}" alt=""
                         class="w-8 h-8 rounded block object-cover align-middle">
                 </button>
                 <ul
