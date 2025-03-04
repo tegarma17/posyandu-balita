@@ -25,4 +25,8 @@ class Jadwal extends Model
     {
         return $this->hasOne(Penimbangan::class, 'id_jadwal');
     }
+    public function vakimun()
+    {
+        return $this->hasMany(Vakimun::class, 'id_vakimun');
+    }
 }

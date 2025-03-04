@@ -26,9 +26,9 @@ class PenimbanganController extends Controller
         $UserID = Auth::user()->id;
         $NakesID = Nakes::where('user_id', $UserID)->first();
         $jadwalPosyandu = Jadwal::where('id_nakes', $NakesID->id)->first();
-        $antrianBalita = Antrian::where('id_jadwal', $jadwalPosyandu->id)->get();
+        $balita = Balita::all();
 
-        return view('vip.penimbangan', compact('title', 'antrianBalita'));
+        return view('vip.penimbangan', compact('title', 'balita', 'jadwalPosyandu'));
     }
 
     /**
@@ -36,14 +36,17 @@ class PenimbanganController extends Controller
      */
     public function create($id)
     {
-        $antrianBalita = Antrian::where('id', $id)->first();
+        $UserID = Auth::user()->id;
+        $NakesID = Nakes::where('user_id', $UserID)->first();
+        $jadwalPosyandu = Jadwal::where('id_nakes', $NakesID->id)->first();
+        $balita = Balita::where('id', $id)->first();
         $usia = DB::table('balitas')
             ->select(DB::raw('CEIL(TIMESTAMPDIFF(MONTH, tgl_lahir, CURDATE())) as usia'))
-            ->where('id', $antrianBalita->balita->id)
+            ->where('id', $balita->id)
             ->first();
-        $rekap = Penimbangan::where('id_balita', $antrianBalita->id_balita)->get();
-        dump($rekap);
-        return view('vip.tambahPenimbangan', compact('antrianBalita', 'usia', 'rekap'));
+        $edit = Penimbangan::where('id_balita', $balita->id)->first();
+        $rekap = Penimbangan::where('id_balita', $balita->id)->get();
+        return view('vip.tambahPenimbangan', compact('jadwalPosyandu', 'usia', 'rekap', 'balita', 'edit'));
     }
 
     public function store(Request $request)
@@ -85,25 +88,44 @@ class PenimbanganController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Penimbangan $penimbangan)
+    public function show(string $id)
     {
-        //
+        $rekap = Penimbangan::where('id_balita', $id);
+        return view('vip.rekappenimbangan', compact('rekap'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Penimbangan $penimbangan)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Penimbangan $penimbangan)
+    public function update(Request $request, string $id)
     {
-        //
+        $penimbangan = Penimbangan::find($id);
+        $usia = $request->input('usia');
+        $bb = $request->input('berat_badan');
+        $idBalita = $request->input('id_balita');
+
+        $whobb = WhoBB::where('usia', $usia)->first();
+        $z_score = ($bb - $whobb->mean_bb) / $whobb->std_dev;
+        if ($z_score < -3) {
+            $status_bb = 'Gizi Buruk';
+        } elseif ($z_score >= -3 && $z_score < -2) {
+            $status_bb = 'Gizi Kurang';
+        } elseif ($z_score >= -2 && $z_score <= 2) {
+            $status_bb = 'Gizi Baik';
+        } else {
+            $status_bb = 'Gizi Lebih';
+        }
+        $data = [
+            'berat_badan' => $bb,
+            'tanggal_penimbangan' => $request->tgl_penimbangan,
+            'keterangan' => $request->keterangan,
+            'status_gizi' => $status_bb,
+            'usia' => $usia,
+            'saran' => $request->saran,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ];
+
+        $penimbangan->update($data);
+        return redirect()->route('vip.penimbangan', $idBalita)->with('succes', 'Data Penimbangan balita telah diupdate');
     }
 
     /**

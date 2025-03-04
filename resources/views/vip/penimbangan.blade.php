@@ -39,22 +39,31 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($antrianBalita as $blt)
+                    @if ($jadwalPosyandu->selesai_posyandu >= now())
+                        @foreach ($balita as $blt)
+                            <tr class="border-b border-gray-200 dark:border-gray-700">
+                                <th scope="row"
+                                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
+                                    {{ $blt->nama }}
+                                </th>
+                                <td class="px-6 py-4">
+                                    {{ $blt->nama_ortu }}
+                                </td>
+                                <td
+                                    class="flex flex-col md:flex-row md:space-x-2 space-y-2 md:space-y-0 px-6 py-4 bg-gray-50 dark:bg-gray-800">
+                                    <a href="{{ route('vip.penimbangan', $blt->id) }}"
+                                        class="px-3 py-1 bg-emerald-500 rounded-lg font-medium text-white dark:text-red-500 hover:underline">Penimbangan</a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @else
                         <tr class="border-b border-gray-200 dark:border-gray-700">
                             <th scope="row"
                                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
-                                {{ $blt->balita->nama }}
+                                Belum ada jadwal Posyandu
                             </th>
-                            <td class="px-6 py-4">
-                                {{ $blt->balita->nama_ortu }}
-                            </td>
-                            <td
-                                class="flex flex-col md:flex-row md:space-x-2 space-y-2 md:space-y-0 px-6 py-4 bg-gray-50 dark:bg-gray-800">
-                                <a href="{{ route('vip.penimbangan', $blt->id) }}"
-                                    class="px-3 py-1 bg-emerald-500 rounded-lg font-medium text-white dark:text-red-500 hover:underline">Penimbangan</a>
-                            </td>
                         </tr>
-                    @endforeach
+                    @endif
                 </tbody>
             </table>
         </div>

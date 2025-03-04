@@ -54,6 +54,10 @@ class Balita extends Model
     {
         return $this->hasOne(Penimbangan::class, 'id_balita');
     }
+    public function vakimun()
+    {
+        return $this->hasMany(Vakimun::class, 'id_vakimun');
+    }
 
     public static function generateBalita()
     {

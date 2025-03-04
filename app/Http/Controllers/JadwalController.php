@@ -35,6 +35,7 @@ class JadwalController extends Controller
         } else {
             $jadwal = Jadwal::paginate(5)->fragment('std');
         }
+
         $assignedNakesIds = Jadwal::pluck('id_nakes')->toArray();
         $nakes = Nakes::whereHas('user.role', function ($query) {
             $query->where('nama_role', 'Tenaga Kesehatan');

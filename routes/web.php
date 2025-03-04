@@ -16,6 +16,7 @@ use App\Http\Controllers\PenimbanganController;
 use App\Http\Controllers\TemplateExcelController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VakimunController;
+use App\Models\Vakimun;
 
 Route::GET('/', function () {
     return view('welcome');
@@ -91,14 +92,19 @@ Route::group(['middleware' => ['auth', 'check_role:1']], function () {
 });
 
 Route::group(['middleware' => ['auth', 'check_role:2,3']], function () {
-    Route::GET('/data-vip-balita', [VipController::class, 'index'])->name('vip');
+
     Route::GET('/jadwal-posyandu/detail/{id}', [JadwalController::class, 'show'])->name('jadwal.detail');
     Route::get('/jadwal-posyandu', [JadwalController::class, 'showNksKdr'])->name('jadwal.nakes');
+
     Route::get('/penimbangan-balita', [PenimbanganController::class, 'index'])->name('penimbangan.index');
     Route::get('/penimbangan-balita/{id}', [PenimbanganController::class, 'create'])->name('vip.penimbangan');
     Route::post('/penimbangan-balita/penimbangan', [PenimbanganController::class, 'store'])->name('vip.simpan_penimbangan');
+    Route::GET('/penimbangan-balita/rekap/{id}', [PenimbanganController::class, 'show'])->name('vip.rekap_penimbangan');
+    Route::PUT('/penimbangan-balita/ubah/{id}', [PenimbanganController::class, 'update'])->name('vip.edit_penimbangan');
 
     Route::get('/vakimun-balita', [VakimunController::class, 'index'])->name('vakimun.index');
+    Route::get('/vakimun-balita/{id}', [VakimunController::class, 'create'])->name('vip.vakimun');
+    Route::post('/vakimun-balita/simpan', [VakimunController::class, 'store'])->name('vip.simpan_vakimun');
 
     Route::GET('/dta-laporan', function () {
         return view('laporan', ['title' => 'Data Laporan Posyandu']);
