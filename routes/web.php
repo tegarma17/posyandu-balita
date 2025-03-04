@@ -15,6 +15,7 @@ use App\Http\Controllers\KecamatanController;
 use App\Http\Controllers\PenimbanganController;
 use App\Http\Controllers\TemplateExcelController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VakimunController;
 
 Route::GET('/', function () {
     return view('welcome');
@@ -95,6 +96,10 @@ Route::group(['middleware' => ['auth', 'check_role:2,3']], function () {
     Route::get('/jadwal-posyandu', [JadwalController::class, 'showNksKdr'])->name('jadwal.nakes');
     Route::get('/penimbangan-balita', [PenimbanganController::class, 'index'])->name('penimbangan.index');
     Route::get('/penimbangan-balita/{id}', [PenimbanganController::class, 'create'])->name('vip.penimbangan');
+    Route::post('/penimbangan-balita/penimbangan', [PenimbanganController::class, 'store'])->name('vip.simpan_penimbangan');
+
+    Route::get('/vakimun-balita', [VakimunController::class, 'index'])->name('vakimun.index');
+
     Route::GET('/dta-laporan', function () {
         return view('laporan', ['title' => 'Data Laporan Posyandu']);
     });

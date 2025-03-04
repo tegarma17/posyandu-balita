@@ -11,20 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('penimbangans', function (Blueprint $table) {
+        Schema::create('vakimuns', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_jadwal');
             $table->foreign('id_jadwal')->references('id')->on('jadwals')->onDelete('cascade')->constrained();
+            $table->unsignedBigInteger('id_imunivak');
+            $table->foreign('id_imunivak')->references('id')->on('imunivaks')->onDelete('cascade')->constrained();
             $table->unsignedBigInteger('id_balita');
             $table->foreign('id_balita')->references('id')->on('balitas')->onDelete('cascade')->constrained();
-            $table->integer('tinggi_badan');
-            $table->integer('berat_badan');
-            $table->date('tanggal_penimbangan');
-            $table->enum('keterangan', ['N', 'T', 'B', 'O']);
-            $table->string('status_gizi', 50);
+            $table->date('tanggal_imunivak');
             $table->string('usia', 2);
-            $table->enum('jns_penimbangan', ['berdiri', 'tidur']);
-            $table->string('saran', 100);
             $table->timestamps();
         });
     }
@@ -34,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('penimbangans');
+        Schema::dropIfExists('vakimuns');
     }
 };

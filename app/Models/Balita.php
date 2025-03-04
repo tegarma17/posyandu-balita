@@ -50,6 +50,10 @@ class Balita extends Model
     {
         return $this->hasOne(Antrian::class, 'id_balita');
     }
+    public function penimbangan()
+    {
+        return $this->hasOne(Penimbangan::class, 'id_balita');
+    }
 
     public static function generateBalita()
     {

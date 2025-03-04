@@ -8,6 +8,7 @@ use App\Models\Balita;
 use App\Models\Jadwal;
 use App\Models\Antrian;
 use App\Models\Penimbangan;
+use App\Models\WhoBB;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
@@ -20,14 +21,12 @@ class PenimbanganController extends Controller
      */
     public function index()
     {
-        $title = 'Vaksin, Imunisasi, Penimbangan Balita';
+        $title = 'Data Penimbangan Balita';
 
         $UserID = Auth::user()->id;
         $NakesID = Nakes::where('user_id', $UserID)->first();
         $jadwalPosyandu = Jadwal::where('id_nakes', $NakesID->id)->first();
         $antrianBalita = Antrian::where('id_jadwal', $jadwalPosyandu->id)->get();
-        // $jadwalBalita = Jadwal::where(
-
 
         return view('vip.penimbangan', compact('title', 'antrianBalita'));
     }
@@ -42,16 +41,45 @@ class PenimbanganController extends Controller
             ->select(DB::raw('CEIL(TIMESTAMPDIFF(MONTH, tgl_lahir, CURDATE())) as usia'))
             ->where('id', $antrianBalita->balita->id)
             ->first();
-
-        return view('vip.tambahPenimbangan', compact('antrianBalita', 'usia'));
+        $rekap = Penimbangan::where('id_balita', $antrianBalita->id_balita)->get();
+        dump($rekap);
+        return view('vip.tambahPenimbangan', compact('antrianBalita', 'usia', 'rekap'));
     }
-    public function hitungUsia() {}
-    /**
-     * Store a newly created resource in storage.
-     */
+
     public function store(Request $request)
     {
-        //
+
+        $idJadwal = $request->input('id_jadwal');
+        $idBalita = $request->input('id_balita');
+        $usia = $request->input('usia');
+        $bb = $request->input('berat_badan');
+
+
+        $whobb = WhoBB::where('usia', $usia)->first();
+        $z_score = ($bb - $whobb->mean_bb) / $whobb->std_dev;
+        if ($z_score < -3) {
+            $status_bb = 'Gizi Buruk';
+        } elseif ($z_score >= -3 && $z_score < -2) {
+            $status_bb = 'Gizi Kurang';
+        } elseif ($z_score >= -2 && $z_score <= 2) {
+            $status_bb = 'Gizi Baik';
+        } else {
+            $status_bb = 'Gizi Lebih';
+        }
+        $data = [
+            'id_jadwal' => $idJadwal,
+            'id_balita' => $idBalita,
+            'berat_badan' => $bb,
+            'tanggal_penimbangan' => $request->tgl_penimbangan,
+            'keterangan' => $request->keterangan,
+            'status_gizi' => $status_bb,
+            'usia' => $usia,
+            'saran' => $request->saran,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ];
+        Penimbangan::create($data);
+        return redirect()->route('penimbangan.index')->with('succes', 'Pnimbangan Balita sudah tersimpan');
     }
 
     /**

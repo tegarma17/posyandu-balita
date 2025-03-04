@@ -20,9 +20,9 @@
             </div>
         @elseif (Auth::user()->role_id == '2' || Auth::user()->role_id == '3')
             <div class="flex justify-between gap-3">
-                <div class="w-1/2 px-4 py-6 bg-hijaumudaaa text-white rounded-lg">
+                <div class="w-1/2 px-4 py-1 bg-hijaumudaaa text-white rounded-lg">
                     <div class="flex justify-start px-3 py-5 gap-3">
-                        <div class="w-1/4  mt-5">
+                        <div class="w-1/4 ">
                             <img src="{{ asset('img/admin.png') }}">
                         </div>
                         <div class="mx-3 ">
@@ -38,21 +38,21 @@
                     </div>
                 </div>
                 @if ($jadwal->jadwal_posyandu == now())
-                    <div class="w-1/2 px-2 py-6 bg-green-500 text-white rounded-lg content-center">
+                    <div class="w-1/2 px-2 py-1 bg-green-500 text-white rounded-lg content-center">
                         <h1 class="text-lg font-bold">Anda Memiliki jadwal Posyandu Hari ini
                             <h3>{{ $dateFormat }}</h3>
                             <h3>{{ $jadwal->posyandu->alamat }}</h3>
                         </h1>
                     </div>
                 @elseif ($jadwal->jadwal_posyandu > now())
-                    <div class="w-1/2 px-2 py-6 bg-yellow-500 text-white rounded-lg content-center">
+                    <div class="w-1/2 px-2 py-1 bg-yellow-500 text-white rounded-lg content-center">
                         <h1 class="text-lg font-bold">Anda Memiliki jadwal Posyandu yang akan datang
                             <h3>{{ $dateFormat }}</h3>
                             <h3>{{ $jadwal->posyandu->alamat }}</h3>
                         </h1>
                     </div>
                 @else
-                    <div class="w-1/2 px-2 py-6 bg-orange-500 text-white rounded-lg content-center text-center">
+                    <div class="w-1/2 px-2 py-1 bg-orange-500 text-white rounded-lg content-center text-center">
                         <h1 class="text-lg font-bold">Anda tidak memiliki jadwal posyandu</h1>
                     </div>
                 @endif

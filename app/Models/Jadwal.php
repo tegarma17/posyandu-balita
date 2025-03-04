@@ -21,4 +21,8 @@ class Jadwal extends Model
     {
         return $this->hasMany(Antrian::class, 'id_jadwal');
     }
+    public function penimbangan()
+    {
+        return $this->hasOne(Penimbangan::class, 'id_jadwal');
+    }
 }

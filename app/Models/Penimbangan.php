@@ -10,13 +10,19 @@ class Penimbangan extends Model
     protected $fillable = [
         'id_jadwal',
         'id_balita',
-        'tinggi_badan',
         'berat_badan',
         'tanggal_penimbangan',
         'keterangan',
         'status_gizi',
         'usia',
-        'jns_penimbangan',
         'saran'
     ];
+    public function balita()
+    {
+        return $this->belongsTo(Balita::class, 'id_balita');
+    }
+    public function jadwal()
+    {
+        return $this->belongsTo(Jadwal::class, 'id_jadwal');
+    }
 }
