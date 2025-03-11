@@ -75,8 +75,6 @@ Route::group(['middleware' => ['auth', 'check_role:1']], function () {
     Route::POST('posyandu', [PosyanduController::class, 'store'])->name('psynd.simpan');
     Route::DELETE('/posyandu/delete/{id}', [PosyanduController::class, 'destroy'])->name('psynd.destroy');
     Route::PUT('/posyandu/edit/{id}', [PosyanduController::class, 'update'])->name('psynd.update');
-    Route::GET('/desa/by-kecamatan/{id}', [KecamatanController::class, 'GETByKecamatan']);
-    Route::GET('/desa/by-kecamatan/{id}', [DesaController::class, 'GETByKecamatan']);
     Route::GET('/generate-template-excel-posyandu', [TemplateExcelController::class, 'generatePosyandu']);
     Route::POST('/import-data-posyandu', [PosyanduController::class, 'import'])->name('import.posyandu');
     Route::GET('/donload-template-posyandu', function () {
@@ -86,6 +84,9 @@ Route::group(['middleware' => ['auth', 'check_role:1']], function () {
 
     Route::get('/jadwal', [JadwalController::class, 'index'])->name('jadwal.index');
     Route::get('/jadwal-posyandu/edit-jadwal/{id}', [JadwalController::class, 'edit'])->name('jadwal.edit');
+    Route::get('/jadwal-posyandu/detail-jadwal/{id}', [JadwalController::class, 'detailJadwal'])->name('jadwal.detailAdmin');
+    Route::put('/jadwal-posyandu/update-jadwal/', [JadwalController::class, 'updateByJadwal'])->name('jadwal.update');
+    Route::get('/jadwal-posyandu/detail-petugas/{id}', [JadwalController::class, 'detailPetugas'])->name('jadwal.detailPetugas');
     Route::put('/jadwal-posyandu/edit-jadwal/{id}', [JadwalController::class, 'update'])->name('jadwal.ubah');
     Route::post('/jadwal-posyandu/simpan', [JadwalController::class, 'store'])->name('jadwal.tambah');
     Route::delete('/jadwal-posyandu/hapus/{id}', [JadwalController::class, 'destroy'])->name('jadwal.delete');
@@ -97,8 +98,10 @@ Route::group(['middleware' => ['auth', 'check_role:2,3']], function () {
     Route::get('/jadwal-posyandu', [JadwalController::class, 'showNksKdr'])->name('jadwal.nakes');
 
     Route::get('/penimbangan-balita', [PenimbanganController::class, 'index'])->name('penimbangan.index');
+    Route::get('/penimbangan-balita/detail-penimbangan', [PenimbanganController::class, 'showConfirmation'])->name('penimbangan.detailMeasurement');
     Route::get('/penimbangan-balita/{id}', [PenimbanganController::class, 'create'])->name('vip.penimbangan');
-    Route::post('/penimbangan-balita/penimbangan', [PenimbanganController::class, 'store'])->name('vip.simpan_penimbangan');
+    Route::post('/penimbangan-balita/penimbangan', [PenimbanganController::class, 'storeDetail'])->name('vip.simpan_penimbangan');
+    Route::post('/penimbangan-balita/savePenimbangan', [PenimbanganController::class, 'saveInformation'])->name('vip.savePenimbangan');
     Route::GET('/penimbangan-balita/rekap/{id}', [PenimbanganController::class, 'show'])->name('vip.rekap_penimbangan');
     Route::PUT('/penimbangan-balita/ubah/{id}', [PenimbanganController::class, 'update'])->name('vip.edit_penimbangan');
 

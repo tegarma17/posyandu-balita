@@ -22,6 +22,23 @@
                 class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-6"
                 placeholder="Nama Balita">
         </div>
+        @if (session('error'))
+            <script>
+                Swal.fire({
+                    title: 'Gagal!',
+                    text: '{{ session('success') }}',
+                    icon: 'error'
+                });
+            </script>
+        @else
+            <script>
+                Swal.fire({
+                    title: 'Berhasil',
+                    text: '{{ session('success') }}',
+                    icon: 'success'
+                });
+            </script>
+        @endif
         <div class="relative overflow-x-auto mx-5 sm:rounded-lg">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class=" text-gray-700 uppercase dark:text-gray-400">
@@ -35,11 +52,10 @@
                         <th scope="col" class="px-6 py-3  dark:bg-gray-800">
                             Action
                         </th>
-
                     </tr>
                 </thead>
                 <tbody>
-                    @if ($jadwalPosyandu->selesai_posyandu >= now())
+                    @if ($cek <= $tanggal)
                         @foreach ($balita as $blt)
                             <tr class="border-b border-gray-200 dark:border-gray-700">
                                 <th scope="row"
@@ -60,7 +76,7 @@
                         <tr class="border-b border-gray-200 dark:border-gray-700">
                             <th scope="row"
                                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
-                                Belum ada jadwal Posyandu
+                                Belum tersedia
                             </th>
                         </tr>
                     @endif

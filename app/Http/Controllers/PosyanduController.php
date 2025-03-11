@@ -8,12 +8,13 @@ use App\Models\Posyandu;
 use App\Models\Kecamatan;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
+use App\Http\Requests\ValidasiData;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Crypt;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use App\Http\Controllers\TemplateExcelController;
-use App\Http\Requests\ValidasiData;
 
 class PosyanduController extends Controller
 {
@@ -105,8 +106,9 @@ class PosyanduController extends Controller
         return redirect()->route('psynd.index')->with('success', 'Posyandu Terhapus.');
     }
 
-    public function edit(string $id): View
+    public function edit($encryptedId)
     {
+        $id = Crypt::decrypt($encryptedId);
         $posyandu = Posyandu::find($id);
         $kecamatan = Kecamatan::all();
         $desa = Desa::where('kcmtn_id', $posyandu->kecamatan_id)->get();

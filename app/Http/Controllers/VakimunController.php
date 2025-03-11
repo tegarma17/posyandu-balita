@@ -15,16 +15,25 @@ use Illuminate\Support\Facades\Auth;
 
 class VakimunController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    private $userID;
+    private $NakesID;
+    private $jadwalPosyandu;
+    private $balita;
+
+    public function initData()
+    {
+
+        $this->userID = Auth::user()->id;
+        $this->NakesID = Nakes::where('user_id', $this->userID)->first();
+        $this->jadwalPosyandu = Jadwal::where('id_nakes', $this->NakesID->id)->first();
+        $this->balita = Balita::all();
+    }
     public function index()
     {
+        $this->initData();
         $title = 'Data Vaksin & Imunisasi Balita';
-        $UserID = Auth::user()->id;
-        $NakesID = Nakes::where('user_id', $UserID)->first();
-        $jadwalPosyandu = Jadwal::where('id_nakes', $NakesID->id)->first();
-        $balita = Balita::all();
+        $balita = $this->balita;
+        $jadwalPosyandu = $this->jadwalPosyandu;
 
         return view('vip.vakimunBalita', compact('title', 'balita', 'jadwalPosyandu'));
     }
@@ -34,23 +43,13 @@ class VakimunController extends Controller
      */
     public function create($id)
     {
-        $UserID = Auth::user()->id;
-        $NakesID = Nakes::where('user_id', $UserID)->first();
-        $jadwalPosyandu = Jadwal::where('id_nakes', $NakesID->id)->first();
+        $this->initData();
+        $balita = $this->balita;
+        $jadwalPosyandu = $this->jadwalPosyandu;
         $balita = Balita::where('id', $id)->first();
-        $usia = DB::table('balitas')
-            ->select(DB::raw('CEIL(TIMESTAMPDIFF(MONTH, tgl_lahir, CURDATE())) as usia'))
-            ->where('id', $balita->id)
-            ->first();
+        $usia = Balita::getBabyAge($balita->id);
         $vaksin = DB::table('imunivaks')->get();
-
-        $rekap = DB::table('vakimuns')
-            ->join('imunivaks', 'vakimuns.id_imunivak', '=', 'imunivaks.id')
-            ->join('balitas', 'vakimuns.id_balita', '=', 'balitas.id')
-            ->select('vakimuns.*', 'balitas.*', 'imunivaks.nama_vksn_imun as nama_imunivak')
-            ->where('balitas.id', '=', $balita->id)
-            ->get();
-        dump($rekap);
+        $rekap = Vakimun::rekapVakimun($balita->id);
         return view('vip.suntikimunivak', compact('jadwalPosyandu', 'usia', 'rekap', 'balita', 'vaksin'));
     }
 

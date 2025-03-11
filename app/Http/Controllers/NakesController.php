@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Crypt;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class NakesController extends Controller
@@ -113,9 +114,11 @@ class NakesController extends Controller
 
 
 
-    public function edit(string $id)
+    public function edit($encryptedId)
     {
+        $id = Crypt::decrypt($encryptedId);
         $nakes = Nakes::find($id);
+
         return view('editNakes', compact('nakes', 'id'));
     }
 

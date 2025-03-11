@@ -40,7 +40,10 @@
                     <select id="desa"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                         <option selected="">Pilih Desa</option>
-
+                        @foreach ($desa as $dsa)
+                            <option value="{{ $dsa->kd_desa }}" data-kecamatan="{{ $dsa->kd_kcmtn }}">
+                                {{ $dsa->nm_desa }}</option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="col-span-2">
@@ -49,7 +52,8 @@
                     <select id="posyandu" name="id_psynd"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                         @foreach ($posyandu as $psynd)
-                            <option value="{{ $psynd->id }}" {{ $jadwal->id_psynd == $psynd->id ? 'selected' : '' }}>
+                            <option value="{{ $psynd->id }}" data-desa="{{ $psynd->kd_desa }}"
+                                {{ $jadwal->id_psynd == $psynd->id ? 'selected' : '' }}>
                                 {{ $psynd->nm_psynd }}
                             </option>
                         @endforeach
@@ -116,10 +120,39 @@
 
     <script>
         $(document).ready(function() {
+            $('#kecamatan').change(function() {
+                var kcmtnID = $(this).val();
+                $('#output').text('Kode Kecamatan: ' + kcmtnID);
+                $('#desa option').each(function() {
+                    if ($(this).data('kecamatan') == kcmtnID || !kcmtnID) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+                $('#desa').val('Pilih Desa');
+            });
+        });
+        $(document).ready(function() {
             $('#nakes').select2();
         });
         $(document).ready(function() {
             $('#kader').select2();
+        });
+
+        $(document).ready(function() {
+            $('#desa').change(function() {
+                var desaID = $(this).val();
+                $('#output').text('Kode Desa: ' + desaID);
+                $('#posyandu option').each(function() {
+                    if ($(this).data('desa') == desaID || !desaID) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+                $('#posyandu').val('Pilih Posyandu');
+            });
         });
     </script>
 </x-main-admin>

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 
 class Balita extends Model
@@ -70,5 +71,21 @@ class Balita extends Model
             $number = $lastNumber + 1;
         }
         return 'BLT' . str_pad($number, 4, '0', STR_PAD_LEFT);
+    }
+
+    public static function getBabyAge($id)
+    {
+        return DB::table('balitas')
+            ->select(DB::raw('CEIL(TIMESTAMPDIFF(MONTH, tgl_lahir, CURDATE())) as usia'))
+            ->where('id', $id)
+            ->first();
+    }
+    public static function HealthWeight($id)
+    {
+        return self::join('penimbangans', 'penimbangans.id_balita', '=', 'balitas.id')
+            ->join('pengukurans', 'pengukurans.id_balita', '=', 'balitas.id')
+            ->select('balitas.*', 'penimbangans.*', 'pengukurans.*')
+            ->where('balitas.id', '=', $id)
+            ->get();
     }
 }

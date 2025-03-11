@@ -37,17 +37,10 @@
                         </div>
                     </div>
                 </div>
-                @if ($jadwal->jadwal_posyandu == now())
+                @if ($tanggal <= $selesaiPosyandu)
                     <div class="w-1/2 px-2 py-1 bg-green-500 text-white rounded-lg content-center">
-                        <h1 class="text-lg font-bold">Anda Memiliki jadwal Posyandu Hari ini
-                            <h3>{{ $dateFormat }}</h3>
-                            <h3>{{ $jadwal->posyandu->alamat }}</h3>
-                        </h1>
-                    </div>
-                @elseif ($jadwal->jadwal_posyandu > now())
-                    <div class="w-1/2 px-2 py-1 bg-yellow-500 text-white rounded-lg content-center">
-                        <h1 class="text-lg font-bold">Anda Memiliki jadwal Posyandu yang akan datang
-                            <h3>{{ $dateFormat }}</h3>
+                        <h1 class="text-lg font-bold">Anda Memiliki jadwal Posyandu
+                            <h3>{{ $mulai }} - {{ $selesai }}</h3>
                             <h3>{{ $jadwal->posyandu->alamat }}</h3>
                         </h1>
                     </div>

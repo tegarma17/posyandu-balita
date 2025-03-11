@@ -35,7 +35,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if ($jadwal == null)
+                    @if ($jadwal_posyandu == null)
                         <tr class="border-b border-gray-200 dark:border-gray-700">
                             <th scope="row"
                                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
@@ -54,29 +54,27 @@
                             </td>
                         </tr>
                     @else
-                        @foreach ($jadwal as $jdwl)
-                            <tr class="border-b border-gray-200 dark:border-gray-700">
-                                <th scope="row"
-                                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
-                                    {{ $jdwl->posyandu->nm_psynd }}
+                        <tr class="border-b border-gray-200 dark:border-gray-700">
+                            <th scope="row"
+                                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
+                                {{ $jadwal_posyandu->posyandu->nm_psynd }}
 
-                                </th>
-                                <td class="px-6 py-4">
-                                    {{ $jdwl->posyandu->desa->nm_desa }}
-                                </td>
-                                <td class="px-6 py-4">
-                                    {{ $jdwl->jadwal_posyandu }}
-                                </td>
-                                <td class="px-8 py-4 m-4 bg-gray-50 dark:bg-gray-800">
-                                    {{ $jdwl->posyandu->alamat }}
-                                </td>
-                                <td class="px-8 py-4 m-4 bg-gray-50 dark:bg-gray-800">
-                                    <a href="{{ route('jadwal.detail', $jdwl->id) }}"
-                                        class="py-1 px-3 bg-green-500 rounded-lg font-medium text-white dark:text-red-500 hover:underline">Detail
-                                        Jadwal</a>
-                                </td>
-                            </tr>
-                        @endforeach
+                            </th>
+                            <td class="px-6 py-4">
+                                {{ $jadwal_posyandu->posyandu->desa->nm_desa }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ $jadwal_posyandu->jadwal_posyandu }}
+                            </td>
+                            <td class="px-8 py-4 m-4 bg-gray-50 dark:bg-gray-800">
+                                {{ $jadwal_posyandu->posyandu->alamat }}
+                            </td>
+                            <td class="px-8 py-4 m-4 bg-gray-50 dark:bg-gray-800">
+                                <a href="{{ route('jadwal.detail', Crypt::encrypt($jadwal_posyandu->id)) }}"
+                                    class="py-1 px-3 bg-green-500 rounded-lg font-medium text-white dark:text-red-500 hover:underline">Detail
+                                    Jadwal</a>
+                            </td>
+                        </tr>
                     @endif
                 </tbody>
             </table>

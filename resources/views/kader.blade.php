@@ -128,7 +128,7 @@
                                         @method('DELETE')
                                         <button type="submit"
                                             class=" bg-red-500 py-3 px-6 rounded-lg dark:text-red-500 hover:underline transition duration-150 ease-in-out">Delete</button>
-                                        <a href="{{ route('kader.edit', $kader->id) }}"
+                                        <a href="{{ route('kader.edit', Crypt::encrypt($kader->id)) }}"
                                             class=" bg-yellow-400 py-3 px-6 mb-3 rounded-lg dark:text-red-500 hover:underline">Edit</a>
                                     </form>
                                 </div>

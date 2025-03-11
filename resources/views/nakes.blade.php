@@ -127,7 +127,7 @@
                                         @method('DELETE')
                                         <button
                                             class="bg-red-500 py-3 px-6 rounded-lg dark:text-red-500 hover:underline transition duration-150 ease-in-out">Delete</button>
-                                        <a href="{{ route('nakes.edit', $nks->id) }}"
+                                        <a href="{{ route('nakes.edit', Crypt::encrypt($nks->id)) }}"
                                             class="bg-yellow-400 py-3 px-6 mb-3 rounded-lg dark:text-red-500 hover:underline">Edit</a>
                                     </form>
                                 </div>

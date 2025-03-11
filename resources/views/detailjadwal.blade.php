@@ -16,13 +16,8 @@
                 Kembali
             </button></a>
         <h4 class="text-2xl font-bold text-center my-4">Detail Jadwal Posyandu</h4>
-
-
         <div class="container mx-auto py-8">
-
-
             <div class="bg-white shadow overflow-hidden sm:rounded-lg">
-
                 <div class="border-t border-gray-200">
                     <dl>
                         <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 ">

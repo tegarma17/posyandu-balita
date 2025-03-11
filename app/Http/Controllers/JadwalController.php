@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Desa;
 use App\Models\Kader;
 use App\Models\Nakes;
@@ -10,9 +11,11 @@ use App\Models\Jadwal;
 use App\Models\Antrian;
 use App\Models\Posyandu;
 use App\Models\Kecamatan;
-use Illuminate\Http\Request;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 
 class JadwalController extends Controller
 {
@@ -26,6 +29,13 @@ class JadwalController extends Controller
         $posyandu = Posyandu::all();
         $desa = Desa::all();
         $search = $request->input('search');
+        $tanggal_jadwal = Jadwal::select('jadwal_posyandu')
+            ->distinct()
+            ->orderBy('jadwal_posyandu', 'desc')
+            ->paginate(5)
+            ->fragment('std');
+
+        Carbon::setLocale('id');
         if (!empty($search)) {
             $jadwal = Jadwal::with('nakes')
                 ->whereHas('nakes', function ($query) use ($search) {
@@ -35,17 +45,75 @@ class JadwalController extends Controller
         } else {
             $jadwal = Jadwal::paginate(5)->fragment('std');
         }
+        $today = now()->toDateString();
+        $cek = Jadwal::whereDate('selesai_posyandu', $today)->first();
 
-        $assignedNakesIds = Jadwal::pluck('id_nakes')->toArray();
-        $nakes = Nakes::whereHas('user.role', function ($query) {
-            $query->where('nama_role', 'Tenaga Kesehatan');
-        })->whereNotIn('id', $assignedNakesIds)->get();
+        if ($cek == null) {
+            $assignedNakesIds = Jadwal::pluck('id_nakes')->toArray();
+            $nakes = Nakes::whereHas('user.role', function ($query) {
+                $query->where('nama_role', 'Tenaga Kesehatan');
+            })->get();
 
-        $assignedKaderIds = Jadwal::pluck('id_nakes')->toArray();
-        $kader = Kader::whereHas('user.role', function ($query) {
-            $query->where('nama_role', 'Kader Posyandu');
-        })->whereNotIn('id', $assignedKaderIds)->get();
-        return view('jadwal', compact('title', 'kecamatan', 'desa', 'posyandu', 'nakes', 'kader', 'jadwal'));
+            $assignedKaderIds = Jadwal::pluck('id_nakes')->toArray();
+            $kader = Kader::whereHas('user.role', function ($query) {
+                $query->where('nama_role', 'Kader Posyandu');
+            })->get();
+        } else {
+            $assignedNakesIds = Jadwal::pluck('id_nakes')->toArray();
+            $nakes = Nakes::whereHas('user.role', function ($query) {
+                $query->where('nama_role', 'Tenaga Kesehatan');
+            })->whereNotIn('id', $assignedNakesIds)->get();
+
+            $assignedKaderIds = Jadwal::pluck('id_nakes')->toArray();
+            $kader = Kader::whereHas('user.role', function ($query) {
+                $query->where('nama_role', 'Kader Posyandu');
+            })->whereNotIn('id', $assignedKaderIds)->get();
+        }
+        return view('jadwal', compact('title', 'kecamatan', 'desa', 'posyandu', 'nakes', 'kader', 'jadwal', 'tanggal_jadwal'));
+    }
+
+    public function detailJadwal($encryptedId)
+    {
+        $id = Crypt::decrypt($encryptedId);
+        $title = 'Jadwal Posyandu';
+        $coba = Jadwal::select('id_psynd')
+            ->where('jadwal_posyandu', $id)
+            ->distinct()
+            ->paginate(5)->fragment('std');
+        foreach ($coba as $cba) {
+            $cek = Jadwal::where('jadwal_posyandu', $id)
+                ->where('id_psynd', $cba->id_psynd)->first();
+        }
+        return view('admin.detailJadwal', compact('coba', 'title', 'cek'));
+    }
+
+
+    public function updateByJadwal(Request $request)
+    {
+
+        $selesai = $request->input('selesai_posyandu');
+        $idPosyandu = $request->input('id_psynd');
+        $dataToUpdate = $request->only('jadwal_posyandu');
+        $today = now()->toDateString();
+
+        if ($today > $selesai) {
+            return redirect()->route('jadwal.index')->with('error', 'Posyandu Sudah dilakukan');
+        } else {
+            DB::table('jadwals')
+                ->where('id_psynd', $idPosyandu)
+                ->update($dataToUpdate);
+            return redirect()->route('jadwal.index')->with('success', 'Data berhasil diperbarui!');
+        }
+    }
+
+    public function detailPetugas($encryptedId)
+    {
+        $id = Crypt::decrypt($encryptedId);
+        $title = 'Jadwal Posyandu';
+        $coba = Jadwal::where('id_psynd', $id)
+            ->paginate(5)->fragment('std');
+
+        return view('admin.detailPetugas', compact('coba', 'title'));
     }
 
     public function showNksKdr()
@@ -54,15 +122,20 @@ class JadwalController extends Controller
         $id = Auth::user()->id;
         $cek = Nakes::where('user_id', $id)->first();
 
-        $jadwal = Jadwal::where('id_nakes', $cek->id)->first('jadwal_posyandu');
-        if ($jadwal->jadwal_posyandu == now()) {
-            $jadwal = Jadwal::where('id_nakes', $cek->id)->get();
+        $jadwal_posyandu = Jadwal::where('id_nakes', $cek->id)
+            ->orderBy('selesai_posyandu', 'desc')->first();
+        $coba = now()->format('m-d');
+        $selesaiPosyandu = \Carbon\Carbon::parse($jadwal_posyandu->selesai_posyandu)->format('m-d');
+        if ($selesaiPosyandu == $coba) {
+            $jadwal_posyandu = Jadwal::where('id_nakes', $cek->id)
+                ->orderBy('selesai_posyandu', 'desc')->first();
         } else {
-            $jadwal = null;
+            $jadwal_posyandu = null;
         }
 
+
         $title = 'Jadwal Posyandu';
-        return view('nakes.jadwal', compact('title', 'jadwal'));
+        return view('nakes.jadwal', compact('title', 'jadwal_posyandu', 'selesaiPosyandu'));
     }
 
     public function showJadwal()
@@ -116,8 +189,9 @@ class JadwalController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($encryptedId)
     {
+        $id = Crypt::decrypt($encryptedId);
         $ambilJadwal = Jadwal::findOrFail($id);
         $dateFormat = \Carbon\Carbon::parse($ambilJadwal['jadwal_posyandu'])->locale('id')->isoFormat('dddd, MMMM Do YYYY, HH:mm');
         $dateFormat2 = \Carbon\Carbon::parse($ambilJadwal['selesai_posyandu'])->locale('id')->isoFormat('dddd, MMMM Do YYYY, HH:mm');
@@ -141,8 +215,9 @@ class JadwalController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($encryptedId)
     {
+        $id = Crypt::decrypt($encryptedId);
         $jadwal = Jadwal::find($id);
         $kecamatan = Kecamatan::all();
         $posyandu = Posyandu::all();

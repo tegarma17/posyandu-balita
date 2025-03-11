@@ -10,6 +10,7 @@ use App\Models\Kecamatan;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Crypt;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
 
@@ -168,14 +169,15 @@ class BalitaController extends Controller
         return redirect()->route('balita.index')->with('success', 'Data Balita berhasil diimport');
     }
 
-    public function edit(string $id)
+    public function edit($encryptedId)
     {
+        $id = Crypt::decrypt($encryptedId);
         $balita = Balita::find($id);
         $title = 'Edit Data Balita';
         $ktkbp = Ktkbp::all();
         $kcmtn = Kecamatan::all();
         $desa = Desa::all();
-        return view('editBalita', compact('balita', 'title', 'ktkbp', 'kcmtn', 'desa'));
+        return view('editBalita', compact('balita', 'title', 'ktkbp', 'kcmtn', 'desa', 'id'));
     }
 
     /**

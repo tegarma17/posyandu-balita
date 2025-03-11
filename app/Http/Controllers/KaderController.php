@@ -6,10 +6,11 @@ use App\Models\User;
 use App\Models\Kader;
 use App\Models\Nakes;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-use PhpOffice\PhpSpreadsheet\IOFactory;
-
 use function PHPSTORM_META\map;
+use Illuminate\Support\Facades\Log;
+
+use Illuminate\Support\Facades\Crypt;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class KaderController extends Controller
 {
@@ -107,8 +108,9 @@ class KaderController extends Controller
 
         return redirect()->route('kader.index')->with('success', 'Data Kader berhasil diimport');
     }
-    public function edit(string $id)
+    public function edit($encryptedId)
     {
+        $id = Crypt::decrypt($encryptedId);
         $kader = Nakes::find($id);
         return view('editKader', compact('kader', 'id'));
     }
