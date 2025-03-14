@@ -2,20 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use PDO;
 use DateTime;
 use App\Models\Nakes;
+use App\Models\WhoBB;
+use App\Models\WhoTB;
 use App\Models\Balita;
 use App\Models\Jadwal;
 use App\Models\Antrian;
 use App\Models\Pengukuran;
 use App\Models\Penimbangan;
-use App\Models\WhoBB;
-use App\Models\WhoTB;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use PDO;
+use Illuminate\Support\Facades\Crypt;
 
 class PenimbanganController extends Controller
 {
@@ -47,18 +49,24 @@ class PenimbanganController extends Controller
         $balita = $this->balita;
         $tanggal = $this->jadwal;
         $cek = $this->tanggal;
+
         return view('vip.penimbangan', compact('title', 'balita',  'cek', 'tanggal'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create($id)
+    public function create($baby_name, $encryptedId)
     {
+        $id = Crypt::decrypt($encryptedId);
         $this->initData();
         $balita = $this->balita;
         $jadwalPosyandu = $this->jadwalPosyandu;
         $balita = Balita::where('id', $id)->first();
+        if (Str::slug($balita->nama) !== $baby_name) {
+            abort(404, 'Nama balita tidak sesuai.');
+        }
+
         if ($balita == null) {
             return redirect()->route('penimbangan.index')->with('success', 'Data balita tidak ada.');
         }
@@ -75,7 +83,9 @@ class PenimbanganController extends Controller
             $usia = Balita::getBabyAge($id);
             $rekap = Balita::HealthWeight($id);
         }
+
         return view('vip.tambahPenimbangan', compact('jadwalPosyandu', 'usia', 'rekap', 'balita', 'edit', 'jadwal', 'editTB'));
+
         if ($edit->tanggal_penimbangan !== $this->tanggal) {
             return redirect()->route('penimbangan.index')->with('error', 'Halaman tidak dapat diakses silahkan hubungi admin terkait.');
         }
@@ -145,8 +155,6 @@ class PenimbanganController extends Controller
             'created_at' => now(),
             'updated_at' => now(),
         ];
-
-
         session(['input_bb' => $bb, 'input_tb' => $tb]);
         return redirect()->route('penimbangan.detailMeasurement');
     }
@@ -183,19 +191,17 @@ class PenimbanganController extends Controller
         if (empty($inputBb) || empty($inputTb)) {
             return redirect()->back()->with('error', 'Data tidak ditemukan! Harap isi ulang form.');
         }
-
-
-        // Pengukuran::create([
-        //     'id_jadwal' => $inputTb['id_jadwal'],
-        //     'id_balita' => $inputTb['id_balita'],
-        //     'tinggi_badan' => $inputTb['tinggi_badan'],
-        //     'tanggal_pengukuran' => $inputTb['tanggal_pengukuran'],
-        //     'status_gizi' => $inputTb['status_gizi'],
-        //     'usia' => $inputTb['usia'],
-        //     'saran' => $inputTb['saran'],
-        //     'created_at' => $inputTb['created_at'],
-        //     'updated_at' => $inputTb['updated_at'],
-        // ]);
+        Pengukuran::create([
+            'id_jadwal' => $inputTb['id_jadwal'],
+            'id_balita' => $inputTb['id_balita'],
+            'tinggi_badan' => $inputTb['tinggi_badan'],
+            'tanggal_pengukuran' => $inputTb['tanggal_pengukuran'],
+            'status_gizi' => $inputTb['status_gizi'],
+            'usia' => $inputTb['usia'],
+            'saran' => $inputTb['saran'],
+            'created_at' => $inputTb['created_at'],
+            'updated_at' => $inputTb['updated_at'],
+        ]);
         Penimbangan::create([
             'id_jadwal' => $inputBb['id_jadwal'],
             'id_balita' => $inputBb['id_balita'],

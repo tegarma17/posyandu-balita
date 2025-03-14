@@ -22,20 +22,12 @@
                 class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-6"
                 placeholder="Nama Balita">
         </div>
-        @if (session('error'))
+        @if (session('error') || session('success'))
             <script>
                 Swal.fire({
-                    title: 'Gagal!',
-                    text: '{{ session('success') }}',
-                    icon: 'error'
-                });
-            </script>
-        @else
-            <script>
-                Swal.fire({
-                    title: 'Berhasil',
-                    text: '{{ session('success') }}',
-                    icon: 'success'
+                    title: '{{ session('error') ? 'Error!' : 'Success!' }}',
+                    text: '{{ session('error') ?? session('success') }}',
+                    icon: '{{ session('error') ? 'error' : 'success' }}'
                 });
             </script>
         @endif
@@ -67,7 +59,7 @@
                                 </td>
                                 <td
                                     class="flex flex-col md:flex-row md:space-x-2 space-y-2 md:space-y-0 px-6 py-4 bg-gray-50 dark:bg-gray-800">
-                                    <a href="{{ route('vip.penimbangan', $blt->id) }}"
+                                    <a href="{{ route('vip.penimbangan', ['baby_name' => Str::slug($blt->nama), 'id' => Crypt::encrypt($blt->id)]) }}"
                                         class="px-3 py-1 bg-emerald-500 rounded-lg font-medium text-white dark:text-red-500 hover:underline">Penimbangan</a>
                                 </td>
                             </tr>

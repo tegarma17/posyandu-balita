@@ -11,7 +11,7 @@
             <li class="text-gray-600 mr-2 font-semibold">/</li>
             <li class="text-gray-600 mr-2 font-semibold">Input Vaksin & Imunsisasi Balita</li>
         </ul>
-        <a href="{{ route('penimbangan.index') }}"><button
+        <a href="{{ route('vakimun.index') }}"><button
                 class="mx-4  bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded-lg">
                 Kembali
             </button></a>
@@ -80,12 +80,11 @@
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                     placeholder="">
                             </div>
-
                             <div class="col-span-2 sm:col-span-1">
                                 <label for="price"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Usia
                                     (Bulan)</label>
-                                <input id="hasil "type="text" name="usia" disabled
+                                <input id="hasil "type="text" name="usia"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                     placeholder="" value="{{ $usia->usia }}">
                             </div>
@@ -93,7 +92,7 @@
                                 <label for="category"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jenis
                                     Vaksin/Imunisasi</label>
-                                <select name="id_imunivak"
+                                <select id="imunivak" name="id_imunivak"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                     <option value=""></option>
                                     @foreach ($vaksin as $vksin)
@@ -117,103 +116,60 @@
             </div>
             <p class=" font-bold mx-4 my-4">Data Vaksin/Imunisasi Balita {{ $balita->nama }}
             </p>
-            @if ($rekap == null)
-                <div class="relative overflow-x-auto mx-5 sm:rounded-lg">
-                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                        <thead class=" text-gray-700 uppercase dark:text-gray-400">
-                            <tr class="bg-green-700 text-white font-semibold">
-                                <th scope="col" class="px-6 py-3  dark:bg-gray-800">
-                                    Nama Balita
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Tgl Penimbangan
-                                </th>
-                                <th scope="col" class="px-6 py-3  dark:bg-gray-800">
-                                    Usia
-                                </th>
-
-                                <th scope="col" class="px-6 py-3  dark:bg-gray-800">
-                                    Berat Badan
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Ket
-                                </th>
-                                <th scope="col" class="px-6 py-3  dark:bg-gray-800">
-                                    Status Gizi
-                                </th>
-                                <th scope="col" class="px-6 py-3  dark:bg-gray-800">
-                                    Saran
-                                </th>
-                                <th scope="col" class="px-6 py-3  dark:bg-gray-800">
-                                    Action
-                                </th>
-
-                            </tr>
-                        </thead>
-                        <tbody>
+            <div class="relative overflow-x-auto mx-5 sm:rounded-lg">
+                <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <thead class=" text-gray-700 uppercase dark:text-gray-400">
+                        <tr class="bg-green-700 text-white font-semibold">
+                            <th scope="col" class="px-6 py-3">
+                                Tgl Imunisasi / Vaksin
+                            </th>
+                            <th scope="col" class="px-6 py-3  dark:bg-gray-800">
+                                Usia
+                            </th>
+                            <th scope="col" class="px-6 py-3  dark:bg-gray-800">
+                                Jenis Vaksin / Imunisasi
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if ($rekap == null)
                             <tr class="border-b border-gray-200 dark:border-gray-700 ">
                                 <th scope="row"
                                     class="px-6 py-4 font-medium  text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
-
+                                    Belum Ada data
+                                </th>
+                                <th scope="row"
+                                    class="px-6 py-4 font-medium  text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
+                                    Belum Ada data
                                 </th>
                                 <td class="px-6 py-4">
-                                    Belum Ada rekap penimbangan
+                                    Belum Ada data
                                 </td>
                             </tr>
-                        </tbody>
-                    </table>
-                </div>
-            @else
-                <div class="relative overflow-x-auto mx-5 sm:rounded-lg">
-                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                        <thead class=" text-gray-700 uppercase dark:text-gray-400">
-                            <tr class="bg-green-700 text-white font-semibold">
-                                <th scope="col" class="px-6 py-3  dark:bg-gray-800">
-                                    Nama Balita
-                                </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Tgl Imunisasi / Vakin
-                                </th>
-                                <th scope="col" class="px-6 py-3  dark:bg-gray-800">
-                                    Usia ( Bulan)
-                                </th>
-
-                                <th scope="col" class="px-6 py-3  dark:bg-gray-800">
-                                    Jenis Vaksin/Imunisasi
-                                </th>
-                                <th scope="col" class="px-6 py-3  dark:bg-gray-800">
-                                    Action
-                                </th>
-
-                            </tr>
-                        </thead>
-                        <tbody>
+                        @else
                             @foreach ($rekap as $hasil)
                                 <tr class="border-b border-gray-200 dark:border-gray-700">
                                     <th scope="row"
                                         class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
-                                        {{ $hasil->nama }}
+                                        {{ $hasil->tanggal_imunivak }}
                                     </th>
                                     <td class="px-6 py-4">
-                                        {{ $hasil->tanggal_imunivak }}
-                                    </td>
-                                    <th scope="row"
-                                        class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
                                         {{ $hasil->usia }}
-                                    </th>
+                                    </td>
                                     <td class="px-6 py-4">
                                         {{ $hasil->nama_imunivak }}
                                     </td>
-                                    <td
-                                        class="flex flex-col md:flex-row md:space-x-2 space-y-2 md:space-y-0 px-6 py-4 bg-gray-50 dark:bg-gray-800">
-                                        <a href=""
-                                            class="px-3 py-1 bg-yellow-400 rounded-lg font-medium text-white dark:text-red-500 hover:underline">Edit</a>
-                                    </td>
+
                                 </tr>
                             @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            @endif
+                        @endif
+                    </tbody>
+                </table>
+            </div>
         </div>
+        <script>
+            $(document).ready(function() {
+                $('#imunivak').select2();
+            });
+        </script>
 </x-main-admin>

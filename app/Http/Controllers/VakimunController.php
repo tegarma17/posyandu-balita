@@ -25,7 +25,7 @@ class VakimunController extends Controller
 
         $this->userID = Auth::user()->id;
         $this->NakesID = Nakes::where('user_id', $this->userID)->first();
-        $this->jadwalPosyandu = Jadwal::where('id_nakes', $this->NakesID->id)->first();
+        $this->jadwalPosyandu = Jadwal::where('id_nakes', $this->NakesID->id)->orderBy('selesai_posyandu', 'desc')->first();
         $this->balita = Balita::all();
     }
     public function index()
@@ -49,7 +49,12 @@ class VakimunController extends Controller
         $balita = Balita::where('id', $id)->first();
         $usia = Balita::getBabyAge($balita->id);
         $vaksin = DB::table('imunivaks')->get();
-        $rekap = Vakimun::rekapVakimun($balita->id);
+        $rekap = Vakimun::rekapVakimun($id);
+
+        if ($rekap->isEmpty()) {
+            $rekap = null; // Atur ke null jika kosong
+        }
+
         return view('vip.suntikimunivak', compact('jadwalPosyandu', 'usia', 'rekap', 'balita', 'vaksin'));
     }
 
@@ -61,6 +66,7 @@ class VakimunController extends Controller
         $idJadwal = $request->input('id_jadwal');
         $idBalita = $request->input('id_balita');
         $usia = $request->input('usia');
+
         $data = [
             'id_jadwal' => $idJadwal,
             'id_balita' => $idBalita,

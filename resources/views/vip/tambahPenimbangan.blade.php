@@ -316,9 +316,7 @@
                                 <th scope="col" class="px-6 py-3  dark:bg-gray-800">
                                     Status Gizi
                                 </th>
-                                <th scope="col" class="px-6 py-3  dark:bg-gray-800">
-                                    Action
-                                </th>
+
                             </tr>
                         </thead>
                         <tbody>
@@ -342,15 +340,9 @@
                                     </td>
                                     <th scope="row"
                                         class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
-                                        {{ $hasil_penimbangan->status_gizi }}
+                                        BB / TB aka Belum Kelar
                                     </th>
-                                    <td class="px-6 py-4">
-                                        <a
-                                            class="py-1 px-3  bg-yellow-400 rounded-lg text-xs md:text-sm md:font-medium text-white dark:text-red-500 hover:underline"><button
-                                                class="fas fa-edit"></i>
-                                            </button>
-                                        </a>
-                                    </td>
+
                                 </tr>
                             @endforeach
                         </tbody>

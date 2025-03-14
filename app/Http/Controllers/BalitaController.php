@@ -8,6 +8,7 @@ use App\Models\Ktkbp;
 use App\Models\Balita;
 use App\Models\Kecamatan;
 
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Crypt;
@@ -169,10 +170,13 @@ class BalitaController extends Controller
         return redirect()->route('balita.index')->with('success', 'Data Balita berhasil diimport');
     }
 
-    public function edit($encryptedId)
+    public function edit($nama_balita, $encryptedId)
     {
         $id = Crypt::decrypt($encryptedId);
         $balita = Balita::find($id);
+        if (Str::slug($balita->nama) !== $nama_balita) {
+            abort(404, 'Nama balita tidak sesuai.');
+        }
         $title = 'Edit Data Balita';
         $ktkbp = Ktkbp::all();
         $kcmtn = Kecamatan::all();

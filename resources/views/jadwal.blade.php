@@ -13,12 +13,12 @@
             Buat Jadwal
         </button>
 
-        @if (session('success'))
+        @if (session('error') || session('success'))
             <script>
                 Swal.fire({
-                    title: 'Success!',
-                    text: '{{ session('success') }}',
-                    icon: 'success'
+                    title: '{{ session('error') ? 'Error!' : 'Success!' }}', // Ganti title berdasarkan session
+                    text: '{{ session('error') ?? session('success') }}', // Tampilkan pesan dari session
+                    icon: '{{ session('error') ? 'error' : 'success' }}' // Ganti ikon berdasarkan jenis pesan
                 });
             </script>
         @endif

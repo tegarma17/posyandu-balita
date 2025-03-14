@@ -22,13 +22,13 @@ class JadwalController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
         $title = 'Jadwal Posyandu';
         $kecamatan = Kecamatan::all();
         $posyandu = Posyandu::all();
         $desa = Desa::all();
-        $search = $request->input('search');
+
         $tanggal_jadwal = Jadwal::select('jadwal_posyandu')
             ->distinct()
             ->orderBy('jadwal_posyandu', 'desc')
@@ -36,15 +36,7 @@ class JadwalController extends Controller
             ->fragment('std');
 
         Carbon::setLocale('id');
-        if (!empty($search)) {
-            $jadwal = Jadwal::with('nakes')
-                ->whereHas('nakes', function ($query) use ($search) {
-                    $query->where('nama', 'like', '%' . $search . '%');
-                })
-                ->paginate(5)->fragment('std');
-        } else {
-            $jadwal = Jadwal::paginate(5)->fragment('std');
-        }
+
         $today = now()->toDateString();
         $cek = Jadwal::whereDate('selesai_posyandu', $today)->first();
 
@@ -69,31 +61,44 @@ class JadwalController extends Controller
                 $query->where('nama_role', 'Kader Posyandu');
             })->whereNotIn('id', $assignedKaderIds)->get();
         }
-        return view('jadwal', compact('title', 'kecamatan', 'desa', 'posyandu', 'nakes', 'kader', 'jadwal', 'tanggal_jadwal'));
+        return view('jadwal', compact('title', 'kecamatan', 'desa', 'posyandu', 'nakes', 'kader', 'tanggal_jadwal'));
     }
 
     public function detailJadwal($encryptedId)
     {
         $id = Crypt::decrypt($encryptedId);
         $title = 'Jadwal Posyandu';
-        $coba = Jadwal::select('id_psynd')
+        $jadwalData = Jadwal::select('id_psynd', 'jadwal_posyandu')
             ->where('jadwal_posyandu', $id)
             ->distinct()
-            ->paginate(5)->fragment('std');
-        foreach ($coba as $cba) {
-            $cek = Jadwal::where('jadwal_posyandu', $id)
-                ->where('id_psynd', $cba->id_psynd)->first();
-        }
-        return view('admin.detailJadwal', compact('coba', 'title', 'cek'));
+            ->get();
+        return view('admin.detailJadwal', compact('jadwalData', 'title'));
     }
+    public function detailPetugas($jadwal_posyandu, $id_psynd)
+    {
+        $title = 'Jadwal Posyandu';
+        $tanggalSpesifik = Jadwal::select('id_psynd', 'jadwal_posyandu')
+            ->where('id_psynd', $id_psynd)
+            ->where('jadwal_posyandu', $jadwal_posyandu)
+            ->first();
 
+        $coba = Jadwal::where('id_psynd', $tanggalSpesifik->id_psynd)
+            ->where('jadwal_posyandu', $tanggalSpesifik->jadwal_posyandu)
+            ->get();
+
+        return view('admin.detailPetugas', compact('coba', 'title'));
+    }
 
     public function updateByJadwal(Request $request)
     {
 
         $selesai = $request->input('selesai_posyandu');
         $idPosyandu = $request->input('id_psynd');
-        $dataToUpdate = $request->only('jadwal_posyandu');
+        $data = [
+            'jadwal_posyandu' => Carbon::parse($request->input('jadwal_posyandu'))->format('Y-m-d H:i'),
+            'selesai_posyandu' => Carbon::parse($request->input('selesai_posyandu'))->format('Y-m-d H:i'),
+        ];
+
         $today = now()->toDateString();
 
         if ($today > $selesai) {
@@ -101,20 +106,12 @@ class JadwalController extends Controller
         } else {
             DB::table('jadwals')
                 ->where('id_psynd', $idPosyandu)
-                ->update($dataToUpdate);
+                ->update($data);
             return redirect()->route('jadwal.index')->with('success', 'Data berhasil diperbarui!');
         }
     }
 
-    public function detailPetugas($encryptedId)
-    {
-        $id = Crypt::decrypt($encryptedId);
-        $title = 'Jadwal Posyandu';
-        $coba = Jadwal::where('id_psynd', $id)
-            ->paginate(5)->fragment('std');
 
-        return view('admin.detailPetugas', compact('coba', 'title'));
-    }
 
     public function showNksKdr()
     {
@@ -124,16 +121,15 @@ class JadwalController extends Controller
 
         $jadwal_posyandu = Jadwal::where('id_nakes', $cek->id)
             ->orderBy('selesai_posyandu', 'desc')->first();
-        $coba = now()->format('m-d');
+
+        $jadwal = now()->format('m-d');
         $selesaiPosyandu = \Carbon\Carbon::parse($jadwal_posyandu->selesai_posyandu)->format('m-d');
-        if ($selesaiPosyandu == $coba) {
+        if ($jadwal <= $selesaiPosyandu) {
             $jadwal_posyandu = Jadwal::where('id_nakes', $cek->id)
                 ->orderBy('selesai_posyandu', 'desc')->first();
         } else {
             $jadwal_posyandu = null;
         }
-
-
         $title = 'Jadwal Posyandu';
         return view('nakes.jadwal', compact('title', 'jadwal_posyandu', 'selesaiPosyandu'));
     }
@@ -193,21 +189,27 @@ class JadwalController extends Controller
     {
         $id = Crypt::decrypt($encryptedId);
         $ambilJadwal = Jadwal::findOrFail($id);
+        dump($ambilJadwal);
         $dateFormat = \Carbon\Carbon::parse($ambilJadwal['jadwal_posyandu'])->locale('id')->isoFormat('dddd, MMMM Do YYYY, HH:mm');
         $dateFormat2 = \Carbon\Carbon::parse($ambilJadwal['selesai_posyandu'])->locale('id')->isoFormat('dddd, MMMM Do YYYY, HH:mm');
+        dump($ambilJadwal);
 
         $nakes = Jadwal::where('id_psynd', $ambilJadwal->id_psynd)
+            ->where('selesai_posyandu', $ambilJadwal->selesai_posyandu)
             ->whereHas('nakes.user.role', function ($query) {
                 $query->where('nama_role', 'Tenaga Kesehatan');
             })
             ->with(['nakes.user.role'])
             ->get();
+
         $kader = Jadwal::where('id_psynd', $ambilJadwal->id_psynd)
+            ->where('selesai_posyandu', $ambilJadwal->selesai_posyandu)
             ->whereHas('nakes.user.role', function ($query) {
                 $query->where('nama_role', 'Kader Posyandu');
             })
             ->with(['nakes.user.role'])
             ->get();
+
         $title = 'Jadwal Posyandu';
         return view('detailjadwal', compact('id', 'title', 'ambilJadwal', 'nakes', 'kader', 'dateFormat', 'dateFormat2'));
     }
