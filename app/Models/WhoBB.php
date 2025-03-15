@@ -7,5 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 class WhoBB extends Model
 {
     protected $table = 'whobb';
-    protected $fillable = ['usia', 'mean_bb', 'std_dev'];
+    protected $fillable = ['jk', 'usia', 'mean_bb', 'std_dev'];
 }

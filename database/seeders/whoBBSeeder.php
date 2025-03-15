@@ -14,9 +14,8 @@ class whoBBSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('whobb')->insert([
-
-            ['usia' => '0', 'jk' => 'l', 'mean_bb' => '3.3', 'std_dev' => '0,55', 'created_at' => now(), 'updated_at' => now()],
+        $data = [
+            ['usia' => '0', 'jk' => 'l', 'mean_bb' => '3.3', 'std_dev' => '0.55', 'created_at' => now(), 'updated_at' => now()],
             ['usia' => '1', 'jk' => 'l', 'mean_bb' => '4.5', 'std_dev' => '0.65', 'created_at' => now(), 'updated_at' => now()],
             ['usia' => '2', 'jk' => 'l', 'mean_bb' => '5.6', 'std_dev' => '0.75', 'created_at' => now(), 'updated_at' => now()],
             ['usia' => '3', 'jk' => 'l', 'mean_bb' => '6.4', 'std_dev' => '0.8', 'created_at' => now(), 'updated_at' => now()],
@@ -24,8 +23,8 @@ class whoBBSeeder extends Seeder
             ['usia' => '5', 'jk' => 'l', 'mean_bb' => '7.5', 'std_dev' => '0.9', 'created_at' => now(), 'updated_at' => now()],
             ['usia' => '6', 'jk' => 'l', 'mean_bb' => '7.9', 'std_dev' => '0.95', 'created_at' => now(), 'updated_at' => now()],
             ['usia' => '7', 'jk' => 'l', 'mean_bb' => '8.3', 'std_dev' => '1.0', 'created_at' => now(), 'updated_at' => now()],
-            ['usia' => '8', 'jk' => 'l', 'mean_bb' => '8.6', 'std_dev' => '1,05', 'created_at' => now(), 'updated_at' => now()],
-            ['usia' => '9', 'jk' => 'l', 'mean_bb' => '8.9', 'std_dev' => '1,05', 'created_at' => now(), 'updated_at' => now()],
+            ['usia' => '8', 'jk' => 'l', 'mean_bb' => '8.6', 'std_dev' => '1.05', 'created_at' => now(), 'updated_at' => now()],
+            ['usia' => '9', 'jk' => 'l', 'mean_bb' => '8.9', 'std_dev' => '1.05', 'created_at' => now(), 'updated_at' => now()],
             ['usia' => '10', 'jk' => 'l', 'mean_bb' => '9.2', 'std_dev' => '1.1', 'created_at' => now(), 'updated_at' => now()],
             ['usia' => '11', 'jk' => 'l', 'mean_bb' => '9.4', 'std_dev' => '1.15', 'created_at' => now(), 'updated_at' => now()],
             ['usia' => '12', 'jk' => 'l', 'mean_bb' => '9.6', 'std_dev' => '1.2', 'created_at' => now(), 'updated_at' => now()],
@@ -77,9 +76,7 @@ class whoBBSeeder extends Seeder
             ['usia' => '58', 'jk' => 'l', 'mean_bb' => '18.0', 'std_dev' => '2.85', 'created_at' => now(), 'updated_at' => now()],
             ['usia' => '59', 'jk' => 'l', 'mean_bb' => '18.2', 'std_dev' => '2.85', 'created_at' => now(), 'updated_at' => now()],
             ['usia' => '60', 'jk' => 'l', 'mean_bb' => '18.3', 'std_dev' => '2.95', 'created_at' => now(), 'updated_at' => now()],
-
-
-            ['usia' => '0', 'jk' => 'p', 'mean_bb' => '3.2', 'std_dev' => '0,5', 'created_at' => now(), 'updated_at' => now()],
+            ['usia' => '0', 'jk' => 'p', 'mean_bb' => '3.2', 'std_dev' => '0.5', 'created_at' => now(), 'updated_at' => now()],
             ['usia' => '1', 'jk' => 'p', 'mean_bb' => '4.2', 'std_dev' => '0.65', 'created_at' => now(), 'updated_at' => now()],
             ['usia' => '2', 'jk' => 'p', 'mean_bb' => '5.1', 'std_dev' => '0.75', 'created_at' => now(), 'updated_at' => now()],
             ['usia' => '3', 'jk' => 'p', 'mean_bb' => '5.8', 'std_dev' => '0.85', 'created_at' => now(), 'updated_at' => now()],
@@ -87,8 +84,8 @@ class whoBBSeeder extends Seeder
             ['usia' => '5', 'jk' => 'p', 'mean_bb' => '6.9', 'std_dev' => '0.95', 'created_at' => now(), 'updated_at' => now()],
             ['usia' => '6', 'jk' => 'p', 'mean_bb' => '7.3', 'std_dev' => '1.0', 'created_at' => now(), 'updated_at' => now()],
             ['usia' => '7', 'jk' => 'p', 'mean_bb' => '7.6', 'std_dev' => '1.1', 'created_at' => now(), 'updated_at' => now()],
-            ['usia' => '8', 'jk' => 'p', 'mean_bb' => '7.9', 'std_dev' => '1,15', 'created_at' => now(), 'updated_at' => now()],
-            ['usia' => '9', 'jk' => 'p', 'mean_bb' => '8.2', 'std_dev' => '1,15', 'created_at' => now(), 'updated_at' => now()],
+            ['usia' => '8', 'jk' => 'p', 'mean_bb' => '7.9', 'std_dev' => '1.15', 'created_at' => now(), 'updated_at' => now()],
+            ['usia' => '9', 'jk' => 'p', 'mean_bb' => '8.2', 'std_dev' => '1.15', 'created_at' => now(), 'updated_at' => now()],
             ['usia' => '10', 'jk' => 'p', 'mean_bb' => '8.5', 'std_dev' => '1.2', 'created_at' => now(), 'updated_at' => now()],
             ['usia' => '11', 'jk' => 'p', 'mean_bb' => '8.7', 'std_dev' => '1.25', 'created_at' => now(), 'updated_at' => now()],
             ['usia' => '12', 'jk' => 'p', 'mean_bb' => '8.9', 'std_dev' => '1.3', 'created_at' => now(), 'updated_at' => now()],
@@ -140,8 +137,7 @@ class whoBBSeeder extends Seeder
             ['usia' => '58', 'jk' => 'p', 'mean_bb' => '17.9', 'std_dev' => '3.25', 'created_at' => now(), 'updated_at' => now()],
             ['usia' => '59', 'jk' => 'p', 'mean_bb' => '18.0', 'std_dev' => '3.3', 'created_at' => now(), 'updated_at' => now()],
             ['usia' => '60', 'jk' => 'p', 'mean_bb' => '18.2', 'std_dev' => '3.35', 'created_at' => now(), 'updated_at' => now()],
-
-
-        ]);
+        ];
+        DB::table('whobb')->insert($data);
     }
 }

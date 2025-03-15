@@ -11,12 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('posyandu', function (Blueprint $table) {
+        Schema::create('roles', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('desa_id')->constrained('desa')->onDelete('cascade');
-            $table->string('kd_psynd', 15);
-            $table->string('nama', 50);
-            $table->string('alamat', 100);
+            $table->string('nama_role', 20);
             $table->timestamps();
         });
     }
@@ -26,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('posyandus');
+        Schema::dropIfExists('roles');
     }
 };

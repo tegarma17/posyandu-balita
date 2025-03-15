@@ -11,10 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ktkbp', function (Blueprint $table) {
+        Schema::create('whobb', function (Blueprint $table) {
             $table->id();
-            $table->string('kd_ktkbp')->unique();
-            $table->string('nm_ktkbp')->unique();
+            $table->integer('usia');
+            $table->enum('jk', ['l', 'p']);
+            $table->double('mean_bb');
+            $table->double('std_dev');
             $table->timestamps();
         });
     }
@@ -24,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('ktkbps');
+        //
     }
 };

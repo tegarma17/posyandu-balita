@@ -13,10 +13,9 @@ return new class extends Migration
     {
         Schema::create('desa', function (Blueprint $table) {
             $table->id();
-            $table->string('kd_kcmtn');
-            $table->foreign('kd_kcmtn')->references('kd_kcmtn')->on('kecamatan');
-            $table->string('kd_desa')->unique();
-            $table->string('nm_desa');
+            $table->foreignId('kecamatan_id')->constrained('kecamatan')->onDelete('cascade');
+            $table->string('kd_desa', 15)->unique();
+            $table->string('nama', 50);
             $table->timestamps();
         });
     }

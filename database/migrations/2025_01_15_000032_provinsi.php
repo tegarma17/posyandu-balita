@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('Kecamatan', function (Blueprint $table) {
+        Schema::create('provinsi', function (Blueprint $table) {
             $table->id();
-            $table->string('kd_ktkbp');
-            $table->foreign('kd_ktkbp')->references('kd_ktkbp')->on('ktkbp')->onDelete('cascade');
-            $table->string('kd_kcmtn')->unique();
-            $table->string('nm_kcmtn')->unique();
+            $table->string('kd_prov', 3);
+            $table->string('nama', '50');
             $table->timestamps();
         });
     }
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('Kecamatan');
+        //
     }
 };

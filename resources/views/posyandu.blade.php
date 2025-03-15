@@ -9,7 +9,7 @@
             <li class="text-gray-600 mr-2 font-medium">{{ $title }}</li>
 
         </ul>
-        <h4 class="text-2xl font-bold text-center my-4">Data Posyandu</h4>
+        <h4 class="text-2xl font-bold text-center ">Data Posyandu</h4>
         <div class="flex justify-start">
             <button data-modal-target="crud-modal" data-modal-toggle="crud-modal"
                 class="block mx-4 my-3 bg-hijautua hover:bg-hijaumuda text-white py-2 px-4 rounded-lg" type="button">
@@ -23,7 +23,7 @@
         <div class="relative mx-4">
             <form action="{{ route('import.posyandu') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                <input type="file" name="file" required>
+                <input class="rounded-lg border border-gray-300 " type="file" name="file" required>
                 <button class="block  my-3 bg-yellow-400 hover:bg-orange-400 text-white py-2 px-4 rounded-lg"
                     type="submit">Unggah</button>
             </form>
@@ -44,12 +44,6 @@
                 <input type="text" id="table-search" name="search"
                     class="form-control block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-6"
                     placeholder="Nama Posyandu atau Kode Posyandu">
-            </div>
-            <div class="flex justify-start">
-                <button class="block mx-4 my-3 bg-hijautua hover:bg-hijaumuda text-white py-2 px-4 rounded-lg"
-                    id="resetButton" type="submit">Cari</button>
-                <a href="{{ route('psynd.index') }}"class="block my-3 bg-yellow-400 hover:bg-orange-400 text-white py-2 px-4 rounded-lg"
-                    id="resetButton" type="submit">Reset Pencarian</a>
             </div>
         </form>
         @if ($errors->any())
@@ -88,48 +82,43 @@
         <div class="relative overflow-x-auto mx-5 sm:rounded-lg">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class=" text-gray-700 uppercase dark:text-gray-400">
-                    <tr class="bg-green-700 text-white font-semibold text-lg">
-                        <th scope="col" class="px-6 py-3  dark:bg-gray-800">
-                            Kode Posyandu
-                        </th>
-                        <th scope="col" class="px-6 py-3">
+                    <tr class="bg-green-700 text-white font-semibold text-base text-center">
+                        <th scope="col" class="px-6 py-1">
                             Desa
                         </th>
-                        <th scope="col" class="px-6 py-3  dark:bg-gray-800">
+                        <th scope="col" class="px-6 py-1  dark:bg-gray-800">
                             Nama Posyandu
                         </th>
-                        <th scope="col" class="px-6 py-3  dark:bg-gray-800">
+                        <th scope="col" class="px-6 py-1  dark:bg-gray-800">
                             Alamat
                         </th>
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="px-6 py-1">
                             Action
                         </th>
                     </tr>
                 </thead>
                 <tbody>
-
                     @foreach ($psyndu as $posyandu)
-                        <tr class="border-b border-gray-200 dark:border-gray-700 text-base">
-                            <th scope="row"
-                                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
-                                {{ $posyandu->kd_psynd }}
-                            </th>
-                            <td class="px-6 py-4">
-                                {{ $posyandu->desa->nm_desa }}
+                        <tr class="border-b border-gray-200 dark:border-gray-700 text-base text-center">
+                            <td class="px-6 py-1">
+                                {{ $posyandu->desa->nama }}
                             </td>
-                            <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800">
-                                {{ $posyandu->nm_psynd }}
+                            <td class="px-6 py-1 bg-gray-50 dark:bg-gray-800">
+                                {{ $posyandu->nama }}
                             </td>
-                            <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800">
+                            <td class="px-6 py-1 bg-gray-50 dark:bg-gray-800">
                                 {{ $posyandu->alamat }}
                             </td>
-                            <td class="px-6 py-4">
+                            <td class="px-6 py-1 text-center">
                                 <form action="{{ route('psynd.destroy', $posyandu->id) }}" method="POST"
                                     onsubmit="return confirmDelete(event)">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit"
-                                        class="px-6 py-2 bg-red-500 rounded-lg font-medium text-white dark:text-red-500 hover:underline transition duration-150 ease-in-out">Delete</button>
+                                    <button type="submit" class="hover:underline transition duration-150 ease-in-out">
+                                        <span style="color: red; font-size:25px">
+                                            <i class="fa-solid fa-trash mt-1"></i>
+                                        </span>
+                                    </button>
                                 </form>
                             </td>
                         </tr>
@@ -173,7 +162,7 @@
                                 <label for="category"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama
                                     Posyandu</label>
-                                <input type="text" name="nm_psynd" id="nm_psynd"
+                                <input type="text" name="nama" id="nm_psynd"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                     placeholder="">
                             </div>
@@ -187,32 +176,34 @@
                             <div class="col-span-2 sm:col-span-1">
                                 <label for="price"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Provinsi</label>
-                                <select id="prov" name="prov"
+                                <select id="prov"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                     <option selected="">Pilih Provinsi</option>
-                                    <option value="35" selected="">Jawa Timur</option>
+                                    @foreach ($provinsi as $prov)
+                                        <option value="{{ $prov->id }}">{{ $prov->nama }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="col-span-2 sm:col-span-1">
                                 <label for="category"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kabupaten /
                                     Kota</label>
-                                <select id="kd_ktkbp" name="kd_ktkbp"
+                                <select id="kd_ktkbp"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                     <option selected="">Pilih Kota / Kabupaten</option>
                                     @foreach ($ktkbp as $kota)
-                                        <option value="{{ $kota->kd_ktkbp }}">{{ $kota->nm_ktkbp }}</option>
+                                        <option value="{{ $kota->id }}">{{ $kota->nama }}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="col-span-2 sm:col-span-1">
-                                <label for="kdKcmtn"
+                                <label
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kecamatan</label>
-                                <select id="kecamatan" name="kd_kcmtn"
+                                <select id="kecamatan"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                     <option selected="">Pilih Kecamatan</option>
-                                    @foreach ($kcmtn as $kecamatan)
-                                        <option value="{{ $kecamatan->kd_kcmtn }}">{{ $kecamatan->nm_kcmtn }}
+                                    @foreach ($kecamatan as $kecamatan)
+                                        <option value="{{ $kecamatan->id }}">{{ $kecamatan->nama }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -220,12 +211,13 @@
                             <div class="col-span-2 sm:col-span-1">
                                 <label for="category"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Desa</label>
-                                <select id="desa" name="kd_desa"
+                                <select id="desa" name="desa_id"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                     <option selected="">Pilih Desa</option>
                                     @foreach ($desa as $desa)
-                                        <option value="{{ $desa->kd_desa }}"data-kecamatan="{{ $desa->kd_kcmtn }}">
-                                            {{ $desa->nm_desa }}</option>
+                                        <option
+                                            value="{{ $desa->id }}"data-kecamatan="{{ $desa->kecamatan_id }}">
+                                            {{ $desa->nama }}</option>
                                     @endforeach
                                 </select>
                             </div>

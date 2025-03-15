@@ -7,15 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Balita extends Model
 {
-    protected $table = 'balitas';
+    protected $table = 'balita';
     protected $fillable = [
         'user_id',
-        'kd_ktkbp',
-        'kd_kcmtn',
-        'kd_desa',
+        'desa_id',
         'nik',
         'no_kk',
-        'no_kk_ortu',
+        'nik_ortu',
         'nama',
         'jns_klmn',
         'tgl_lahir',
@@ -26,7 +24,6 @@ class Balita extends Model
         'no_hp_ortu',
         'anak_ke',
         'alamat',
-        'prov',
         'rt',
         'rw'
     ];

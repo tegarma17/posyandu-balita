@@ -15,58 +15,67 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Crypt;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use App\Http\Controllers\TemplateExcelController;
+use App\Models\Provinsi;
 
 class PosyanduController extends Controller
 {
+    private $provinsi;
+    private $ktkbp;
+    private $kecamatan;
+    private $desa;
+
     protected $excelImportServices;
     public function __construct(TemplateExcelController $excelImportServices)
     {
         $this->excelImportServices = $excelImportServices;
     }
+    public function initData()
+    {
+        $this->provinsi = Provinsi::all();
+        $this->ktkbp = Ktkbp::all();
+        $this->kecamatan = Kecamatan::all();
+        $this->desa = Desa::all();
+    }
     public function index(Request $request)
     {
-        $ktkbp = Ktkbp::all();
-        $kcmtn = Kecamatan::all();
-        $desa = Desa::all();
+        $this->initData();
+        $provinsi = $this->provinsi;
+        $ktkbp = $this->ktkbp;
+        $kecamatan = $this->kecamatan;
+        $desa = $this->desa;
         $search = $request->query('search');
 
         if (!empty($search)) {
-            $psyndu = Posyandu::with('desa')
-                ->where('nm_psynd', 'like', '%' . $search . '%')
+            $psyndu = Posyandu::where('nama', 'like', '%' . $search . '%')
                 ->orWhere('kd_psynd', 'like', '%' . $search . '%')
                 ->orderBy('kd_psynd', 'asc')
                 ->paginate(5)->fragment('std');
         } else {
-            $psyndu = Posyandu::with('desa')
-                ->paginate(5)
+            $psyndu = Posyandu::paginate(5)
                 ->fragment('std');
         }
 
         $title = 'Data Posyandu';
-        return view('posyandu', compact('ktkbp', 'kcmtn', 'desa', 'title', 'psyndu', 'search'));
+        return view('posyandu', compact('provinsi', 'ktkbp', 'kecamatan', 'desa', 'title', 'psyndu', 'search'));
     }
 
     public function store(Request $request): RedirectResponse
     {
+
         $message = [
-            'kd_psynd.required' => 'Kode Posyandu Wajib diisi',
             'kd_psynd.unique' => 'Kode Posyandu Sudah ada',
-            'nm_psynd.required' => 'Nama Posyandu Wajib diisi',
+            'nama.required' => 'Nama Posyandu Wajib diisi',
             'alamat.required' => 'Alamat Wajib diisi',
-            'kd_ktkbp.required' => 'Kabupaten / Kota Wajib diisi',
-            'kd_desa.required' => 'Desa Wajib diisi',
-            'kd_kcmtn.required' => 'Kecamatan Wajib diisi',
-            'prov.required' => 'Provinsi Wajib diisi',
+            'desa_id.required' => 'Desa Wajib Diisi'
         ];
         $validate = $request->validate([
-            'kd_psynd' => ['required', 'unique:posyandu'],
-            'nm_psynd' => ['required'],
+            'kd_psynd' => ['unique:posyandu,kd_psynd'],
+            'nama' => ['required'],
             'alamat' => ['required'],
-            'kd_ktkbp' => ['required'],
-            'kd_kcmtn' => ['required'],
-            'kd_desa' => ['required'],
-            'prov' => ['required'],
+            'desa_id' => ['required'],
         ], $message);
+        $validate['kd_psynd'] = Posyandu::generateKdPsynd();
+
         Posyandu::create($validate);
         return redirect()->route('psynd.index')->with('success', 'Posyandu Baru telah ditambahkan.');
     }
@@ -87,12 +96,9 @@ class PosyanduController extends Controller
             if (!empty($row[0]) && !empty($row[1]) && !empty($row[2]) && !empty($row[3])) {
                 Posyandu::updateOrCreate(
                     [
-                        'nm_psynd' => $row[0],
+                        'nama' => $row[0],
                         'alamat' => $row[1],
-                        'prov' => $row[3],
-                        'kd_ktkbp' => $row[5],
-                        'kd_kcmtn' => $row[7],
-                        'kd_desa' => $row[9],
+                        'desa_id' => $row[6],
                     ]
                 );
             }

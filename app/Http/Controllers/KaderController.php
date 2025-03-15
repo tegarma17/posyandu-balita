@@ -59,20 +59,21 @@ class KaderController extends Controller
             'no_hp.numeric' => 'Nomer HP harus berupa angka',
             'no_hp.regex' => 'Format nomer HP tidak valid'
         ]);
+
         User::create([
             'role_id' => 2, //Kode Kader pada database
             'username' => $kode,
             'password' => bcrypt($kode),
         ]);
-        $tambahanData = $request->only(['jns_klmn']);
-        $data = array_merge($validate, $tambahanData);
+        $tambahanData = $request->only(['jk']);
 
+        $data = array_merge($validate, $tambahanData);
         $data['user_id'] = User::latest()->first()->id;
+        $data['kd_nakes'] = $kode;
 
         Kader::create($data);
-        return redirect()->route('kader.index')->with('success', 'Tenaga Kesehatan Baru telah ditambahkan.');
+        return redirect()->route('kader.index')->with('success', 'Data Kader Baru telah ditambahkan.');
     }
-
     public function import(Request $request)
     {
 

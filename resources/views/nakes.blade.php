@@ -44,12 +44,6 @@
                     class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-6"
                     placeholder="Nama Tenaga Kesehatan" value="{{ request('search') }}">
             </div>
-            <div class="flex justify-start">
-                <button class="block mx-4  bg-hijautua hover:bg-hijaumuda text-white py-2 px-4 rounded-lg"
-                    id="resetButton" type="submit">Cari</button>
-                <a href="{{ route('nakes.index') }}"class="block bg-yellow-400 hover:bg-orange-400 text-white py-2 px-4 rounded-lg"
-                    id="resetButton" type="submit">Reset Pencarian</a>
-            </div>
         </form>
         @if ($errors->any())
             <div>
@@ -85,20 +79,17 @@
         <div class="relative overflow-x-auto mx-5 sm:rounded-lg">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class=" text-gray-700 uppercase dark:text-gray-400">
-                    <tr class="bg-green-700 text-white font-semibold">
-                        <th scope="col" class="px-6 py-3  dark:bg-gray-800">
-                            Kode Tenaga Kesehatan
-                        </th>
-                        <th scope="col" class="px-6 py-3">
+                    <tr class="bg-green-700 text-white font-semibold text-base text-center">
+                        <th scope="col" class="px-6 py-1">
                             Nama Nakes
                         </th>
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="px-6 py-1">
                             Alamat
                         </th>
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="px-6 py-1">
                             No HP
                         </th>
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="px-6 py-1">
                             Action
                         </th>
                     </tr>
@@ -106,29 +97,33 @@
                 <tbody>
                     @foreach ($nakes as $nks)
                         <tr class="border-b border-gray-200 dark:border-gray-700">
-                            <th scope="row"
-                                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
-                                {{ $nks->kd_nakes }}
-                            </th>
-                            <td class="px-6 py-4">
+
+                            <td class="px-6 py-1">
                                 {{ $nks->nama }}
                             </td>
-                            <td class="px-6 py-4">
+                            <td class="px-6 py-1">
                                 {{ $nks->alamat }}
                             </td>
-                            <td class="px-6 py-4">
+                            <td class="px-6 py-1">
                                 {{ $nks->no_hp }}
                             </td>
-                            <td class="px-6 py-4">
-                                <div class="flex gap-3 items-center text-white ">
+                            <td class="px-6 py-1 text-center">
+                                <div class="flex gap-6 justify-center text-white ">
                                     <form action="{{ route('nakes.destroy', $nks->id) }}" method="POST"
                                         onsubmit="return confirmDelete(event)">
                                         @csrf
                                         @method('DELETE')
-                                        <button
-                                            class="bg-red-500 py-3 px-6 rounded-lg dark:text-red-500 hover:underline transition duration-150 ease-in-out">Delete</button>
-                                        <a href="{{ route('nakes.edit', Crypt::encrypt($nks->id)) }}"
-                                            class="bg-yellow-400 py-3 px-6 mb-3 rounded-lg dark:text-red-500 hover:underline">Edit</a>
+                                        <button type="submit"
+                                            class="mx-4 hover:underline transition duration-150 ease-in-out">
+                                            <span style="color: red; font-size:25px">
+                                                <i class="fa-solid fa-trash mt-1"></i>
+                                            </span>
+                                        </button>
+                                        <a href="{{ route('nakes.edit', Crypt::encrypt($nks->id)) }}">
+                                            <span style="color: orange; font-size: 25px">
+                                                <i class="fa-solid fa-pencil"></i>
+                                            </span>
+                                        </a>
                                     </form>
                                 </div>
                             </td>
@@ -189,7 +184,7 @@
                                 <label for="jk"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jenis
                                     Kelamin</label>
-                                <select id="jk" name="jns_klmn"
+                                <select id="jk" name="jk"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                     <option selected="">Jenis Kelamin</option>
                                     <option value="l">Laki - Laki</option>

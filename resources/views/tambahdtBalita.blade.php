@@ -92,14 +92,6 @@
                                 <option value="p">Perempuan</option>
 
                             </select>
-                            <div
-                                class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20">
-                                    <path
-                                        d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                                </svg>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -138,7 +130,7 @@
                         </label>
                         <input
                             class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                            type="number" placeholder="Satuan (KG)" name="tb_awal">
+                            type="number" placeholder="Satuan (CM)" name="tb_awal">
 
                     </div>
                 </div>
@@ -189,16 +181,10 @@
                             <select name="prov"
                                 class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
                                 <option>Pilih Provinsi</option>
-                                <option value="35">Jawa Timur</option>
+                                @foreach ($prov as $provinsi)
+                                    <option value="{{ $provinsi->id }}">{{ $provinsi->nama }}</option>
+                                @endforeach
                             </select>
-                            <div
-                                class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20">
-                                    <path
-                                        d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                                </svg>
-                            </div>
                         </div>
                     </div>
                     <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
@@ -211,17 +197,10 @@
                                 name="kd_ktkbp">
                                 <option>Pilih Kabupaten</option>
                                 @foreach ($ktkbp as $ktkb)
-                                    <option value="{{ $ktkb->kd_ktkbp }}">{{ $ktkb->nm_ktkbp }}</option>
+                                    <option value="{{ $ktkb->id }}">{{ $ktkb->nama }}</option>
                                 @endforeach
                             </select>
-                            <div
-                                class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20">
-                                    <path
-                                        d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                                </svg>
-                            </div>
+
                         </div>
                     </div>
                     <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
@@ -234,17 +213,10 @@
                                 id="kecamatan" name="kd_kcmtn">
                                 <option>Pilih Kecamatan</option>
                                 @foreach ($kcmtn as $kecamatan)
-                                    <option value="{{ $kecamatan->kd_kcmtn }}">{{ $kecamatan->nm_kcmtn }}</option>
+                                    <option value="{{ $kecamatan->id }}">{{ $kecamatan->nama }}</option>
                                 @endforeach
                             </select>
-                            <div
-                                class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20">
-                                    <path
-                                        d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                                </svg>
-                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -259,18 +231,11 @@
                                 id="desa" name="kd_desa">
                                 <option>Pilih Desa</option>
                                 @foreach ($desa as $desa)
-                                    <option value="{{ $desa->kd_desa }}"data-kecamatan="{{ $desa->kd_kcmtn }}">
-                                        {{ $desa->nm_desa }}</option>
+                                    <option value="{{ $desa->id }}"data-kecamatan="{{ $desa->kecamatan_id }}">
+                                        {{ $desa->nama }}</option>
                                 @endforeach
                             </select>
-                            <div
-                                class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20">
-                                    <path
-                                        d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                                </svg>
-                            </div>
+
                         </div>
                     </div>
                     <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">

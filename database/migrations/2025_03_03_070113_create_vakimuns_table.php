@@ -13,12 +13,8 @@ return new class extends Migration
     {
         Schema::create('vakimuns', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_jadwal');
-            $table->foreign('id_jadwal')->references('id')->on('jadwals')->onDelete('cascade')->constrained();
-            $table->unsignedBigInteger('id_imunivak');
-            $table->foreign('id_imunivak')->references('id')->on('imunivaks')->onDelete('cascade')->constrained();
-            $table->unsignedBigInteger('id_balita');
-            $table->foreign('id_balita')->references('id')->on('balitas')->onDelete('cascade')->constrained();
+            $table->foreignId('imunivaks_id')->constrained('imunivaks')->onDelete('cascade');
+            $table->foreignId('balita_id')->constrained('balita')->onDelete('cascade');
             $table->date('tanggal_imunivak');
             $table->string('usia', 2);
             $table->timestamps();

@@ -13,15 +13,13 @@ return new class extends Migration
     {
         Schema::create('penimbangans', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_jadwal');
-            $table->foreign('id_jadwal')->references('id')->on('jadwals')->onDelete('cascade')->constrained();
-            $table->unsignedBigInteger('id_balita');
-            $table->foreign('id_balita')->references('id')->on('balitas')->onDelete('cascade')->constrained();
-            $table->integer('berat_badan');
-            $table->date('tanggal_penimbangan');
-            $table->enum('keterangan', ['N', 'T', 'B', 'O']);
-            $table->string('status_gizi', 50);
+            $table->foreignId('posyandu_id')->constrained('posyandu')->onDelete('cascade');
+            $table->foreignId('balita_id')->constrained('balita')->onDelete('cascade');
+            $table->integer('bb');
             $table->string('usia', 2);
+            $table->enum('keterangan', ['N', 'T', 'B', 'O']);
+            $table->date('tanggal_penimbangan');
+            $table->string('status_gizi', 50);
             $table->string('saran', 100);
             $table->timestamps();
         });

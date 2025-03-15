@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('whobb', function (Blueprint $table) {
+        Schema::create('Kecamatan', function (Blueprint $table) {
             $table->id();
-            $table->integer('usia');
-            $table->integer('mean_bb');
-            $table->integer('std_dev');
+            $table->foreignId('ktkbp_id')->constrained('ktkbp')->onDelete('cascade');
+            $table->string('kd_kcmtn', 10)->unique();
+            $table->string('nama', 50)->unique();
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('Kecamatan');
     }
 };

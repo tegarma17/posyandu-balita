@@ -11,7 +11,8 @@ use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PosyanduController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\KecamatanController;
+
+use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\PenimbanganController;
 use App\Http\Controllers\TemplateExcelController;
 use App\Http\Controllers\UserController;
@@ -116,8 +117,9 @@ Route::group(['middleware' => ['auth', 'check_role:2,3']], function () {
     Route::get('/vakimun-balita/{id}', [VakimunController::class, 'create'])->name('vip.vakimun');
     Route::post('/vakimun-balita/simpan', [VakimunController::class, 'store'])->name('vip.simpan_vakimun');
 
-    Route::GET('/dta-laporan', function () {
-        return view('laporan', ['title' => 'Data Laporan Posyandu']);
+    Route::prefix('/laporan')->group(function () {
+        Route::GET('/', [LaporanController::class, 'index'])->name('laporan.index');
+        Route::GET('/{dateReport}/{id}', [LaporanController::class, 'ReportCheck'])->name('laporan.check');
     });
 });
 

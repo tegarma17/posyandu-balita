@@ -83,7 +83,7 @@ class whoTBSeeder extends Seeder
             ['usia' => '2', 'jk' => 'p', 'mean_tb' => '57.1', 'std_dev' => '2.0', 'posisi' => 'terlentang', 'created_at' => now(), 'updated_at' => now()],
             ['usia' => '3', 'jk' => 'p', 'mean_tb' => '59.8', 'std_dev' => '2.1', 'posisi' => 'terlentang', 'created_at' => now(), 'updated_at' => now()],
             ['usia' => '4', 'jk' => 'p', 'mean_tb' => '62.1', 'std_dev' => '2.15', 'posisi' => 'terlentang', 'created_at' => now(), 'updated_at' => now()],
-            ['usia' => '5', 'jk' => 'p', 'mean_tb' => '64.0.', 'std_dev' => '2.25', 'posisi' => 'terlentang', 'created_at' => now(), 'updated_at' => now()],
+            ['usia' => '5', 'jk' => 'p', 'mean_tb' => '64.0', 'std_dev' => '2.25', 'posisi' => 'terlentang', 'created_at' => now(), 'updated_at' => now()],
             ['usia' => '6', 'jk' => 'p', 'mean_tb' => '65.7', 'std_dev' => '2.3', 'posisi' => 'terlentang', 'created_at' => now(), 'updated_at' => now()],
             ['usia' => '7', 'jk' => 'p', 'mean_tb' => '67.3', 'std_dev' => '2.3', 'posisi' => 'terlentang', 'created_at' => now(), 'updated_at' => now()],
             ['usia' => '8', 'jk' => 'p', 'mean_tb' => '68.7', 'std_dev' => '2.4', 'posisi' => 'terlentang', 'created_at' => now(), 'updated_at' => now()],

@@ -8,10 +8,15 @@ class Ktkbp extends Model
 {
     protected $table = 'ktkbp';
     protected $fillable = [
+        'prov_id',
         'kd_ktkbp',
-        'nm_ktkbp',
+        'nama',
 
     ];
+    public function provinsi()
+    {
+        return $this->belongsTo(Provinsi::class);
+    }
     public function kecamatan()
     {
         return $this->hasMany(Kecamatan::class, 'kd_ktkbp', 'kd_ktkbp');

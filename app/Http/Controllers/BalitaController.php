@@ -7,7 +7,7 @@ use App\Models\User;
 use App\Models\Ktkbp;
 use App\Models\Balita;
 use App\Models\Kecamatan;
-
+use App\Models\Provinsi;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -17,9 +17,20 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class BalitaController extends Controller
 {
+    protected $provinsi;
+    protected $ktkbp;
+    protected $kecamatan;
+    protected $desa;
     /**
      * Display a listing of the resource.
      */
+    public function initData()
+    {
+        $this->provinsi = Provinsi::all();
+        $this->ktkbp = Ktkbp::all();
+        $this->kecamatan = Kecamatan::all();
+        $this->desa = Desa::all();
+    }
     public function index(Request $request)
     {
         $search = $request->query('search');
@@ -41,13 +52,15 @@ class BalitaController extends Controller
      */
     public function create()
     {
+        $this->initData();
         $kode = Balita::generateBalita();
 
         $title = 'Tambah Data Balita';
-        $ktkbp = Ktkbp::all();
-        $kcmtn = Kecamatan::all();
-        $desa = Desa::all();
-        return view('tambahdtBalita', compact('title', 'ktkbp', 'kcmtn', 'desa', 'kode'));
+        $ktkbp = $this->ktkbp;
+        $prov = $this->provinsi;
+        $kcmtn = $this->kecamatan;
+        $desa = $this->desa;
+        return view('tambahdtBalita', compact('title', 'ktkbp', 'kcmtn', 'desa', 'kode', 'prov'));
     }
 
     /**

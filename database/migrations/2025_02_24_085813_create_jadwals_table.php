@@ -13,10 +13,8 @@ return new class extends Migration
     {
         Schema::create('jadwals', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_psynd');
-            $table->foreign('id_psynd')->references('id')->on('posyandu')->onDelete('cascade')->constrained();
-            $table->unsignedBigInteger('id_nakes');
-            $table->foreign('id_nakes')->references('id')->on('nakes')->onDelete('cascade')->constrained();
+            $table->foreignId('posyandu_id')->constrained('posyandu')->onDelete('cascade');
+            $table->foreignId('nakes_id')->constrained('nakes')->onDelete('cascade');
             $table->timestamp('jadwal_posyandu')->nullable();
             $table->timestamp('selesai_posyandu')->nullable();
             $table->timestamps();

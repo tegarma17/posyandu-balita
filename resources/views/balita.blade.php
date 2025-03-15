@@ -45,12 +45,6 @@
                     class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-6"
                     placeholder="Nama Balita / Nama Orang Tua Balita " value="{{ request('search') }}">
             </div>
-            <div class="flex justify-start">
-                <button class="block mx-4  bg-hijautua hover:bg-hijaumuda text-white py-2 px-4 rounded-lg"
-                    id="resetButton" type="submit">Cari</button>
-                <a href="{{ route('balita.index') }}"class="block bg-yellow-400 hover:bg-orange-400 text-white py-2 px-4 rounded-lg"
-                    id="resetButton" type="submit">Reset Pencarian</a>
-            </div>
         </form>
         <!-- End pencarian data -->
         @if (session('success'))

@@ -10,9 +10,8 @@ class Desa extends Model
     use HasFactory;
     protected $table = 'desa';
     protected $fillable = [
-        'kd_kcmtn',
         'kd_desa',
-        'nm_desa',
+        'nama',
 
     ];
     public function kecamatan()
@@ -21,6 +20,6 @@ class Desa extends Model
     }
     public function posyandu()
     {
-        return $this->hasMany(Posyandu::class);
+        return $this->hasMany(Posyandu::class, 'desa_id');
     }
 }

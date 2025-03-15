@@ -62,7 +62,6 @@ class NakesController extends Controller
         ], $message);
         $tambahanData = $request->only(['jns_klmn']);
         $data = array_merge($validate, $tambahanData);
-
         $kode = Nakes::generateNakes();
         User::create([
             'role_id' => 3,
@@ -70,6 +69,8 @@ class NakesController extends Controller
             'password' => bcrypt($kode),
         ]);
         $data['user_id'] = User::latest()->first()->id;
+        $data['kd_nakes'] = $kode;
+
         Nakes::create($data);
         return redirect()->route('nakes.index')->with('success', 'Tenaga Kesehatan Baru telah ditambahkan.');
     }
@@ -102,7 +103,7 @@ class NakesController extends Controller
                     [
                         'user_id' =>  User::latest()->first()->id,
                         'nama' => $row[1],
-                        'jns_klmn' => $row[2],
+                        'jk' => $row[2],
                         'alamat' => $row[3],
                         'no_hp' => $row[4],
                     ]

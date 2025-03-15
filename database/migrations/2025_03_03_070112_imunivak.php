@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('imunivaks', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_vksn_imun');
+            $table->string('nama');
             $table->timestamps();
         });
     }

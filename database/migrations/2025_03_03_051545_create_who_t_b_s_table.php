@@ -14,8 +14,10 @@ return new class extends Migration
         Schema::create('whotb', function (Blueprint $table) {
             $table->id();
             $table->integer('usia');
-            $table->float('mean_tb');
-            $table->float('std_dev');
+            $table->enum('jk', ['l', 'p']);
+            $table->enum('posisi', ['terlentang', 'berdiri']);
+            $table->double('mean_tb');
+            $table->double('std_dev');
             $table->timestamps();
         });
     }

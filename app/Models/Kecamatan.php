@@ -10,9 +10,9 @@ class Kecamatan extends Model
     use HasFactory;
     protected $table = 'kecamatan';
     protected $fillable = [
-        'kd_ktkbp',
+        'ktkbp_id',
         'kd_kcmtn',
-        'nm_kcmtn',
+        'nama',
     ];
 
     public function ktkbp()

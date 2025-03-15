@@ -11,29 +11,23 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('balitas', function (Blueprint $table) {
+        Schema::create('balita', function (Blueprint $table) {
             $table->id();
-            $table->string('kd_ktkbp');
-            $table->foreign('kd_ktkbp')->references('kd_ktkbp')->on('ktkbp')->onDelete('cascade');
-            $table->string('kd_kcmtn');
-            $table->foreign('kd_kcmtn')->references('kd_kcmtn')->on('kecamatan')->onDelete('cascade');
-            $table->string('kd_desa');
-            $table->foreign('kd_desa')->references('kd_desa')->on('desa')->onDelete('cascade');
+            $table->foreignId('desa_id')->constrained('desa')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->string('nik', 16)->unique();
-            $table->string('no_kk', 16)->unique();
-            $table->string('no_kk_ortu', 16)->unique();
-            $table->string('nama');
+            $table->string('nik', 20)->unique();
+            $table->string('no_kk', 20)->unique();
+            $table->string('nik_ortu', 20)->unique();
+            $table->string('nama', 50);
             $table->enum('jns_klmn', ['l', 'p']);
             $table->date('tgl_lahir');
-            $table->string('tmpt_lahir');
+            $table->string('tmpt_lahir', 25);
             $table->string('bb_awal', 3);
             $table->string('tb_awal', 3);
-            $table->string('nama_ortu');
+            $table->string('nama_ortu', 50);
             $table->string('no_hp_ortu', 16);
             $table->string('anak_ke', 2);
-            $table->string('alamat');
-            $table->string('prov');
+            $table->string('alamat', 100);
             $table->string('rt', 3);
             $table->string('rw', 3);
             $table->timestamps();
