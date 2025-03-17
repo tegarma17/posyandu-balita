@@ -1,4 +1,27 @@
 <x-main-admin>
+    @if ($errors->any())
+        <div>
+            <ul>
+                <div class="flex items-center p-4 mb-4 text-sm text-yellow-800 border border-yellow-300 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300 dark:border-yellow-800"
+                    role="alert">
+                    <svg class="shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor" viewBox="0 0 20 20">
+                        <path
+                            d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+                    </svg>
+                    <span class="sr-only">Info</span>
+                    <div>
+                        <span class="font-medium">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </span>
+                    </div>
+                </div>
+            </ul>
+        </div>
+
+    @endif
     <section class="container mx-auto my-5">
         <ul class="flex items-center text-sm ml-4 my-5">
             <li class="mr-2">
@@ -15,11 +38,10 @@
                 class="mx-4  bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded-lg">
                 Kembali
             </button></a>
-        <h4 class="text-2xl font-bold text-center my-4">Edit Data Balita {{ $balita->nama }}</h4>
+        <h4 class="text-2xl font-bold text-center my-4">Tambah Data Balita Baru</h4>
         <div class="mx-auto w-full ">
-            <form action="{{ route('balita.update', $balita->id) }}" method="POST">
+            <form action="{{ route('balita.simpan') }}" method="POST">
                 @csrf
-                @method('PUT')
                 <div class="flex flex-wrap mx-3 mb-6">
                     <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
                         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
@@ -27,8 +49,8 @@
                         </label>
                         <input
                             class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                            type="number" placeholder="NIK Balita" name="nik"
-                            value="{{ old('nik', $balita->nik) }}">
+                            type="number" placeholder="NIK Balita" name="nik">
+
                     </div>
                     <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
                         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
@@ -36,8 +58,7 @@
                         </label>
                         <input
                             class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                            type="number" placeholder="Nomer Kartu Keluarga" name="no_kk"
-                            value="{{ old('no_kk', $balita->no_kk) }}">
+                            type="number" placeholder="Nomer Kartu Keluarga" name="no_kk">
                     </div>
                     <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
                         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
@@ -45,8 +66,7 @@
                         </label>
                         <input
                             class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                            type="number" placeholder="NIK Orang Tua" name="no_kk_ortu"
-                            value="{{ old('no_kk_ortu', $balita->no_kk_ortu) }}">
+                            type="number" placeholder="NIK Orang Tua" name="nik_ortu">
                     </div>
                 </div>
                 <div class="flex flex-wrap mx-3 mb-6">
@@ -56,8 +76,7 @@
                         </label>
                         <input
                             class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                            type="text" placeholder="Nama Balita" name="nama"
-                            value="{{ old('nama', $balita->nama) }}">
+                            type="text" placeholder="Nama Balita" name="nama">
                     </div>
                     <div class="w-full md:w-1/2 px-3">
                         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -69,19 +88,10 @@
                                 class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                                 name="jns_klmn">
                                 <option>Pilih Jenis Kelamin</option>
-                                <option value="l" {{ $balita->jns_klmn == 'l' ? 'selected' : '' }}>Laki - Laki
-                                </option>
-                                <option value="p" {{ $balita->jns_klmn == 'p' ? 'selected' : '' }}>Perempuan
-                                </option>
+                                <option value="l">Laki - Laki</option>
+                                <option value="p">Perempuan</option>
+
                             </select>
-                            <div
-                                class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20">
-                                    <path
-                                        d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                                </svg>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -92,8 +102,7 @@
                         </label>
                         <input
                             class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                            type="date" placeholder="Tanggal Lahir Balita" name="tgl_lahir"
-                            value="{{ old('tgl_lahir', $balita->tgl_lahir) }}">
+                            type="date" placeholder="Tanggal Lahir Balita" name="tgl_lahir">
 
                     </div>
                     <div class="w-full md:w-1/2 px-3">
@@ -102,8 +111,8 @@
                         </label>
                         <input
                             class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                            type="text" placeholder="Nama Kota" name="tmpt_lahir"
-                            value="{{ old('tmpt_lahir', $balita->tmpt_lahir) }}">
+                            type="text" placeholder="Nama Kota" name="tmpt_lahir">
+
                     </div>
                 </div>
                 <div class="flex flex-wrap mx-3 mb-6">
@@ -113,8 +122,8 @@
                         </label>
                         <input
                             class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                            type="number" placeholder="Satuan (KG)" name="bb_awal"
-                            value="{{ old('bb_awal', $balita->bb_awal) }}">
+                            type="number" placeholder="Satuan (KG) & menggunakan ." name="bb_awal" min="0"
+                            step="0.1">
                     </div>
                     <div class="w-full md:w-1/2 px-3">
                         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
@@ -122,8 +131,9 @@
                         </label>
                         <input
                             class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                            type="number" placeholder="Satuan (KG)" name="tb_awal"
-                            value="{{ old('tb_awal', $balita->tb_awal) }}">
+                            type="number" placeholder="Satuan (CM) & menggunakan ." name="tb_awal" min="0"
+                            step="0.1">
+
                     </div>
                 </div>
                 <div class="flex flex-wrap mx-3 mb-6">
@@ -133,8 +143,7 @@
                         </label>
                         <input
                             class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                            type="text" placeholder="Nama Ayah / Ibu" name="nama_ortu"
-                            value="{{ old('nama_ortu', $balita->nama_ortu) }}">
+                            type="text" placeholder="Nama Ayah / Ibu" name="nama_ortu">
                     </div>
                     <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
                         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
@@ -142,8 +151,7 @@
                         </label>
                         <input
                             class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                            type="number" placeholder="Nomer HP Ayah / Ibu" name="no_hp_ortu"
-                            value="{{ old('no_hp_ortu', $balita->no_hp_ortu) }}">
+                            type="number" placeholder="Nomer HP Ayah / Ibu" name="no_hp_ortu">
                     </div>
                     <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
                         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
@@ -151,8 +159,7 @@
                         </label>
                         <input
                             class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                            type="number" placeholder="Anak Ke-" name="anak_ke"
-                            value="{{ old('anak_ke', $balita->anak_ke) }}">
+                            type="number" placeholder="Anak Ke-" name="anak_ke">
                     </div>
                 </div>
                 <div class="flex flex-wrap mx-3 mb-6">
@@ -163,8 +170,7 @@
                         </label>
                         <input
                             class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                            type="text" placeholder="Alamat Lengkap" name="alamat"
-                            value="{{ old('alamat', $balita->alamat) }}">
+                            type="text" placeholder="Alamat Lengkap" name="alamat">
 
                     </div>
                 </div>
@@ -177,11 +183,10 @@
                             <select name="prov"
                                 class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
                                 <option>Pilih Provinsi</option>
-                                <option value="35" {{ $balita->prov == '35' ? 'selected' : '' }}>Jawa Timur
-                                </option>
-
+                                @foreach ($prov as $provinsi)
+                                    <option value="{{ $provinsi->id }}">{{ $provinsi->nama }}</option>
+                                @endforeach
                             </select>
-
                         </div>
                     </div>
                     <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
@@ -194,11 +199,7 @@
                                 name="kd_ktkbp">
                                 <option>Pilih Kabupaten</option>
                                 @foreach ($ktkbp as $ktkb)
-                                    <option value="{{ $ktkb->kd_ktkbp }}">{{ $ktkb->nm_ktkbp }}</option>
-                                    <option value="{{ $ktkb->kd_ktkbp }}"
-                                        {{ $balita->kd_ktkbp == $ktkb->kd_ktkbp ? 'selected' : '' }}>
-                                        {{ $ktkb->nm_ktkbp }}
-                                    </option>
+                                    <option value="{{ $ktkb->id }}">{{ $ktkb->nama }}</option>
                                 @endforeach
                             </select>
 
@@ -214,19 +215,10 @@
                                 id="kecamatan" name="kd_kcmtn">
                                 <option>Pilih Kecamatan</option>
                                 @foreach ($kcmtn as $kecamatan)
-                                    <option value="{{ $kecamatan->kd_kcmtn }}"
-                                        {{ $balita->kd_kcmtn == $kecamatan->kd_kcmtn ? 'selected' : '' }}>
-                                        {{ $kecamatan->nm_kcmtn }}</option>
+                                    <option value="{{ $kecamatan->id }}">{{ $kecamatan->nama }}</option>
                                 @endforeach
                             </select>
-                            <div
-                                class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20">
-                                    <path
-                                        d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                                </svg>
-                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -238,22 +230,14 @@
                         <div class="relative">
                             <select
                                 class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                id="desa" name="kd_desa">
+                                id="desa" name="desa_id">
                                 <option>Pilih Desa</option>
-                                @foreach ($desa as $dsa)
-                                    <option value="{{ $dsa->kd_desa }}" data-kecamatan="{{ $dsa->kd_kcmtn }}"
-                                        {{ $balita->kd_desa == $dsa->kd_desa ? 'selected' : '' }}>
-                                        {{ $dsa->nm_desa }}</option>
+                                @foreach ($desa as $desa)
+                                    <option value="{{ $desa->id }}"data-kecamatan="{{ $desa->kecamatan_id }}">
+                                        {{ $desa->nama }}</option>
                                 @endforeach
                             </select>
-                            <div
-                                class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20">
-                                    <path
-                                        d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                                </svg>
-                            </div>
+
                         </div>
                     </div>
                     <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
@@ -262,8 +246,7 @@
                         </label>
                         <input
                             class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                            type="number" placeholder="001 / 01" name="rw"
-                            value="{{ old('rw', $balita->rw) }}">
+                            type="number" placeholder="001 / 01" name="rw">
                     </div>
                     <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
                         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
@@ -271,8 +254,7 @@
                         </label>
                         <input
                             class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                            type="number" placeholder="001 / 01" name="rt"
-                            value="{{ old('rw', $balita->rt) }}">
+                            type="number" placeholder="001 / 01" name="rt">
                     </div>
                 </div>
                 <button class="mx-4 my-3 bg-hijautua hover:bg-hijaumuda text-white font-bold py-2 px-4 rounded-lg">

@@ -45,6 +45,7 @@ Route::group(['middleware' => ['auth', 'check_role:1']], function () {
     Route::prefix('/data-balita')->group(function () {
         Route::GET('/', [BalitaController::class, 'index'])->name('balita.index');
         Route::GET('/tambah', [BalitaController::class, 'create'])->name(('tambah.balita'));
+        Route::GET('/baby-detail/{id}', [BalitaController::class, 'show'])->name(('balita.show'));
         Route::POST('/simpan', [BalitaController::class, 'store'])->name('balita.simpan');
         Route::GET('/edit/{nama_balita}/{id}', [BalitaController::class, 'edit'])->name('balita.edit');
         Route::PUT('/update-data/{id}', [BalitaController::class, 'update'])->name('balita.update');
@@ -60,6 +61,7 @@ Route::group(['middleware' => ['auth', 'check_role:1']], function () {
         Route::POST('/save', [NakesController::class, 'store'])->name('nakes.simpan');
         Route::DELETE('/delete/{id}', [NakesController::class, 'destroy'])->name('nakes.destroy');
         Route::GET('/edit/{id}', [NakesController::class, 'edit'])->name('nakes.edit');
+        Route::GET('/nakes-detail/{id}', [NakesController::class, 'show'])->name('nakes.show');
         Route::PUT('/update/{id}', [NakesController::class, 'update'])->name('nakes.update');
         Route::GET('/generate-template-excel-nakes', [TemplateExcelController::class, 'generetaNakes'])->name('template.nakes');
         Route::POST('/import-data-nakes', [NakesController::class, 'import'])->name('import.nakes');

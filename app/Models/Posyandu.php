@@ -38,6 +38,6 @@ class Posyandu extends Model
     }
     public function jadwal()
     {
-        return $this->hasOne(Jadwal::class, 'id_psynd');
+        return $this->hasOne(Jadwal::class, 'posyandu_id');
     }
 }

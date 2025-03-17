@@ -31,7 +31,6 @@
                         <th scope="col" class="px-6 py-3  dark:bg-gray-800">
                             Action
                         </th>
-
                     </tr>
                 </thead>
                 <tbody>
@@ -39,33 +38,33 @@
                         <tr class="border-b border-gray-200 dark:border-gray-700">
                             <th scope="row"
                                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
-                                {{ $jdwl->posyandu->desa->kecamatan->nm_kcmtn }}
+                                {{ $jdwl->posyandu->desa->kecamatan->nama }}
                             </th>
                             <th scope="row"
                                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
-                                {{ $jdwl->posyandu->desa->nm_desa }}
+                                {{ $jdwl->posyandu->desa->nama }}
                             </th>
                             <th scope="row"
                                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
-                                {{ $jdwl->posyandu->nm_psynd }}
+                                {{ $jdwl->posyandu->nama }}
                             </th>
-                            <input type="text" name="jadwal_posyandu" id="price" hidden placeholder=""
-                                value="{{ $jdwl->jadwal_posyandu }}">
+
                             <th class="px-8 py-4 mb-2 sm:mb-4 md:mb-6 lg:mb-8 bg-gray-50 dark:bg-gray-800">
                                 <div class="flex gap-1">
-                                    <a href="{{ route('jadwal.detailPetugas', ['jadwal_posyandu' => $jdwl->jadwal_posyandu, 'id_psynd' => $jdwl->id_psynd]) }}"
-                                        class="py-1 px-3  bg-blue-400 rounded-lg text-xs md:text-sm md:font-medium text-white dark:text-red-500 hover:underline"><i
-                                            class="fas fa-eye"></i></a>
+                                    <a href="{{ route('jadwal.detailPetugas', ['jadwal_posyandu' => $jdwl->jadwal_posyandu, 'id_psynd' => $jdwl->posyandu_id]) }}"
+                                        class="py-1 px-3 bg-blue-400 rounded-lg text-xs md:text-sm md:font-medium text-white dark:text-red-500 hover:underline">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
                                     <a
-                                        class="py-1 px-3  bg-yellow-400 rounded-lg text-xs md:text-sm md:font-medium text-white dark:text-red-500 hover:underline"><button
-                                            data-modal-target="crud-modal" data-modal-toggle="crud-modal"><i
-                                                class="fas fa-edit"></i>
+                                        class="py-1 px-3  bg-yellow-400 rounded-lg text-xs md:text-sm md:font-medium text-white dark:text-red-500 hover:underline">
+                                        <button data-modal-target="crud-modal" data-modal-toggle="crud-modal">
+                                            <i class="fas fa-edit"></i>
                                         </button>
                                     </a>
                                     <a
-                                        class="py-1 px-3 bg-red-400 rounded-lg text-xs md:text-sm md:font-medium text-white dark:text-red-500 hover:underline"><button
-                                            data-modal-target="crud-modal" data-modal-toggle="crud-modal"><i
-                                                class="fas fa-trash"></i>
+                                        class="py-1 px-3 bg-red-400 rounded-lg text-xs md:text-sm md:font-medium text-white dark:text-red-500 hover:underline">
+                                        <button data-modal-target="crud-modal" data-modal-toggle="crud-modal">
+                                            <i class="fas fa-trash"></i>
                                         </button>
                                     </a>
                                 </div>

@@ -15,10 +15,10 @@ class Ktkbp extends Model
     ];
     public function provinsi()
     {
-        return $this->belongsTo(Provinsi::class);
+        return $this->belongsTo(Provinsi::class, 'prov_id');
     }
     public function kecamatan()
     {
-        return $this->hasMany(Kecamatan::class, 'kd_ktkbp', 'kd_ktkbp');
+        return $this->hasMany(Kecamatan::class, 'ktkbp_id');
     }
 }

@@ -16,7 +16,7 @@ class Nakes extends Model
     }
     public function jadwal()
     {
-        return $this->hasMany(Jadwal::class, 'id_nakes');
+        return $this->hasMany(Jadwal::class, 'nakes_id');
     }
     protected static function boot()
     {

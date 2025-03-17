@@ -18,6 +18,7 @@ class NakesController extends Controller
      */
     public function index(Request $request)
     {
+        $nks = Nakes::all();
         $search = $request->query('search');
         if (!empty($search)) {
             $nakes = Nakes::where(function ($query) use ($search) {
@@ -35,8 +36,9 @@ class NakesController extends Controller
             })
                 ->paginate(5)->fragment('std');
         }
+
         $title = 'Data Tenaga Kesehatan';
-        return view('nakes', compact('nakes', 'title', 'search'));
+        return view('admin.nakes.nakes', compact('nakes', 'title', 'search', 'nks'));
     }
     public function store(Request $request): RedirectResponse
     {
@@ -111,6 +113,14 @@ class NakesController extends Controller
             }
         }
         return redirect()->route('nakes.index')->with('success', 'Data Posyandu berhasil diimport');
+    }
+
+
+    public function show($encryptedId)
+    {
+
+        $nakes = Nakes::find(Crypt::decrypt($encryptedId));
+        return view('admin.nakes.show', compact('nakes'));
     }
 
 

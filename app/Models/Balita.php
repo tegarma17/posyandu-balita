@@ -72,17 +72,17 @@ class Balita extends Model
 
     public static function getBabyAge($id)
     {
-        return DB::table('balitas')
+        return DB::table('balita')
             ->select(DB::raw('CEIL(TIMESTAMPDIFF(MONTH, tgl_lahir, CURDATE())) as usia'))
             ->where('id', $id)
             ->first();
     }
     public static function HealthWeight($id)
     {
-        return self::join('penimbangans', 'penimbangans.id_balita', '=', 'balitas.id')
-            ->join('pengukurans', 'pengukurans.id_balita', '=', 'balitas.id')
-            ->select('balitas.*', 'penimbangans.*', 'pengukurans.*')
-            ->where('balitas.id', '=', $id)
+        return self::join('penimbangans', 'penimbangans.id_balita', '=', 'balita.id')
+            ->join('pengukurans', 'pengukurans.id_balita', '=', 'balita.id')
+            ->select('balita.*', 'penimbangans.*', 'pengukurans.*')
+            ->where('balita.id', '=', $id)
             ->get();
     }
 }

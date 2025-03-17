@@ -38,20 +38,29 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($tanggal_jadwal as $jdwl)
+                    @if ($tanggal_jadwal == null)
                         <tr class="border-b border-gray-200 dark:border-gray-700">
                             <th scope="row"
                                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
-                                {{ \Carbon\Carbon::parse($jdwl->jadwal_posyandu)->isoFormat('dddd, D MMMM Y - H:m') }}
-                            </th>
-
-                            <th class="px-8 py-4 m-4 bg-gray-50 dark:bg-gray-800">
-                                <a href="{{ route('jadwal.detailAdmin', Crypt::encrypt($jdwl->jadwal_posyandu)) }}"
-                                    class="py-1 px-3  bg-blue-400 rounded-lg font-medium text-white dark:text-red-500 hover:underline">Lihat
-                                    Posyandu</a>
+                                Belum ada jadwal
                             </th>
                         </tr>
-                    @endforeach
+                    @else
+                        @foreach ($tanggal_jadwal as $jdwl)
+                            <tr class="border-b border-gray-200 dark:border-gray-700">
+                                <th scope="row"
+                                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
+                                    {{ \Carbon\Carbon::parse($jdwl->jadwal_posyandu)->isoFormat('dddd, D MMMM Y - H:m') }}
+                                </th>
+
+                                <th class="px-8 py-4 m-4 bg-gray-50 dark:bg-gray-800">
+                                    <a href="{{ route('jadwal.detailAdmin', Crypt::encrypt($jdwl->jadwal_posyandu)) }}"
+                                        class="py-1 px-3  bg-blue-400 rounded-lg font-medium text-white dark:text-red-500 hover:underline">Lihat
+                                        Posyandu</a>
+                                </th>
+                            </tr>
+                        @endforeach
+                    @endif
                 </tbody>
             </table>
         </div>
@@ -94,7 +103,7 @@
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                     <option selected="">Pilih Kecamatan</option>
                                     @foreach ($kecamatan as $kcmtn)
-                                        <option value="{{ $kcmtn->kd_kcmtn }}">{{ $kcmtn->nm_kcmtn }}</option>
+                                        <option value="{{ $kcmtn->id }}">{{ $kcmtn->nama }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -105,8 +114,8 @@
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                     <option selected="">Pilih Desa</option>
                                     @foreach ($desa as $dsa)
-                                        <option value="{{ $dsa->kd_desa }}" data-kecamatan="{{ $dsa->kd_kcmtn }}">
-                                            {{ $dsa->nm_desa }}</option>
+                                        <option value="{{ $dsa->id }}" data-kecamatan="{{ $dsa->kecamatan_id }}">
+                                            {{ $dsa->nama }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -117,8 +126,8 @@
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                     <option selected="">Pilih Posyandu</option>
                                     @foreach ($posyandu as $psynd)
-                                        <option value="{{ $psynd->id }}" data-desa="{{ $psynd->kd_desa }}">
-                                            {{ $psynd->nm_psynd }}</option>
+                                        <option value="{{ $psynd->id }}" data-desa="{{ $psynd->desa_id }}">
+                                            {{ $psynd->nama }}</option>
                                     @endforeach
                                 </select>
                             </div>

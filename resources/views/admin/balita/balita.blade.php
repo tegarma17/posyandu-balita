@@ -7,12 +7,14 @@
             <li class="text-gray-600 mr-2 font-medium">/</li>
             <li class="text-gray-600 mr-2 font-medium">{{ $title }}</li>
         </ul>
-        <h4 class="text-2xl font-bold text-center my-4">Data Balita</h4>
+        <h4 class="text-xl font-bold text-center my-4">Data Balita</h4>
         <!-- Tambah data balita -->
         <div class="flex justify-start">
             <a href="{{ route('tambah.balita') }}">
-                <button class="mx-4 my-3 bg-hijautua hover:bg-hijaumuda text-white py-2 px-4 rounded-lg">Tambah
-                    Data Balita Baru</button></a>
+                <button class="mx-4 my-3 bg-hijautua hover:bg-hijaumuda text-white py-2 px-4 rounded-lg">
+                    Tambah Data
+                </button>
+            </a>
             <a href="{{ route('download.template.balita') }}"
                 class="block my-3 bg-yellow-400 hover:bg-orange-400 text-white py-2 px-4 rounded-lg" type="button">
                 Download Template Excel
@@ -67,7 +69,7 @@
                         <th scope="col" class="px-6 py-3">
                             Nama Ibu
                         </th>
-                        <th scope="col" class="px-6 py-3  dark:bg-gray-800">
+                        <th scope="col" class="px-6 py-3 dark:bg-gray-800">
                             Alamat
                         </th>
                         <th scope="col" class="px-6 py-3">
@@ -82,28 +84,44 @@
                                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
                                 {{ $blt->nama }}
                             </th>
-                            <td class="px-6 py-4">
+                            <th scope="row"
+                                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
                                 {{ $blt->nama_ortu }}
-                            </td>
-                            <td class="px-6 py-4 bg-gray-50 dark:bg-gray-800">
+                            </th>
+                            <th scope="row"
+                                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
                                 {{ $blt->alamat }}
-                            </td>
-                            <td class="px-6 py-4 text-center  tracking-wider">
-                                <div class="flex gap-3 items-center justify-center text-white ">
-                                    <form action="{{ route('balita.delete', $blt->id) }}" method="POST"
-                                        onsubmit="return confirmDelete(event)">
+                            </th>
+                            <th class="px-8 py-4 mb-2 sm:mb-4 md:mb-6 lg:mb-8 bg-gray-50 dark:bg-gray-800">
+                                <div class="flex gap-1">
+                                    <a href="{{ route('balita.show', Crypt::encrypt($blt->id)) }}"
+                                        class="py-1 px-3 bg-blue-400
+                                        rounded-lg text-xs md:text-sm md:font-medium text-white dark:text-red-500
+                                        hover:underline">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <a href="{{ route('balita.edit', ['nama_balita' => Str::slug($blt->nama), 'id' => Crypt::encrypt($blt->id)]) }}"
+                                        class="py-1 px-3  bg-yellow-400 rounded-lg text-xs md:text-sm md:font-medium text-white dark:text-red-500 hover:underline">
+                                        <button data-modal-target="crud-modal" data-modal-toggle="crud-modal">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </a>
+                                    <a onclick="deleteConfirmation({{ $blt->id }});"
+                                        class="py-1 px-3 bg-red-400 rounded-lg text-xs md:text-sm md:font-medium text-white dark:text-red-500 hover:underline">
+                                        <button data-modal-target="crud-modal" data-modal-toggle="crud-modal">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </a>
+                                    <form id="delete-form-{{ $blt->id }}"
+                                        action="{{ route('balita.delete', $blt->id) }}" method="POST"
+                                        style="display: none;"">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit"
-                                            class="bg-red-500 py-3 px-6 rounded-lg dark:text-red-500 hover:underline transition duration-150 ease-in-out">Delete</button>
-                                        <a href="{{ route('balita.edit', ['nama_balita' => Str::slug($blt->nama), 'id' => Crypt::encrypt($blt->id)]) }}"
-                                            class="bg-yellow-400 py-3 px-6 mb-3 rounded-lg dark:text-red-500 hover:underline">Edit</a>
                                     </form>
                                 </div>
-                            </td>
+                            </th>
                         </tr>
                     @endforeach
-
                 </tbody>
             </table>
         </div>
@@ -116,9 +134,7 @@
 
         <!-- Modal Delete -->
         <script>
-            function confirmDelete(event) {
-                event.preventDefault(); // Mencegah pengiriman form
-                const form = event.target;
+            function deleteConfirmation(id) {
                 Swal.fire({
                     title: 'Apakah kamu yakin?',
                     text: "Data yang terhapus tidak bisa dikembalikan!!",
@@ -129,7 +145,7 @@
                     confirmButtonText: 'Hapus'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        form.submit(); // Kirim form setelah konfirmasi
+                        document.getElementById('delete-form-' + id).submit();
                     }
                 });
             }

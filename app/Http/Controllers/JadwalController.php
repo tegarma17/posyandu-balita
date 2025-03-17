@@ -11,11 +11,13 @@ use App\Models\Jadwal;
 use App\Models\Antrian;
 use App\Models\Posyandu;
 use App\Models\Kecamatan;
-
+use App\Models\Provinsi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
+
+use function PHPUnit\Framework\isEmpty;
 
 class JadwalController extends Controller
 {
@@ -28,47 +30,43 @@ class JadwalController extends Controller
         $kecamatan = Kecamatan::all();
         $posyandu = Posyandu::all();
         $desa = Desa::all();
+        $provinsi = Provinsi::all();
 
+        Carbon::setLocale('id');
+        $today = now()->toDateString();
+        $cek = Jadwal::whereDate('jadwal_posyandu', $today)->first();
         $tanggal_jadwal = Jadwal::select('jadwal_posyandu')
             ->distinct()
             ->orderBy('jadwal_posyandu', 'desc')
             ->paginate(5)
             ->fragment('std');
-
-        Carbon::setLocale('id');
-
-        $today = now()->toDateString();
-        $cek = Jadwal::whereDate('selesai_posyandu', $today)->first();
-
         if ($cek == null) {
-            $assignedNakesIds = Jadwal::pluck('id_nakes')->toArray();
             $nakes = Nakes::whereHas('user.role', function ($query) {
                 $query->where('nama_role', 'Tenaga Kesehatan');
             })->get();
-
-            $assignedKaderIds = Jadwal::pluck('id_nakes')->toArray();
             $kader = Kader::whereHas('user.role', function ($query) {
                 $query->where('nama_role', 'Kader Posyandu');
             })->get();
         } else {
-            $assignedNakesIds = Jadwal::pluck('id_nakes')->toArray();
+            $assignedNakesIds = Jadwal::pluck('nakes_id')->toArray();
             $nakes = Nakes::whereHas('user.role', function ($query) {
                 $query->where('nama_role', 'Tenaga Kesehatan');
             })->whereNotIn('id', $assignedNakesIds)->get();
 
-            $assignedKaderIds = Jadwal::pluck('id_nakes')->toArray();
+            $assignedKaderIds = Jadwal::pluck('nakes_id')->toArray();
             $kader = Kader::whereHas('user.role', function ($query) {
                 $query->where('nama_role', 'Kader Posyandu');
             })->whereNotIn('id', $assignedKaderIds)->get();
         }
-        return view('jadwal', compact('title', 'kecamatan', 'desa', 'posyandu', 'nakes', 'kader', 'tanggal_jadwal'));
+
+        return view('admin.jadwal.jadwal', compact('title', 'kecamatan', 'desa', 'posyandu', 'nakes', 'kader', 'tanggal_jadwal', 'cek'));
     }
 
     public function detailJadwal($encryptedId)
     {
         $id = Crypt::decrypt($encryptedId);
         $title = 'Jadwal Posyandu';
-        $jadwalData = Jadwal::select('id_psynd', 'jadwal_posyandu')
+        $jadwalData = Jadwal::select('posyandu_id', 'jadwal_posyandu')
             ->where('jadwal_posyandu', $id)
             ->distinct()
             ->get();
@@ -77,12 +75,12 @@ class JadwalController extends Controller
     public function detailPetugas($jadwal_posyandu, $id_psynd)
     {
         $title = 'Jadwal Posyandu';
-        $tanggalSpesifik = Jadwal::select('id_psynd', 'jadwal_posyandu')
-            ->where('id_psynd', $id_psynd)
+        $tanggalSpesifik = Jadwal::select('posyandu_id', 'jadwal_posyandu')
+            ->where('posyandu_id', $id_psynd)
             ->where('jadwal_posyandu', $jadwal_posyandu)
             ->first();
 
-        $coba = Jadwal::where('id_psynd', $tanggalSpesifik->id_psynd)
+        $coba = Jadwal::where('posyandu_id', $tanggalSpesifik->posyandu_id)
             ->where('jadwal_posyandu', $tanggalSpesifik->jadwal_posyandu)
             ->get();
 
@@ -119,13 +117,13 @@ class JadwalController extends Controller
         $id = Auth::user()->id;
         $cek = Nakes::where('user_id', $id)->first();
 
-        $jadwal_posyandu = Jadwal::where('id_nakes', $cek->id)
+        $jadwal_posyandu = Jadwal::where('nakes_id', $cek->id)
             ->orderBy('selesai_posyandu', 'desc')->first();
 
         $jadwal = now()->format('m-d');
         $selesaiPosyandu = \Carbon\Carbon::parse($jadwal_posyandu->selesai_posyandu)->format('m-d');
         if ($jadwal <= $selesaiPosyandu) {
-            $jadwal_posyandu = Jadwal::where('id_nakes', $cek->id)
+            $jadwal_posyandu = Jadwal::where('nakes_id', $cek->id)
                 ->orderBy('selesai_posyandu', 'desc')->first();
         } else {
             $jadwal_posyandu = null;
@@ -163,15 +161,15 @@ class JadwalController extends Controller
     public function store(Request $request)
     {
         $id_psynd = $request->input('id_psynd');
-        $id_nakes = $request->input('id_nakes');
+        $nakes_id = $request->input('id_nakes');
         $jadwal_posyandu = $request->input('jadwal_posyandu');
         $selesai_posyandu = $request->input('selesai_posyandu');
 
         $data = [];
-        foreach ($id_nakes as $nakes) {
+        foreach ($nakes_id as $nakes) {
             $data[] = [
-                'id_psynd' => $id_psynd,
-                'id_nakes' =>  $nakes,
+                'posyandu_id' => $id_psynd,
+                'nakes_id' =>  $nakes,
                 'jadwal_posyandu' => $jadwal_posyandu,
                 'selesai_posyandu' => $selesai_posyandu,
                 'created_at' => now(),
@@ -224,7 +222,7 @@ class JadwalController extends Controller
         $kecamatan = Kecamatan::all();
         $posyandu = Posyandu::all();
         $desa = Desa::all();
-        $assignedNakesIds = Jadwal::pluck('id_nakes')->toArray();
+        $assignedNakesIds = Jadwal::pluck('nakes_id')->toArray();
         $nakes = Nakes::whereHas('user.role', function ($query) {
             $query->where('nama_role', 'Tenaga Kesehatan');
         })->whereNotIn('id', $assignedNakesIds)->get();

@@ -11,11 +11,11 @@ class Jadwal extends Model
 
     public function nakes()
     {
-        return $this->belongsTo(Nakes::class, 'id_nakes');
+        return $this->belongsTo(Nakes::class, 'nakes_id');
     }
     public function posyandu()
     {
-        return $this->belongsTo(Posyandu::class, 'id_psynd');
+        return $this->belongsTo(Posyandu::class, 'posyandu_id');
     }
     public function antrian()
     {
