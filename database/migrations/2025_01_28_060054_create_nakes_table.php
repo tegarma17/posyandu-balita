@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('nakes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->string('nik', 16);
-            $table->string('kd_nakes');
-            $table->string('nama');
-            $table->enum('jns_klmn', ['l', 'p']);
-            $table->string('alamat');
+            $table->string('nik', 20);
+            $table->string('kd_nakes', 10);
+            $table->string('nama', 50);
+            $table->enum('jk', ['l', 'p']);
+            $table->string('alamat', 100);
             $table->string('no_hp', 13);
             $table->timestamps();
         });

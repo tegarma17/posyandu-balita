@@ -23,11 +23,12 @@ class TemplateExcelController extends Controller
         $sheet1 = $spreadsheet->getActiveSheet();
         $sheet1->setTitle('nakes');
 
-        $sheet1->setCellValue('A1', 'NIK');
-        $sheet1->setCellValue('B1', 'Nama');
+        $sheet1->setCellValue('A1', 'NIK**');
+        $sheet1->setCellValue('B1', 'Nama**');
         $sheet1->setCellValue('C1', 'Jenis Kelamin l/p');
-        $sheet1->setCellValue('D1', 'Alamat');
-        $sheet1->setCellValue('E1', 'Nomer HP / WA');
+        $sheet1->setCellValue('D1', 'Alamat**');
+        $sheet1->setCellValue('E1', 'Nomer HP / WA**');
+        $sheet1->setCellValue('H1', '** Wajib diisi');
         $sheet1->getStyle('A')->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_TEXT);
         $sheet1->getStyle('E')->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_TEXT);
 
@@ -57,12 +58,15 @@ class TemplateExcelController extends Controller
         $sheet2 = $spreadsheet->getActiveSheet();
         $sheet2->setTitle('kader');
 
-        $sheet2->setCellValue('A1', 'NIK');
-        $sheet2->setCellValue('B1', 'Nama');
+        $sheet2->setCellValue('A1', 'NIK**');
+        $sheet2->setCellValue('B1', 'Nama**');
         $sheet2->setCellValue('C1', 'Jenis Kelamin l/p');
 
-        $sheet2->setCellValue('D1', 'Alamat');
-        $sheet2->setCellValue('E1', 'Nomer HP / WA');
+        $sheet2->setCellValue('D1', 'Alamat**');
+        $sheet2->setCellValue('E1', 'Nomer HP / WA**');
+        $sheet2->setCellValue('E1', 'Nomer HP / WA**');
+        $sheet2->setCellValue('H1', '** Wajib diisi');
+
         $sheet2->getStyle('E')->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_TEXT);
         $sheet2->getStyle('A')->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_TEXT);
 

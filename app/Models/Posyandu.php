@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Posyandu extends Model
 {
     protected $table = 'posyandu';
-    protected $fillable = ['kd_ktkbp', 'kd_kcmtn', 'kd_desa', 'kd_psynd', 'nm_psynd', 'alamat', 'prov'];
+    protected $fillable = ['desa_id', 'kd_psynd', 'nama', 'alamat'];
 
     protected static function boot()
     {
@@ -34,6 +34,10 @@ class Posyandu extends Model
     }
     public function desa()
     {
-        return $this->belongsTo(Desa::class, 'kd_desa', 'kd_desa');
+        return $this->belongsTo(Desa::class, 'desa_id');
+    }
+    public function jadwal()
+    {
+        return $this->hasOne(Jadwal::class, 'posyandu_id');
     }
 }

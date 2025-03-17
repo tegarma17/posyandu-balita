@@ -8,46 +8,75 @@ use App\Models\Posyandu;
 use App\Models\Kecamatan;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
+use App\Http\Requests\ValidasiData;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Crypt;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use App\Http\Controllers\TemplateExcelController;
+use App\Models\Provinsi;
 
 class PosyanduController extends Controller
 {
+    private $provinsi;
+    private $ktkbp;
+    private $kecamatan;
+    private $desa;
+
     protected $excelImportServices;
     public function __construct(TemplateExcelController $excelImportServices)
     {
         $this->excelImportServices = $excelImportServices;
     }
+    public function initData()
+    {
+        $this->provinsi = Provinsi::all();
+        $this->ktkbp = Ktkbp::all();
+        $this->kecamatan = Kecamatan::all();
+        $this->desa = Desa::all();
+    }
     public function index(Request $request)
     {
-        $ktkbp = Ktkbp::all();
-        $kcmtn = Kecamatan::all();
-        $desa = Desa::all();
+        $this->initData();
+        $provinsi = $this->provinsi;
+        $ktkbp = $this->ktkbp;
+        $kecamatan = $this->kecamatan;
+        $desa = $this->desa;
         $search = $request->query('search');
 
         if (!empty($search)) {
-            $psyndu = Posyandu::with('desa')
-                ->where('nm_psynd', 'like', '%' . $search . '%')
+            $psyndu = Posyandu::where('nama', 'like', '%' . $search . '%')
                 ->orWhere('kd_psynd', 'like', '%' . $search . '%')
                 ->orderBy('kd_psynd', 'asc')
                 ->paginate(5)->fragment('std');
         } else {
-            $psyndu = Posyandu::with('desa')
-                ->paginate(5)
+            $psyndu = Posyandu::paginate(5)
                 ->fragment('std');
         }
 
         $title = 'Data Posyandu';
-        return view('posyandu', compact('ktkbp', 'kcmtn', 'desa', 'title', 'psyndu', 'search'));
+        return view('posyandu', compact('provinsi', 'ktkbp', 'kecamatan', 'desa', 'title', 'psyndu', 'search'));
     }
 
     public function store(Request $request): RedirectResponse
     {
 
-        Posyandu::create($request->all());
+        $message = [
+            'kd_psynd.unique' => 'Kode Posyandu Sudah ada',
+            'nama.required' => 'Nama Posyandu Wajib diisi',
+            'alamat.required' => 'Alamat Wajib diisi',
+            'desa_id.required' => 'Desa Wajib Diisi'
+        ];
+        $validate = $request->validate([
+            'kd_psynd' => ['unique:posyandu,kd_psynd'],
+            'nama' => ['required'],
+            'alamat' => ['required'],
+            'desa_id' => ['required'],
+        ], $message);
+        $validate['kd_psynd'] = Posyandu::generateKdPsynd();
+
+        Posyandu::create($validate);
         return redirect()->route('psynd.index')->with('success', 'Posyandu Baru telah ditambahkan.');
     }
     public function import(Request $request)
@@ -67,12 +96,9 @@ class PosyanduController extends Controller
             if (!empty($row[0]) && !empty($row[1]) && !empty($row[2]) && !empty($row[3])) {
                 Posyandu::updateOrCreate(
                     [
-                        'nm_psynd' => $row[0],
+                        'nama' => $row[0],
                         'alamat' => $row[1],
-                        'prov' => $row[3],
-                        'kd_ktkbp' => $row[5],
-                        'kd_kcmtn' => $row[7],
-                        'kd_desa' => $row[9],
+                        'desa_id' => $row[6],
                     ]
                 );
             }
@@ -86,8 +112,9 @@ class PosyanduController extends Controller
         return redirect()->route('psynd.index')->with('success', 'Posyandu Terhapus.');
     }
 
-    public function edit(string $id): View
+    public function edit($encryptedId)
     {
+        $id = Crypt::decrypt($encryptedId);
         $posyandu = Posyandu::find($id);
         $kecamatan = Kecamatan::all();
         $desa = Desa::where('kcmtn_id', $posyandu->kecamatan_id)->get();

@@ -1,0 +1,32 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('whotb', function (Blueprint $table) {
+            $table->id();
+            $table->integer('usia');
+            $table->enum('jk', ['l', 'p']);
+            $table->enum('posisi', ['terlentang', 'berdiri']);
+            $table->double('mean_tb');
+            $table->double('std_dev');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('who_t_b_s');
+    }
+};

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Crypt;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class NakesController extends Controller
@@ -17,10 +18,13 @@ class NakesController extends Controller
      */
     public function index(Request $request)
     {
+        $nks = Nakes::all();
         $search = $request->query('search');
         if (!empty($search)) {
-            $nakes = Nakes::where('nama', 'like', '%' . $search . '%')
-                ->orWhere('kd_nakes', 'like', '%' . $search . '%')
+            $nakes = Nakes::where(function ($query) use ($search) {
+                $query->where('nama', 'like', '%' . $search . '%')
+                    ->orWhere('kd_nakes', 'like', '%' . $search . '%');
+            })
                 ->whereHas('user.role', function ($query) {
                     $query->where('nama_role', 'Tenaga Kesehatan');
                 })
@@ -32,20 +36,44 @@ class NakesController extends Controller
             })
                 ->paginate(5)->fragment('std');
         }
+
         $title = 'Data Tenaga Kesehatan';
-        return view('nakes', compact('nakes', 'title', 'search'));
+        return view('admin.nakes.nakes', compact('nakes', 'title', 'search', 'nks'));
     }
     public function store(Request $request): RedirectResponse
     {
+        $message = [
+            'nik.required' => 'NIK Wajib diisi',
+            'nik.unique' => 'NIK sudah terdaftar',
+            'nik.max' => 'NIK maksimal 16 angka',
+            'nama.required' => 'Nama Wajib diisi',
+            'alamat.required' => 'Alamat Wajib diisi',
+            'no_hp.required' => 'Nomer HP wajib disii',
+            'no_hp.max' => 'Nomer HP maksimal 13 angka',
+            'no_hp.numeric' => 'Nomer HP harus Angka',
+            'user_id.required' => 'User ID tidak boleh kosong',
+            'user_id.unique' => 'User ID sudah terdaftar',
+
+        ];
+        $validate = $request->validate([
+            'nik' => 'required|unique:nakes|max:16',
+            'nama' => 'required',
+            'alamat' => 'required',
+            'no_hp' => 'required|numeric',
+            'user_id' => 'requried|unique:nakes'
+        ], $message);
+        $tambahanData = $request->only(['jns_klmn']);
+        $data = array_merge($validate, $tambahanData);
         $kode = Nakes::generateNakes();
         User::create([
             'role_id' => 3,
             'username' => $kode,
             'password' => bcrypt($kode),
         ]);
-        $nakes = $request->all();
-        $nakes['user_id'] = User::latest()->first()->id;
-        Nakes::create($nakes);
+        $data['user_id'] = User::latest()->first()->id;
+        $data['kd_nakes'] = $kode;
+
+        Nakes::create($data);
         return redirect()->route('nakes.index')->with('success', 'Tenaga Kesehatan Baru telah ditambahkan.');
     }
 
@@ -77,7 +105,7 @@ class NakesController extends Controller
                     [
                         'user_id' =>  User::latest()->first()->id,
                         'nama' => $row[1],
-                        'jns_klmn' => $row[2],
+                        'jk' => $row[2],
                         'alamat' => $row[3],
                         'no_hp' => $row[4],
                     ]
@@ -88,10 +116,20 @@ class NakesController extends Controller
     }
 
 
-
-    public function edit(string $id)
+    public function show($encryptedId)
     {
+
+        $nakes = Nakes::find(Crypt::decrypt($encryptedId));
+        return view('admin.nakes.show', compact('nakes'));
+    }
+
+
+
+    public function edit($encryptedId)
+    {
+        $id = Crypt::decrypt($encryptedId);
         $nakes = Nakes::find($id);
+
         return view('editNakes', compact('nakes', 'id'));
     }
 
@@ -115,6 +153,6 @@ class NakesController extends Controller
         $user = User::findOrFail($nakes->user_id);
         $nakes->delete();
         $user->delete();
-        return redirect()->route('nakes.index')->with('success', 'Posyandu Terhapus.');
+        return redirect()->route('nakes.index')->with('success', 'Data Tenaga Kesehatan telah Terhapus.');
     }
 }

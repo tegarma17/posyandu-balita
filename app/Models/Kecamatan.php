@@ -10,17 +10,17 @@ class Kecamatan extends Model
     use HasFactory;
     protected $table = 'kecamatan';
     protected $fillable = [
-        'kd_ktkbp',
+        'ktkbp_id',
         'kd_kcmtn',
-        'nm_kcmtn',
+        'nama',
     ];
 
     public function ktkbp()
     {
-        return $this->belongsTo(Ktkbp::class, 'kd_ktkbp', 'kd_ktkbp');
+        return $this->belongsTo(Ktkbp::class, 'ktkbp_id');
     }
     public function desa()
     {
-        return $this->hasMany(Desa::class, 'kd_kcmtn', 'kd_kcmtn');
+        return $this->hasMany(Desa::class, 'kecamatan_id');
     }
 }

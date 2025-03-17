@@ -7,30 +7,66 @@ use App\Models\User;
 use App\Models\Ktkbp;
 use App\Models\Balita;
 use App\Models\Kecamatan;
+use App\Models\Provinsi;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Crypt;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+
 
 class BalitaController extends Controller
 {
+    protected $provinsi;
+    protected $ktkbp;
+    protected $kecamatan;
+    protected $desa;
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function initData()
     {
-        $balita = Balita::paginate(5);
+        $this->provinsi = Provinsi::all();
+        $this->ktkbp = Ktkbp::all();
+        $this->kecamatan = Kecamatan::all();
+        $this->desa = Desa::all();
+    }
+    public function index(Request $request)
+    {
+        $search = $request->query('search');
+        if (!empty($search)) {
+            $balita = Balita::where('nama', 'like', '%' . $search . '%')
+                ->orWhere('nama_ortu', 'like', '%' . $search . '%')
+                ->orderBy('nama', 'ASC')
+                ->paginate(5)->fragment('std');
+        } else {
+            $balita = Balita::paginate(5)->fragment('std');
+        }
+
         $title = 'Data Balita';
-        return view('balita', compact('balita', 'title'));
+        return view('admin.balita.balita', compact('balita', 'title', 'search'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
+
+    public function show($encryptedId)
+    {
+        $balita = Balita::find(Crypt::decrypt($encryptedId));
+        return view('admin.balita.show', compact('balita'));
+    }
     public function create()
     {
+        $this->initData();
+        $kode = Balita::generateBalita();
+
         $title = 'Tambah Data Balita';
-        $ktkbp = Ktkbp::all();
-        $kcmtn = Kecamatan::all();
-        $desa = Desa::all();
-        return view('tambahdtBalita', compact('title', 'ktkbp', 'kcmtn', 'desa'));
+        $ktkbp = $this->ktkbp;
+        $prov = $this->provinsi;
+        $kcmtn = $this->kecamatan;
+        $desa = $this->desa;
+        return view('admin.balita.tambahdtBalita', compact('title', 'ktkbp', 'kcmtn', 'desa', 'kode', 'prov'));
     }
 
     /**
@@ -38,6 +74,39 @@ class BalitaController extends Controller
      */
     public function store(Request $request)
     {
+        $validate = $request->validate([
+
+            'desa_id' => 'required',
+
+            'nik' => 'required|unique:balita',
+            'no_kk' => 'required|unique:balita',
+            'nik_ortu' => 'required|unique:balita',
+            'nama' => 'required',
+            'tgl_lahir' => 'required',
+            'tmpt_lahir' => 'required',
+            'bb_awal' => 'required',
+            'tb_awal' => 'required',
+            'nama_ortu' => 'required',
+            'no_hp_ortu' => 'required',
+
+        ], [
+            'desa_id.required' => 'Desa Wajib diisi',
+            'nik.required' => 'NIK Wajib diisi',
+            'nik.unique' => 'NIK sudah terdaftar',
+            'no_kk.required' => 'Nomer KK Wajib diisi',
+            'no_kk.unique' => 'Nomer KK sudah terdaftar',
+            'nik_ortu.required' => 'NIK Orang Tua Wajib diisi',
+            'nik_ortu.unique' => 'NIK Orang Tua sudah terdaftar',
+            'nama.required' => 'Nama Balita wajib diisi',
+            'tgl_lahir.required' => 'Tanggal Lahir balita wajib disii',
+            'tmpt_lahir.required' => 'Tempat Lahir balita wajib disii',
+            'bb_awal.required' => 'Berat badan balita wajib disii',
+            'tb_awal.required' => 'Tinggi Badan balita wajib disii',
+            'nama_ortu.required' => 'Nama Orang Tua balita wajib disii',
+            'no_hp_ortu.required' => 'Nomer HP Orang Tua balita wajib disii',
+
+
+        ]);
         $latesBalita = User::where('username', 'like', 'balita%')->orderBy('username', 'desc')->first();
         if ($latesBalita) {
             $latesNumber = intval(substr($latesBalita->username, 6));
@@ -51,21 +120,77 @@ class BalitaController extends Controller
             'username' => $newUsername,
             'password' => $newUsername
         ]);
-        $balita = $request->all();
-        $balita['user_id'] = User::latest()->first()->id;
-        Balita::create($balita);
+        $tambahanData = $request->only([
+            'jns_klmn',
+            'alamat',
+            'rt',
+            'rw',
+            'anak_ke'
+        ]);
+        $data = array_merge($validate, $tambahanData);
+
+        $data['user_id'] = User::latest()->first()->id;
+        Balita::create($data);
         return redirect()->route('balita.index')->with('success', 'Data Balita Baru telah ditambahkan.');
     }
-
-
-    public function edit(string $id)
+    public function import(Request $request)
     {
+        $file = $request->file('file');
+        $spreadheet = IOFactory::load(($file->getPathname()));
+        $rows = $spreadheet->getSheetByName('Balita')->toArray();
+
+        foreach ($rows as $index => $row) {
+            $kode = Balita::generateBalita();
+            if ($index === 0) {
+                continue;
+            }
+            Log::info("Processing row: " . json_encode($row));
+
+            if (!empty($row[0]) && !empty($row[1]) && !empty($row[2])) {
+
+                User::create([
+                    'role_id' => 4,
+                    'username' => $kode,
+                    'password' => $kode,
+                ]);
+
+                Balita::updateOrCreate([
+                    'user_id' => User::latest()->first()->id,
+                    'desa_id' => $row[20],
+                    'nik' => $row[0],
+                    'no_kk' => $row[1],
+                    'nik_ortu' => $row[2],
+                    'nama' => $row[3],
+                    'jns_klmn' => $row[4],
+                    'tgl_lahir' => $row[5],
+                    'tmpt_lahir' => $row[6],
+                    'bb_awal' => $row[7],
+                    'tb_awal' => $row[8],
+                    'nama_ortu' => $row[9],
+                    'no_hp_ortu' => $row[10],
+                    'anak_ke' => $row[11],
+                    'alamat' => $row[12],
+                    'rt' => $row[21],
+                    'rw' => $row[22],
+                ]);
+            }
+        }
+        return redirect()->route('balita.index')->with('success', 'Data Balita berhasil diimport');
+    }
+
+    public function edit($nama_balita, $encryptedId)
+    {
+        $id = Crypt::decrypt($encryptedId);
         $balita = Balita::find($id);
+        if (Str::slug($balita->nama) !== $nama_balita) {
+            abort(404, 'Nama balita tidak sesuai.');
+        }
         $title = 'Edit Data Balita';
         $ktkbp = Ktkbp::all();
         $kcmtn = Kecamatan::all();
         $desa = Desa::all();
-        return view('editBalita', compact('balita', 'title', 'ktkbp', 'kcmtn', 'desa'));
+        $provinsi = Provinsi::all();
+        return view('admin.balita.editBalita', compact('balita', 'title', 'ktkbp', 'kcmtn', 'desa', 'id', 'provinsi'));
     }
 
     /**
@@ -83,11 +208,12 @@ class BalitaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Balita $balita)
+    public function destroy($id)
     {
-        $balita = Balita::findOrFail($balita->id);
+        $balita = Balita::findOrFail($id);
         $user = User::findOrFail($balita->user_id);
         $balita->delete();
         $user->delete();
+        return redirect()->route('balita.index')->with('success', 'Data Balita berhasil dihapus');
     }
 }

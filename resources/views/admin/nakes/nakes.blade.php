@@ -1,0 +1,343 @@
+<x-main-admin>
+
+    <section class="container mx-auto my-5">
+        <ul class="flex items-center text-sm ml-4 my-5">
+            <li class="mr-2">
+                <a href="#" class="text-gray-400 hover:text-gray-600 font-medium">Dashboard</a>
+            </li>
+            <li class="text-gray-600 mr-2 font-medium">/</li>
+            <li class="text-gray-600 mr-2 font-medium">{{ $title }}</li>
+        </ul>
+        <h4 class="text-xl font-bold text-center my-4">Data Tenaga Kesehatan</h4>
+        <!-- Modal toggle -->
+        <div class="flex justify-start">
+            <button data-modal-target="crud-modal" data-modal-toggle="crud-modal"
+                class="block mx-4 my-3 bg-hijautua hover:bg-hijaumuda text-white py-2 px-4 rounded-lg" type="button">
+                Tambah Data
+            </button>
+            <a href="{{ route('template.nakes') }}"
+                class="block my-3 bg-yellow-400 hover:bg-orange-400 text-white py-2 px-4 rounded-lg" type="button">
+                Download Template Excel
+            </a>
+        </div>
+        <div class="relative mx-4">
+            <form action="{{ route('import.nakes') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <input class="rounded-lg border border-gray-300 " type="file" name="file" required>
+                <button class="block my-3 bg-yellow-400 hover:bg-orange-400 text-white py-2 px-4 rounded-lg"
+                    type="submit">Unggah</button>
+            </form>
+        </div>
+        <form method="GET">
+            <label for="table-search" class="sr-only">Search</label>
+            <div class="relative mx-4">
+                <div
+                    class="absolute inset-y-0 left-0 rtl:inset-r-0 rtl:right-0 flex items-center ps-3 pointer-events-none">
+                    <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" aria-hidden="true" fill="currentColor"
+                        viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                </div>
+                <input type="text" id="table-search" name="search"
+                    class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-6"
+                    placeholder="Nama Tenaga Kesehatan" value="{{ request('search') }}">
+            </div>
+        </form>
+        @if ($errors->any())
+            <div>
+                <ul>
+                    <div class="flex items-center p-4 mb-4 text-sm text-yellow-800 border border-yellow-300 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300 dark:border-yellow-800"
+                        role="alert">
+                        <svg class="shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                                d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+                        </svg>
+                        <span class="sr-only">Info</span>
+                        <div>
+                            <span class="font-medium">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </span>
+                        </div>
+                    </div>
+            </div>
+        @endif
+        @if (session('success'))
+            <script>
+                Swal.fire({
+                    title: 'Success!',
+                    text: '{{ session('success') }}',
+                    icon: 'success'
+                });
+            </script>
+        @endif
+        <!-- Tabel data -->
+        <div class="relative overflow-x-auto mx-5 sm:rounded-lg">
+            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <thead class=" text-gray-700 uppercase dark:text-gray-400">
+                    <tr class="bg-green-700 text-white font-semibold text-base text-center">
+                        <th scope="col" class="px-6">
+                            Nama Nakes
+                        </th>
+                        <th scope="col" class="px-6">
+                            Alamat
+                        </th>
+                        <th scope="col" class="px-6">
+                            No HP
+                        </th>
+                        <th scope="col" class="px-6">
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($nakes as $nks)
+                        <tr class="border-b border-gray-200 dark:border-gray-700 text-center">
+                            <th scope="row"
+                                class="px-6 py-4 font-normal text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
+                                {{ $nks->nama }}
+                            </th>
+                            <th scope="row"
+                                class="px-6 py-4 font-normal text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
+                                {{ $nks->alamat }}
+                            </th>
+                            <th scope="row"
+                                class="px-6 py-4 font-normal text-gray-900 whitespace-nowrap bg-gray-50 dark:text-white dark:bg-gray-800">
+                                {{ $nks->no_hp }}
+                            </th>
+                            <th class="px-8 py-4 mb-2 sm:mb-4 md:mb-6 lg:mb-8 bg-gray-50 dark:bg-gray-800">
+                                <div class="flex gap-1">
+                                    <a href="{{ route('nakes.show', Crypt::encrypt($nks->id)) }}"
+                                        class="py-1 px-3 bg-blue-400
+                                        rounded-lg text-xs md:text-sm md:font-medium text-white dark:text-red-500
+                                        hover:underline">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <a
+                                        class="py-1 px-3  bg-yellow-400 rounded-lg text-xs md:text-sm md:font-medium text-white dark:text-red-500 hover:underline">
+                                        <button data-modal-target="edit-modal" data-modal-toggle="edit-modal">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </a>
+                                    <a onclick="deleteConfirmation({{ $nks->id }});"
+                                        class="py-1 px-3 bg-red-400 rounded-lg text-xs md:text-sm md:font-medium text-white dark:text-red-500 hover:underline">
+                                        <button data-modal-target="crud-modal" data-modal-toggle="crud-modal">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </a>
+                                    <form id="delete-form-{{ $nks->id }}"
+                                        action="{{ route('balita.delete', $nks->id) }}" method="POST"
+                                        style="display: none;"">
+                                        @csrf
+                                        @method('DELETE')
+                                    </form>
+                                </div>
+                            </th>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+
+        </div>
+        <!-- End Tabel -->
+        <div class="mt-4 flex justify-center ">
+            {{ $nakes->links('vendor.pagination.tailwind') }}
+
+        </div>
+        <!-- Modal Tambah Tenaga Kesehatan -->
+        <div id="crud-modal" tabindex="-1" aria-hidden="true"
+            class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+            <div class="relative p-4 w-full max-w-md max-h-full">
+                <!-- Modal content -->
+                <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                    <!-- Modal header -->
+                    <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                            Tenaga Kesehatan Baru
+                        </h3>
+                        <button type="button"
+                            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                            data-modal-toggle="crud-modal">
+                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                fill="none" viewBox="0 0 14 14">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                            </svg>
+                            <span class="sr-only">Close modal</span>
+                        </button>
+                    </div>
+                    <!-- Modal body -->
+
+                    <form class="p-4 md:p-5" action="{{ route('nakes.simpan') }}" method="POST">
+                        @csrf
+                        <div class="grid gap-4 mb-4 grid-cols-2">
+                            <div class="col-span-2 ">
+                                <label for="price"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">NIK</label>
+                                <input type="number" name="nik" id="nik"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                    placeholder="">
+                            </div>
+
+                            <div class="col-span-2 sm:col-span-1">
+                                <label for="price"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama</label>
+                                <input type="text" name="nama" id="nama"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                    placeholder="">
+                            </div>
+                            <div class="col-span-2 sm:col-span-1">
+                                <label for="jk"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jenis
+                                    Kelamin</label>
+                                <select id="jk" name="jk"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                    <option selected="">Jenis Kelamin</option>
+                                    <option value="l">Laki - Laki</option>
+                                    <option value="p">Perempuan</option>
+                                </select>
+                            </div>
+
+                            <div class="col-span-2">
+                                <label for="name"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Alamat</label>
+                                <input type="text" name="alamat" id="alamat"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                    placeholder="Type product name">
+                            </div>
+                            <div class="col-span-2">
+                                <label for="name"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nomer
+                                    HP</label>
+                                <input type="number" name="no_hp" id="no_hp"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                    placeholder="Type product name">
+                            </div>
+                        </div>
+                        <button type="submit"
+                            class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd"
+                                    d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                            Tambah Data
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- End Modal  -->
+
+        <!-- Modal Edit Tenaga Kesehatan -->
+        <div id="edit-modal" tabindex="-1" aria-hidden="true"
+            class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+            <div class="relative p-4 w-full max-w-md max-h-full">
+                <!-- Modal content -->
+                <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                    <!-- Modal header -->
+                    <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                            Tenaga Kesehatan Baru
+                        </h3>
+                        <button type="button"
+                            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                            data-modal-toggle="crud-modal">
+                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                fill="none" viewBox="0 0 14 14">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                            </svg>
+                            <span class="sr-only">Close modal</span>
+                        </button>
+                    </div>
+                    <!-- Modal body -->
+
+                    <form class="p-4 md:p-5" action="" method="POST">
+                        @csrf
+                        <div class="grid gap-4 mb-4 grid-cols-2">
+                            <div class="col-span-2 ">
+                                <label for="price"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">NIK</label>
+                                <input type="number" name="nik" id="nik"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                    placeholder="" value="{{ $nakes->nik }}">
+                            </div>
+
+                            <div class="col-span-2 sm:col-span-1">
+                                <label for="price"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama</label>
+                                <input type="text" name="nama" id="nama"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                    placeholder="" value="{{ $nakes->nama }}">
+                            </div>
+                            <div class="col-span-2 sm:col-span-1">
+                                <label for="jk"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jenis
+                                    Kelamin</label>
+                                <select id="jk" name="jk"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                    <option selected="">Jenis Kelamin</option>
+                                    <option value="l">Laki - Laki</option>
+                                    <option value="p">Perempuan</option>
+                                </select>
+                            </div>
+
+                            <div class="col-span-2">
+                                <label for="name"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Alamat</label>
+                                <input type="text" name="alamat" id="alamat"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                    placeholder="Type product name">
+                            </div>
+                            <div class="col-span-2">
+                                <label for="name"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nomer
+                                    HP</label>
+                                <input type="number" name="no_hp" id="no_hp"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                    placeholder="Type product name">
+                            </div>
+                        </div>
+                        <button type="submit"
+                            class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd"
+                                    d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                            Tambah Data
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- End Modal  -->
+
+
+    </section>
+
+    <script>
+        function deleteConfirmation(id) {
+            Swal.fire({
+                title: 'Apakah kamu yakin?',
+                text: "Data yang terhapus tidak bisa dikembalikan!!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Hapus'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + id).submit();
+                }
+            });
+        }
+    </script>
+</x-main-admin>

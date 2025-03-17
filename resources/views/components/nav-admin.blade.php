@@ -6,11 +6,15 @@
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Mina:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
         integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -27,93 +31,130 @@
         </a>
         <ul class="mt-4">
             <li class="mb-1 group active">
-                <a href="#"
+                <a href="{{ route('home') }}"
                     class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
                     <i class="ri-home-2-line mr-3 text-lg"></i>
                     <span class="text-sm">Dashboard</span>
                 </a>
             </li>
-            <li class="mb-1 group">
-                <span class="flex items-center py-2 px-4 text-gray-300 border-b border-b-white">
-                    <span class="text-sm">Data Master</span>
-                </span>
-            </li>
-            <li class="mb-1 group">
-                <a href="{{ route('balita.index') }}"
-                    class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
-                    <i class="ri-user-fill mr-3 text-lg"></i>
-                    <span class="text-sm">Data Balita</span>
-                </a>
-            </li>
-            <li class="mb-1 group">
-                <a href="{{ route('nakes.index') }}"
-                    class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
-                    <i class="ri-nurse-fill mr-3 text-lg"></i>
-                    <span class="text-sm">Data Tenaga Kesehatan</span>
-                </a>
-            </li>
-            <li class="mb-1 group">
-                <a href="{{ route('kader.index') }}"
-                    class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
-                    <i class="ri-nurse-fill mr-3 text-lg"></i>
-                    <span class="text-sm">Data Kader</span>
-                </a>
-            </li>
-            <li class="mb-1 group">
-                <a href="{{ route('psynd.index') }}"
-                    class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
-                    <i class="ri-building-2-fill mr-3 text-lg"></i>
-                    <span class="text-sm">Data Posyandu</span>
-                </a>
-            </li>
-            <li class="mb-1 group">
-                <span class="flex items-center py-2 px-4 text-gray-300 border-b border-b-white">
-                    <span class="text-sm">Data Vaksin / Imunisasi</span>
-                </span>
-            </li>
-            <li class="mb-1 group">
-                <a href="/dta_jdl"
-                    class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
-                    <i class="ri-calendar-todo-line mr-3 text-lg"></i>
-                    <span class="text-sm">Jadwal</span>
-                </a>
-            </li>
-            <li class="mb-1 group">
-                <a href="/dta-vip-blt"
-                    class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100 ">
-                    <i class="ri-health-book-fill mr-3 text-lg"></i>
-                    <span class="text-sm">VIP</span>
-                    <i class="ri-arrow-right-s-line ml-auto group-[.selected]:rotate-90"></i>
-                </a>
+            @if (auth()->user()->role_id == '1')
+                <li class="mb-1 group">
+                    <span class="flex items-center py-2 px-4 text-gray-300 border-b border-b-white">
+                        <span class="text-sm">Data Master</span>
+                    </span>
+                </li>
+                <li class="mb-1 group">
+                    <a href="{{ route('balita.index') }}"
+                        class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
+                        <i class="ri-user-fill mr-3 text-lg"></i>
+                        <span class="text-sm">Data Balita</span>
+                    </a>
+                </li>
+                <li class="mb-1 group">
+                    <a href="{{ route('nakes.index') }}"
+                        class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
+                        <i class="ri-nurse-fill mr-3 text-lg"></i>
+                        <span class="text-sm">Data Tenaga Kesehatan</span>
+                    </a>
+                </li>
+                <li class="mb-1 group">
+                    <a href="{{ route('kader.index') }}"
+                        class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
+                        <i class="ri-nurse-fill mr-3 text-lg"></i>
+                        <span class="text-sm">Data Kader</span>
+                    </a>
+                </li>
+                <li class="mb-1 group">
+                    <a href="{{ route('psynd.index') }}"
+                        class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
+                        <i class="ri-building-2-fill mr-3 text-lg"></i>
+                        <span class="text-sm">Data Posyandu</span>
+                    </a>
+                </li>
+                <li class="mb-1 group">
+                    <a href="{{ route('user') }}"
+                        class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
+                        <i class="ri-user-fill mr-3 text-lg"></i>
+                        <span class="text-sm">Data User</span>
+                    </a>
+                </li>
+                <li class="mb-1 group">
+                    <a href="{{ route('jadwal.index') }}"
+                        class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
+                        <i class="ri-calendar-todo-line mr-3 text-lg"></i>
+                        <span class="text-sm">Jadwal</span>
+                    </a>
+                </li>
+            @elseif (auth()->user()->role_id == '2' || auth()->user()->role_id == '3')
+                <li class="mb-1 group">
+                    <span class="flex items-center py-2 px-4 text-gray-300 border-b border-b-white">
+                        <span class="text-sm">Data Vaksin / Imunisasi</span>
+                    </span>
+                </li>
+                <li class="mb-1 group">
+                    <a href="{{ route('jadwal.nakes') }}"
+                        class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
+                        <i class="ri-calendar-todo-line mr-3 text-lg"></i>
+                        <span class="text-sm">Jadwal</span>
+                    </a>
+                </li>
+                <li class="mb-1 group">
+                    <a href="{{ route('vakimun.index') }}"
+                        class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100 ">
+                        <i class="ri-syringe-line mr-3 text-lg"></i>
+                        <span class="text-sm">Vaksin / Imunisasi</span>
+                    </a>
+                </li>
+                <li class="mb-1 group">
+                    <a href="{{ route('penimbangan.index') }}"
+                        class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100 ">
+                        <i class="ri-scales-2-line mr-3 text-lg"></i>
+                        <span class="text-sm">Penimbangan</span>
 
-            </li>
-            <li class="mb-1 group">
-                <a href="/dta-laporan"
-                    class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
-                    <i class="ri-file-fill mr-3 text-lg"></i>
-                    <span class="text-sm">Laporan</span>
-                </a>
-            </li>
-            <li class="mb-1 group">
-                <span class="flex items-center py-2 px-4 text-gray-300 border-b border-b-white">
-                    <span class="text-sm">Data Profile</span>
-                </span>
-            </li>
-            <li class="mb-1 group">
-                <a href="/profile"
-                    class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
-                    <i class="ri-user-4-fill mr-3 text-lg"></i>
-                    <span class="text-sm">Profile</span>
-                </a>
-            </li>
-            <li class="mb-1 group">
-                <a href="/login"
-                    class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
-                    <i class="ri-logout-box-fill mr-3 text-lg"></i>
-                    <span class="text-sm">Logout</span>
-                </a>
-            </li>
+                    </a>
+                </li>
+
+                <li class="mb-1 group">
+                    <a href="/dta-laporan"
+                        class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
+                        <i class="ri-file-fill mr-3 text-lg"></i>
+                        <span class="text-sm">Laporan</span>
+                    </a>
+                </li>
+            @else
+                <li class="mb-1 group">
+                    <a href="{{ route('jadwal.balita') }}"
+                        class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
+                        <i class="ri-calendar-todo-line mr-3 text-lg"></i>
+                        <span class="text-sm">Jadwal</span>
+                    </a>
+                </li>
+                <li class="mb-1 group">
+                    <span class="flex items-center py-2 px-4 text-gray-300 border-b border-b-white">
+                        <span class="text-sm">Data Profile</span>
+                    </span>
+                </li>
+                <li class="mb-1 group">
+                    <a href="{{ route('profile') }}"
+                        class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
+                        <i class="ri-user-4-fill mr-3 text-lg"></i>
+                        <span class="text-sm">Profile</span>
+                    </a>
+                </li>
+                <li class="mb-1 group">
+                    <form action="{{ route('sesi.logout') }}">
+                        @csrf
+                        <button
+                            class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950
+                        hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white
+                        group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
+                            <i class="ri-logout-box-fill mr-3 text-lg"></i>
+                            <span class="text-sm">Logout</span>
+                        </button>
+                    </form>
+                </li>
         </ul>
+        @endif
     </div>
     <div class="fixed top-0 left-0 w-full h-full bg-black/50 z-40 md:hidden sidebar-overlay"></div>
 </body>

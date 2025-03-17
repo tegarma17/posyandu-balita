@@ -6,7 +6,10 @@ use App\Models\User;
 use App\Models\Kader;
 use App\Models\Nakes;
 use Illuminate\Http\Request;
+use function PHPSTORM_META\map;
 use Illuminate\Support\Facades\Log;
+
+use Illuminate\Support\Facades\Crypt;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class KaderController extends Controller
@@ -20,12 +23,14 @@ class KaderController extends Controller
         $kode = Kader::generateKader();
         $title = 'Data Kader';
         if (!empty($search)) {
-            $kaders = Kader::where('nama', 'like', '%' . $search . '%')
-                ->orWhere('kd_nakes', 'like', '%' . $search . '%')
-                ->orderBy('kd_nakes', 'ASC')
+            $kaders = Kader::where(function ($query) use ($search) {
+                $query->where('nama', 'like', '%' . $search . '%')
+                    ->orWhere('kd_nakes', 'like', '%' . $search . '%');
+            })
                 ->whereHas('user.role', function ($query) {
                     $query->where('nama_role', 'Kader Posyandu');
                 })
+                ->orderBy('kd_nakes', 'ASC')
                 ->paginate(5)->fragment('std');
         } else {
             $kaders = Kader::whereHas('user.role', function ($query) {
@@ -39,25 +44,36 @@ class KaderController extends Controller
     public function store(Request $request)
     {
         $kode = Kader::generateKader();
+        $validate = $request->validate([
+            'nik' => 'required|unique:nakes|max:16',
+            'nama' => 'required',
+            'alamat' => 'required',
+            'no_hp' => 'required|numeric|regex:/^(08)[0-9]{8,10}$/'
+        ], [
+            'nik.required' => 'NIK wajib diisi',
+            'nik.unique' => 'NIK sudah terdaftar',
+            'nik.max' => 'NIK terlalu panjang MAX 16',
+            'nama.required' => 'Nama harusu disiis',
+            'alamat.required' => 'Alamat harus diisi',
+            'no_hp.required' => 'Nomer HP wajib diisi',
+            'no_hp.numeric' => 'Nomer HP harus berupa angka',
+            'no_hp.regex' => 'Format nomer HP tidak valid'
+        ]);
 
         User::create([
             'role_id' => 2, //Kode Kader pada database
             'username' => $kode,
             'password' => bcrypt($kode),
         ]);
-        $nakes = [
-            'nik' => $request->nik,
-            'nama' => $request->nama,
-            'kd_nakes' => $kode,
-            'alamat' => $request->alamat,
-            'no_hp' => $request->no_hp,
-            'user_id' => USer::latest()->first()->id,
-        ];
+        $tambahanData = $request->only(['jk']);
 
-        Kader::create($nakes);
-        return redirect()->route('kader.index')->with('success', 'Tenaga Kesehatan Baru telah ditambahkan.');
+        $data = array_merge($validate, $tambahanData);
+        $data['user_id'] = User::latest()->first()->id;
+        $data['kd_nakes'] = $kode;
+
+        Kader::create($data);
+        return redirect()->route('kader.index')->with('success', 'Data Kader Baru telah ditambahkan.');
     }
-
     public function import(Request $request)
     {
 
@@ -93,8 +109,9 @@ class KaderController extends Controller
 
         return redirect()->route('kader.index')->with('success', 'Data Kader berhasil diimport');
     }
-    public function edit(string $id)
+    public function edit($encryptedId)
     {
+        $id = Crypt::decrypt($encryptedId);
         $kader = Nakes::find($id);
         return view('editKader', compact('kader', 'id'));
     }

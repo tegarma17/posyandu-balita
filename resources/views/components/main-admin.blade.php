@@ -8,7 +8,7 @@
         <ul class="ml-auto flex items-center">
             <li class="dropdown ml-3">
                 <button type="button" class="dropdown-toggle flex items-center">
-                    <img src="{{ asset('img/profile.svg') }}" alt=""
+                    <img src="{{ asset('img/admin.png') }}" alt=""
                         class="w-8 h-8 rounded block object-cover align-middle">
                 </button>
                 <ul
@@ -22,7 +22,7 @@
                             class="flex items-center text-[13px] py-1.5 px-4 text-gray-600 hover:text-blue-500 hover:bg-gray-50">Settings</a>
                     </li>
                     <li>
-                        <a href="#"
+                        <a href="{{ route('sesi.logout') }}"
                             class="flex items-center text-[13px] py-1.5 px-4 text-gray-600 hover:text-blue-500 hover:bg-gray-50">Logout</a>
                     </li>
                 </ul>
@@ -40,5 +40,8 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="{{ asset('js/script.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
 
 </main>
